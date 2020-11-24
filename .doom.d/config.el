@@ -60,8 +60,17 @@
 
 ;; (global-auto-revert-mode t)
 
-(add-hook 'org-mode-hook #'auto-fill-mode)
+(setq
+ doom-font (font-spec :family "Source Code Pro" :size 12)
+ doom-big-font (font-spec :family "Source Code Pro" :size 18)
+ doom-variable-pitch-font (font-spec :family "Avenir Next" :size 18)
+ mac-right-option-modifier nil
+ mac-command-modifier 'super
+ projectile-project-search-path '("~/Workspace/repos")
+ dired-dwim-target t
+ +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir))
 
+;;;; ORG
 (defun +org*update-cookies ()
   (when (and buffer-file-name (file-exists-p buffer-file-name))
     (let (org-hierarchical-todo-statistics)
@@ -69,32 +78,18 @@
 
 (advice-add #'+org|update-cookies :override #'+org*update-cookies)
 
+(add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook! 'org-mode-hook (company-mode -1))
 (add-hook! 'org-capture-mode-hook (company-mode -1))
 
 (setq
- doom-font (font-spec :family "Source Code Pro" :size 12)
- doom-big-font (font-spec :family "Source Code Pro" :size 18)
- doom-variable-pitch-font (font-spec :family "Avenir Next" :size 18)
- ;; dart-format-on-save t
- ;; web-mode-markup-indent-offset 2
- ;; web-mode-code-indent-offset 2
- ;; web-mode-css-indent-offset 2
- mac-right-option-modifier nil
- mac-command-modifier 'meta
  org-agenda-skip-scheduled-if-done t
- ;; js-indent-level 2
- ;; typescript-indent-level 2
- json-reformat:indent-width 2
- ;; prettier-js-args '("--single-quote")
- projectile-project-search-path '("~/Workspace/repos")
- dired-dwim-target t
  org-ellipsis " ▾ "
  org-bullets-bullet-list '("·")
+ org-archive-subtree-save-file-p t ; save target buffer after archiving
  org-tags-column -80
  org-agenda-files (ignore-errors (directory-files +org-dir t "\\.org$" t))
  org-log-done 'time
- ;; css-indent-offset 2
  org-refile-targets (quote ((nil :maxlevel . 1)))
  org-capture-templates '(("x" "Note" entry
                           (file+olp+datetree "journal.org")
@@ -102,39 +97,20 @@
                          ("t" "Task" entry
                           (file+headline "tasks.org" "Inbox")
                           "* [ ] %?\n%i" :prepend t :kill-buffer t))
- +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
  +org-capture-todo-file "tasks.org"
  org-super-agenda-groups '((:name "Today"
-                                  :time-grid t
-                                  :scheduled today)
+                            :time-grid t
+                            :scheduled today)
                            (:name "Due today"
-                                  :deadline today)
+                            :deadline today)
                            (:name "Important"
-                                  :priority "A")
+                            :priority "A")
                            (:name "Overdue"
-                                  :deadline past)
+                            :deadline past)
                            (:name "Due soon"
-                                  :deadline future)
+                            :deadline future)
                            (:name "Big Outcomes"
-                                  :tag "bo")))
-
-;; (add-hook! reason-mode
-;;   (add-hook 'before-save-hook #'refmt-before-save nil t))
-
-;; (add-hook!
-;;   js2-mode 'prettier-js-mode
-;;   (add-hook 'before-save-hook #'refmt-before-save nil t))
-
-(map! :ne "M-/" #'comment-or-uncomment-region)
-(map! :ne "SPC / r" #'deadgrep)
-(map! :ne "SPC n b" #'org-brain-visualize)
-
-;; (def-package! parinfer ; to configure it
-;;   :bind (("C-," . parinfer-toggle-mode)
-;;          ("<tab>" . parinfer-smart-tab:dwim-right)
-;;          ("S-<tab>" . parinfer-smart-tab:dwim-left))
-;;   :hook ((clojure-mode emacs-lisp-mode common-lisp-mode lisp-mode) . parinfer-mode)
-;;   :config (setq parinfer-extensions '(defaults pretty-parens evil paredit)))
+                            :tag "bo")))
 
 (after! org
   (set-face-attribute 'org-link nil
@@ -177,6 +153,12 @@
                       :weight 'bold)
   (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
 
+
+(set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
+(set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
+(set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
+
+;; Hide-show for ruby
 (after! ruby
   (add-to-list 'hs-special-modes-alist
                `(ruby-mode
@@ -185,9 +167,7 @@
                  ,(rx (or "#" "=begin"))                        ; Comment start
                  ruby-forward-sexp nil)))
 
-;; (after! web-mode
-;;   (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode)))
-
+;; hideshow indentation
 (defun +data-hideshow-forward-sexp (arg)
   (let ((start (current-indentation)))
     (forward-line)
@@ -199,13 +179,57 @@
 
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
-(setq +magit-hub-features t)
-
-(set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
-(set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
-(set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
-
 (remove-hook 'ruby-mode-hook #'+ruby|init-robe)
+
+(use-package! lsp-ui-mode
+  :after (lsp-mode)
+  :config
+  (lsp-ui-doc-mode t lsp-response-timeout 25 lsp-enable-xref t))
+
+(define-key key-translation-map [?\C-i]
+  (λ! (if (and (not (cl-position 'tab    (this-single-command-raw-keys)))
+               (not (cl-position 'kp-tab (this-single-command-raw-keys)))
+               (display-graphic-p))
+          [C-i] [?\C-i])))
+
+(map! :m [C-i] #'evil-jump-forward)
+
+;; NOTE: Raise popup window - Info mode: C-~
+
+;;; Indent guide hooks
+(after! highlight-indent-guides
+  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (setq highlight-indent-guides-method 'character)
+  (defadvice insert-for-yank (before my-clear-indent-guides activate)
+    (remove-text-properties
+     0 (length (ad-get-arg 0))
+     '(display highlight-indent-guides-prop) (ad-get-arg 0))))
+
+
+;;;; Dictionary
+(defun user/dictionary ()
+  "All settings related to dictionary"
+  ;;;; Dictionary
+  (require 'dictionary)
+
+  ;; Customize
+  (setq dictionary-default-dictionary "wn")
+
+  ;; key bindings - history go back
+  (evil-define-key 'motion dictionary-mode-map
+    (kbd "C-o") 'dictionary-previous)
+
+  ;; Invoke
+  ;; (spacemacs/set-leader-keys "xwf" 'dictionary-lookup-definition)
+  ;; (spacemacs/set-leader-keys "xwD" 'dictionary-search)
+
+  ;; Font face -- make dictionary beautiful
+  (set-face-font 'dictionary-word-definition-face "Cascadia Code")
+  (set-face-attribute 'dictionary-button-face nil :foreground "magenta")
+  (set-face-attribute 'dictionary-reference-face nil :foreground "cyan")
+  (set-face-attribute 'dictionary-word-entry-face nil :foreground "yellow")
+  )
+;; (user/dictionary)
 
 ;;;; Enable Fill column indicator for certain major modes
 (defun user/fill-column-indicator-hooks ()
@@ -221,31 +245,57 @@
 
 (user/fill-column-indicator-hooks)
 
-(use-package! lsp-ui-mode
-  :after (lsp-mode)
-  :config
-  (lsp-ui-doc-mode t))
+(map! :ne "M-/" #'comment-or-uncomment-region)
+(map! :ne "SPC / r" #'deadgrep)
+(map! :ne "SPC n b" #'org-brain-visualize)
 
-(add-hook 'Info-mode-hook
-  (lambda()
-    (evil-set-initial-state 'Info-mode 'emacs)
-    (map! :ne "C-n" #'Info-scroll-up)
-    (map! :ne "C-p" #'Info-scroll-down)))
+;; (after! web-mode
+;;   (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode)))
 
-;; (after! Info-mode
-;;   (evil-collection-define-key 'motion 'Info-mode-map
-;;     (kbd "C-n") 'Info-scroll-up
-;;     (kbd "C-p") 'Info-scroll-down))
+;; (add-hook 'Info-mode-hook
+;;   (lambda()
+;;     (evil-set-initial-state 'Info-mode 'emacs)
+;;     (map! :ne "C-n" #'Info-scroll-up)
+;;     (map! :ne "C-p" #'Info-scroll-down)))
+
+(after! Info-mode
+  (evil-define-key 'motion 'Info-mode-map
+    (kbd "C-n") 'Info-scroll-up
+    (kbd "C-p") 'Info-scroll-down))
 ;;;; Help
 ;; Key bindings - Help navigation
 ;; (evil-define-key 'motion help-mode-map
 ;;   (kbd "C-n") 'Info-scroll-up
 ;;   (kbd "C-p") 'Info-scroll-down)
 
-(define-key key-translation-map [?\C-i]
-  (λ! (if (and (not (cl-position 'tab    (this-single-command-raw-keys)))
-               (not (cl-position 'kp-tab (this-single-command-raw-keys)))
-               (display-graphic-p))
-          [C-i] [?\C-i])))
+;; Custom settings
+(setq magit-repository-directories '("~/Workspace/repos/")
+      ;; lsp-response-timeout 25
+      ;; lsp-enable-xref t
+      )
 
-(map! :m [C-i] #'evil-jump-forward)
+(setq +magit-hub-features t)
+
+;; (def-package! parinfer ; to configure it
+;;   :bind (("C-," . parinfer-toggle-mode)
+;;          ("<tab>" . parinfer-smart-tab:dwim-right)
+;;          ("S-<tab>" . parinfer-smart-tab:dwim-left))
+;;   :hook ((clojure-mode emacs-lisp-mode common-lisp-mode lisp-mode) . parinfer-mode)
+;;   :config (setq parinfer-extensions '(defaults pretty-parens evil paredit)))
+
+;; (add-hook! reason-mode
+;;   (add-hook 'before-save-hook #'refmt-before-save nil t))
+
+;; (add-hook!
+;;   js2-mode 'prettier-js-mode
+;;   (add-hook 'before-save-hook #'refmt-before-save nil t))
+
+;; dart-format-on-save t
+;; web-mode-markup-indent-offset 2
+;; web-mode-code-indent-offset 2
+;; web-mode-css-indent-offset 2
+;; js-indent-level 2
+;; typescript-indent-level 2
+;; prettier-js-args '("--single-quote")
+;; json-reformat:indent-width 2
+;; css-indent-offset 2

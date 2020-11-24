@@ -59,3 +59,4 @@
 (package! ascii-art-to-unicode)
 (package! wakatime-mode)
 (package! minitest)
+(package! dictionary)

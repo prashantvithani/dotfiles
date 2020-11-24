@@ -47,7 +47,9 @@ This function should only modify configuration layer settings."
          lsp-enable-completion-at-point nil)
        markdown
        multiple-cursors
-       org
+       (org :variables
+         org-enable-github-support t
+         org-projectile-file "TODOs.org")
        (shell :variables
          shell-default-height 30
          shell-default-position 'bottom)
@@ -118,8 +120,8 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-  '(ansi-color-faces-vector
-     [default bold shadow italic underline bold bold-italic bold])
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
  '(company-quickhelp-color-background "#4F4F4F")
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(compilation-message-face 'default)
@@ -129,64 +131,63 @@ This function is called at the very end of Spacemacs initialization."
  '(cua-read-only-cursor-color "#7F9F7F")
  '(evil-want-Y-yank-to-eol nil)
  '(highlight-changes-colors '("#DC8CC3" "#bbb0cb"))
-  '(highlight-symbol-colors
-     '("#680f63eb5998" "#54db645064d0" "#6097535f5322" "#5c2859a95fa1" "#4ede55f24ea4" "#64dd5979525e" "#530060d16157"))
+ '(highlight-symbol-colors
+   '("#680f63eb5998" "#54db645064d0" "#6097535f5322" "#5c2859a95fa1" "#4ede55f24ea4" "#64dd5979525e" "#530060d16157"))
  '(highlight-symbol-foreground-color "#FFFFEF")
-  '(highlight-tail-colors
-     '(("#4F4F4F" . 0)
-        ("#488249" . 20)
-        ("#5dacaf" . 30)
-        ("#57a2a4" . 50)
-        ("#b6a576" . 60)
-        ("#ac7b5a" . 70)
-        ("#aa5790" . 85)
-        ("#4F4F4F" . 100)))
-  '(hl-bg-colors
-     '("#b6a576" "#ac7b5a" "#9f5c5c" "#aa5790" "#85749c" "#57a2a4" "#5dacaf" "#488249"))
-  '(hl-fg-colors
-     '("#3F3F3F" "#3F3F3F" "#3F3F3F" "#3F3F3F" "#3F3F3F" "#3F3F3F" "#3F3F3F" "#3F3F3F"))
+ '(highlight-tail-colors
+   '(("#4F4F4F" . 0)
+     ("#488249" . 20)
+     ("#5dacaf" . 30)
+     ("#57a2a4" . 50)
+     ("#b6a576" . 60)
+     ("#ac7b5a" . 70)
+     ("#aa5790" . 85)
+     ("#4F4F4F" . 100)))
+ '(hl-bg-colors
+   '("#b6a576" "#ac7b5a" "#9f5c5c" "#aa5790" "#85749c" "#57a2a4" "#5dacaf" "#488249"))
+ '(hl-fg-colors
+   '("#3F3F3F" "#3F3F3F" "#3F3F3F" "#3F3F3F" "#3F3F3F" "#3F3F3F" "#3F3F3F" "#3F3F3F"))
  '(hl-sexp-background-color "#1c1f26")
-  '(hl-todo-keyword-faces
-     '(("TODO" . "#dc752f")
-        ("NEXT" . "#dc752f")
-        ("THEM" . "#2d9574")
-        ("PROG" . "#4f97d7")
-        ("OKAY" . "#4f97d7")
-        ("DONT" . "#f2241f")
-        ("FAIL" . "#f2241f")
-        ("DONE" . "#86dc2f")
-        ("NOTE" . "#b1951d")
-        ("KLUDGE" . "#b1951d")
-        ("HACK" . "#b1951d")
-        ("TEMP" . "#b1951d")
-        ("FIXME" . "#dc752f")
-        ("XXX+" . "#dc752f")
-        ("\\?\\?\\?+" . "#dc752f")))
+ '(hl-todo-keyword-faces
+   '(("TODO" . "#dc752f")
+     ("NEXT" . "#dc752f")
+     ("THEM" . "#2d9574")
+     ("PROG" . "#4f97d7")
+     ("OKAY" . "#4f97d7")
+     ("DONT" . "#f2241f")
+     ("FAIL" . "#f2241f")
+     ("DONE" . "#86dc2f")
+     ("NOTE" . "#b1951d")
+     ("KLUDGE" . "#b1951d")
+     ("HACK" . "#b1951d")
+     ("TEMP" . "#b1951d")
+     ("FIXME" . "#dc752f")
+     ("XXX+" . "#dc752f")
+     ("\\?\\?\\?+" . "#dc752f")))
  '(lsp-ui-doc-border "#FFFFEF")
-  '(nrepl-message-colors
-     '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
- '(org-agenda-files nil)
-  '(package-selected-packages
-     '(protobuf-mode helm helm-core highlight-indent-guides tide typescript-mode import-js grizzl add-node-modules-path evil-snipe doom-modeline helm-rtags google-c-style flycheck-ycmd flycheck-rtags disaster cquery cpp-auto-include company-ycmd ycmd request-deferred company-rtags rtags company-c-headers clang-format ccls dockerfile-mode docker tablist docker-tramp material-theme zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme kaolin-themes jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme eziam-theme exotica-theme espresso-theme dracula-theme doom-themes django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme chocolate-theme autothemer cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme utop tuareg caml ocp-indent ob-elixir nodejs-repl mvn meghanada maven-test-mode lsp-java livid-mode skewer-mode json-navigator hierarchy json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc groovy-mode groovy-imports gradle-mode flycheck-ocaml merlin flycheck-mix flycheck-credo emojify emoji-cheat-sheet-plus dune company-tern tern company-emoji auto-complete-rst alchemist elixir-mode geiser link connection dictionary helm-dash dash-docs dash-at-point yapfify stickyfunc-enhance pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements lsp-python-ms live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags cython-mode counsel-gtags counsel swiper ivy company-anaconda blacken anaconda-mode pythonic flycheck-golangci-lint sqlup-mode sql-indent web-mode web-beautify tagedit slim-mode scss-mode sass-mode pug-mode prettier-js impatient-mode simple-httpd helm-css-scss haml-mode emmet-mode company-web web-completion-data godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc company-go go-mode slime-company slime common-lisp-snippets orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-cliplink org-brain org-ql peg ov org-super-agenda ts htmlize helm-org-rifle helm-org gnuplot github-search github-clone gist gh marshal logito pcache forge ghub closql emacsql-sqlite emacsql treepy evil-org xterm-color vterm terminal-here shell-pop multi-term eshell-z eshell-prompt-extras esh-help unfill mwim dap-mode bui enh-ruby-mode yasnippet-snippets yaml-mode treemacs-magit smeargle seeing-is-believing rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode robe rbenv projectile-rails rake inflections mmm-mode minitest markdown-toc magit-svn magit-section magit-gitflow magit-popup lsp-ui lsp-treemacs helm-lsp helm-gitignore helm-git-grep helm-company helm-c-yasnippet gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ fringe-helper git-gutter+ gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip feature-mode evil-magit magit git-commit with-editor transient company-lsp lsp-mode markdown-mode dash-functional company chruby bundler inf-ruby browse-at-remote auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete reveal-in-osx-finder osx-trash osx-dictionary osx-clipboard launchctl ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package treemacs-projectile treemacs-persp treemacs-evil toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restart-emacs request rainbow-delimiters popwin pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file nameless move-text macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
+ '(nrepl-message-colors
+   '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
+ '(package-selected-packages
+   '(ox-gfm protobuf-mode helm helm-core highlight-indent-guides tide typescript-mode import-js grizzl add-node-modules-path evil-snipe doom-modeline helm-rtags google-c-style flycheck-ycmd flycheck-rtags disaster cquery cpp-auto-include company-ycmd ycmd request-deferred company-rtags rtags company-c-headers clang-format ccls dockerfile-mode docker tablist docker-tramp material-theme zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme kaolin-themes jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme eziam-theme exotica-theme espresso-theme dracula-theme doom-themes django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme chocolate-theme autothemer cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme utop tuareg caml ocp-indent ob-elixir nodejs-repl mvn meghanada maven-test-mode lsp-java livid-mode skewer-mode json-navigator hierarchy json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc groovy-mode groovy-imports gradle-mode flycheck-ocaml merlin flycheck-mix flycheck-credo emojify emoji-cheat-sheet-plus dune company-tern tern company-emoji auto-complete-rst alchemist elixir-mode geiser link connection dictionary helm-dash dash-docs dash-at-point yapfify stickyfunc-enhance pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements lsp-python-ms live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags cython-mode counsel-gtags counsel swiper ivy company-anaconda blacken anaconda-mode pythonic flycheck-golangci-lint sqlup-mode sql-indent web-mode web-beautify tagedit slim-mode scss-mode sass-mode pug-mode prettier-js impatient-mode simple-httpd helm-css-scss haml-mode emmet-mode company-web web-completion-data godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc company-go go-mode slime-company slime common-lisp-snippets orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-cliplink org-brain org-ql peg ov org-super-agenda ts htmlize helm-org-rifle helm-org gnuplot github-search github-clone gist gh marshal logito pcache forge ghub closql emacsql-sqlite emacsql treepy evil-org xterm-color vterm terminal-here shell-pop multi-term eshell-z eshell-prompt-extras esh-help unfill mwim dap-mode bui enh-ruby-mode yasnippet-snippets yaml-mode treemacs-magit smeargle seeing-is-believing rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode robe rbenv projectile-rails rake inflections mmm-mode minitest markdown-toc magit-svn magit-section magit-gitflow magit-popup lsp-ui lsp-treemacs helm-lsp helm-gitignore helm-git-grep helm-company helm-c-yasnippet gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ fringe-helper git-gutter+ gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip feature-mode evil-magit magit git-commit with-editor transient company-lsp lsp-mode markdown-mode dash-functional company chruby bundler inf-ruby browse-at-remote auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete reveal-in-osx-finder osx-trash osx-dictionary osx-clipboard launchctl ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package treemacs-projectile treemacs-persp treemacs-evil toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restart-emacs request rainbow-delimiters popwin pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file nameless move-text macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
  '(paradox-github-token t)
  '(pos-tip-background-color "#4F4F4F")
  '(pos-tip-foreground-color "#FFFFEF")
-  '(safe-local-variable-values
-     '((whitespace-line-column . 80)
-        (ruby-test-runner quote minitest)
-        (ruby-test-runner . minitest)
-        (go-backend . go-mode)
-        (go-backend . lsp)))
+ '(safe-local-variable-values
+   '((whitespace-line-column . 80)
+     (ruby-test-runner quote minitest)
+     (ruby-test-runner . minitest)
+     (go-backend . go-mode)
+     (go-backend . lsp)))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#7F9F7F" "#4F4F4F" 0.2))
  '(term-default-bg-color "#3F3F3F")
  '(term-default-fg-color "#DCDCCC")
  '(vc-annotate-background-mode nil)
-  '(weechat-color-list
-     '(unspecified "#3F3F3F" "#4F4F4F" "#9f5c5c" "#CC9393" "#488249" "#7F9F7F" "#b6a576" "#F0DFAF" "#57a2a4" "#8CD0D3" "#aa5790" "#DC8CC3" "#5dacaf" "#93E0E3" "#DCDCCC" "#6F6F6F"))
-  '(xterm-color-names
-     ["#4F4F4F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#fffff6"])
-  '(xterm-color-names-bright
-     ["#3F3F3F" "#DFAF8F" "#878777" "#6F6F6F" "#DCDCCC" "#bbb0cb" "#FFFFEF" "#FFFFFD"]))
+ '(weechat-color-list
+   '(unspecified "#3F3F3F" "#4F4F4F" "#9f5c5c" "#CC9393" "#488249" "#7F9F7F" "#b6a576" "#F0DFAF" "#57a2a4" "#8CD0D3" "#aa5790" "#DC8CC3" "#5dacaf" "#93E0E3" "#DCDCCC" "#6F6F6F"))
+ '(xterm-color-names
+   ["#4F4F4F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#fffff6"])
+ '(xterm-color-names-bright
+   ["#3F3F3F" "#DFAF8F" "#878777" "#6F6F6F" "#DCDCCC" "#bbb0cb" "#FFFFEF" "#FFFFFD"]))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -585,6 +586,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
     dotspacemacs-maximized-at-startup t
     dotspacemacs-mode-line-theme '(all-the-icons :separator-scale 1.5)
     )
+  (setq org-agenda-files '("~/org"))
 
   ;; Flycheck hooks
   ;; (user/flycheck-hooks)
@@ -688,6 +690,9 @@ before packages are loaded."
                                ;; Wrap lines by edge of screen
                                (visual-line-mode)
                                (org-indent-mode)))
+  (setq org-todo-keywords
+    '((sequence "TODO(t)" "WAITING(w)" "NEXT(n)" "IN-PROGRESS(p)" "IN-REVIEW(r)" "|" "DONE(d)" "CANCELLED(c)" "DELEGATED(e)")))
+  (setq org-archive-subtree-save-file-p t)
   )
 
 (defun user/tab-hooks ()
