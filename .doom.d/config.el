@@ -60,17 +60,53 @@
 
 ;; (global-auto-revert-mode t)
 
-(setq
- doom-font (font-spec :family "Source Code Pro" :size 12)
- doom-big-font (font-spec :family "Source Code Pro" :size 18)
- doom-variable-pitch-font (font-spec :family "Avenir Next" :size 18)
- mac-right-option-modifier nil
- mac-command-modifier 'super
- projectile-project-search-path '("~/Workspace/repos")
- dired-dwim-target t
- +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir))
+;;;; Local Leader
+(setq doom-localleader-key ",")
+(setq doom-localleader-alt-key "M-,")
 
-;;;; ORG
+;;;; Evil Snipe
+;; (setq evil-snipe-override-evil-repeat-keys nil)
+(evil-snipe-override-mode +1)
+(when evil-snipe-override-evil-repeat-keys
+  (evil-define-key 'motion evil-snipe-override-mode-map
+    (kbd "C-;") 'evil-snipe-repeat
+    (kbd "C-,") 'evil-snipe-repeat-reverse))
+
+;;;; Custom Settings
+
+(setq doom-font (font-spec :family "Source Code Pro" :size 12)
+      doom-big-font (font-spec :family "Source Code Pro" :size 18)
+      doom-variable-pitch-font (font-spec :family "Avenir Next" :size 12)
+      mac-right-option-modifier nil
+      mac-command-modifier 'super
+      projectile-project-search-path '("~/Workspace/repos")
+      dired-dwim-target t
+      +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
+      magit-repository-directories '("~/Workspace/repos/")
+      lsp-response-timeout 25
+      lsp-enable-xref t
+      +magit-hub-features t)
+
+(define-key key-translation-map [?\C-i]
+  (λ! (if (and (not (cl-position 'tab    (this-single-command-raw-keys)))
+               (not (cl-position 'kp-tab (this-single-command-raw-keys)))
+               (display-graphic-p))
+          [C-i] [?\C-i])))
+
+(map! :m [C-i] #'evil-jump-forward)
+
+(map! :ne "M-/" #'comment-or-uncomment-region)
+(map! :ne "SPC / r" #'deadgrep)
+(map! :ne "SPC n b" #'org-brain-visualize)
+
+
+;; NOTE: Raise popup window - Info mode: C-~
+
+;;;;;;;;;;;;;;;;; ORG ;;;;;;;;;;;;;;;;;;;;;;
+;; (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
+;; (set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
+;; (set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
+
 (defun +org*update-cookies ()
   (when (and buffer-file-name (file-exists-p buffer-file-name))
     (let (org-hierarchical-todo-statistics)
@@ -84,6 +120,7 @@
 
 (setq
  org-agenda-skip-scheduled-if-done t
+ org-agenda-skip-deadline-if-done t
  org-ellipsis " ▾ "
  org-bullets-bullet-list '("·")
  org-archive-subtree-save-file-p t ; save target buffer after archiving
@@ -97,20 +134,75 @@
                          ("t" "Task" entry
                           (file+headline "tasks.org" "Inbox")
                           "* [ ] %?\n%i" :prepend t :kill-buffer t))
- +org-capture-todo-file "tasks.org"
- org-super-agenda-groups '((:name "Today"
+ +org-capture-todo-file "tasks.org")
+
+;;;;;;;;;;;;;;;; SUPER AGENDA ;;;;;;;;;;;;;;;;
+(use-package org-super-agenda
+  :after org-agenda
+  :init
+  (setq org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-deadline-if-done t
+        org-agenda-include-deadlines t
+        org-agenda-block-separator nil
+        org-agenda-include-diary t
+        org-agenda-start-with-log-mode t
+        org-agenda-compact-blocks t)
+        ;; org-agenda-start-day nil
+        ;; org-agenda-span 1
+        ;; org-agenda-start-on-weekday nil)
+
+  (setq org-agenda-custom-commands
+        '(("c" "Super view"
+           ((agenda "" ((org-agenda-span 'day)
+                        (org-agenda-start-day nil) ;; today
+                        (org-super-agenda-groups
+                         '((:name "Today"
                             :time-grid t
-                            :scheduled today)
-                           (:name "Due today"
-                            :deadline today)
-                           (:name "Important"
-                            :priority "A")
-                           (:name "Overdue"
-                            :deadline past)
-                           (:name "Due soon"
-                            :deadline future)
-                           (:name "Big Outcomes"
-                            :tag "bo")))
+                            :date today
+                            :scheduled today
+                            :order 1)))))
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:name "In Progress"
+                             :todo ("STRT" "[-]")
+                             :order 2)
+                            (:name "Important"
+                             :tag ("important" "imp")
+                             :priority "A"
+                             :order 2)
+                            (:name "Due Today"
+                             :deadline today
+                             :order 3)
+                            (:name "Due Soon"
+                             :deadline future
+                             :order 4)
+                            (:name "Overdue"
+                             :deadline past
+                             :order 5)
+                            (:name "Meetings"
+                             :tag "meeting"
+                             :order 6)
+                            (:name "Issues"
+                             :tag "issue"
+                             :order 7)
+                            (:name "Research"
+                             :tag "research"
+                             :order 8)
+                            (:name "To read"
+                             :tag "read"
+                             :order 9)
+                            (:name "Waiting"
+                             :todo ("WAIT" "[?]")
+                             :order 10)
+                            (:name "trivial"
+                             :priority<= "C"
+                             :tag ("Trivial" "Unimportant")
+                             :todo ("SOMEDAY" )
+                             :order 90)
+                            (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
+  :config
+  (org-super-agenda-mode))
+;;;;;;;;;;;;;;;; SUPER AGENDA END ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (after! org
   (set-face-attribute 'org-link nil
@@ -152,13 +244,9 @@
                       :height 1.75
                       :weight 'bold)
   (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+;;;;;;;;;;;;;;;;; ORG END ;;;;;;;;;;;;;;;;;;;;;;
 
-
-(set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
-(set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
-(set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
-
-;; Hide-show for ruby
+;;;; RUBY
 (after! ruby
   (add-to-list 'hs-special-modes-alist
                `(ruby-mode
@@ -167,7 +255,9 @@
                  ,(rx (or "#" "=begin"))                        ; Comment start
                  ruby-forward-sexp nil)))
 
-;; hideshow indentation
+(remove-hook 'ruby-mode-hook #'+ruby|init-robe)
+
+;;;; Hide-Show
 (defun +data-hideshow-forward-sexp (arg)
   (let ((start (current-indentation)))
     (forward-line)
@@ -178,23 +268,6 @@
         (end-of-line)))))
 
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
-
-(remove-hook 'ruby-mode-hook #'+ruby|init-robe)
-
-(use-package! lsp-ui-mode
-  :after (lsp-mode)
-  :config
-  (lsp-ui-doc-mode t lsp-response-timeout 25 lsp-enable-xref t))
-
-(define-key key-translation-map [?\C-i]
-  (λ! (if (and (not (cl-position 'tab    (this-single-command-raw-keys)))
-               (not (cl-position 'kp-tab (this-single-command-raw-keys)))
-               (display-graphic-p))
-          [C-i] [?\C-i])))
-
-(map! :m [C-i] #'evil-jump-forward)
-
-;; NOTE: Raise popup window - Info mode: C-~
 
 ;;; Indent guide hooks
 (after! highlight-indent-guides
@@ -245,10 +318,6 @@
 
 (user/fill-column-indicator-hooks)
 
-(map! :ne "M-/" #'comment-or-uncomment-region)
-(map! :ne "SPC / r" #'deadgrep)
-(map! :ne "SPC n b" #'org-brain-visualize)
-
 ;; (after! web-mode
 ;;   (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode)))
 
@@ -258,23 +327,16 @@
 ;;     (map! :ne "C-n" #'Info-scroll-up)
 ;;     (map! :ne "C-p" #'Info-scroll-down)))
 
-(after! Info-mode
-  (evil-define-key 'motion 'Info-mode-map
-    (kbd "C-n") 'Info-scroll-up
-    (kbd "C-p") 'Info-scroll-down))
+;; (after! Info-mode
+;;   (evil-define-key 'motion 'Info-mode-map
+;;     (kbd "C-n") 'Info-scroll-up
+;;     (kbd "C-p") 'Info-scroll-down))
+
 ;;;; Help
 ;; Key bindings - Help navigation
 ;; (evil-define-key 'motion help-mode-map
 ;;   (kbd "C-n") 'Info-scroll-up
 ;;   (kbd "C-p") 'Info-scroll-down)
-
-;; Custom settings
-(setq magit-repository-directories '("~/Workspace/repos/")
-      ;; lsp-response-timeout 25
-      ;; lsp-enable-xref t
-      )
-
-(setq +magit-hub-features t)
 
 ;; (def-package! parinfer ; to configure it
 ;;   :bind (("C-," . parinfer-toggle-mode)
@@ -299,3 +361,8 @@
 ;; prettier-js-args '("--single-quote")
 ;; json-reformat:indent-width 2
 ;; css-indent-offset 2
+
+;; (use-package! lsp-ui
+;;   :after (lsp-mode)
+;;   :config
+;;   (lsp-ui-doc-mode t))
