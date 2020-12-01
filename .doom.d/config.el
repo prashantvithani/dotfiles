@@ -22,10 +22,13 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
+;;load custom functions file
+(load "~/.doom.d/custom-functions")
+
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-dark+)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -65,16 +68,27 @@
 (setq doom-localleader-alt-key "M-,")
 
 ;;;; Evil Snipe
-;; (setq evil-snipe-override-evil-repeat-keys nil)
-(evil-snipe-override-mode +1)
-(when evil-snipe-override-evil-repeat-keys
-  (evil-define-key 'motion evil-snipe-override-mode-map
-    (kbd "C-;") 'evil-snipe-repeat
-    (kbd "C-,") 'evil-snipe-repeat-reverse))
+(setq evil-snipe-override-evil-repeat-keys nil)
+;; (evil-snipe-override-mode +1)
+;; (when evil-snipe-override-evil-repeat-keys
+;;   (evil-define-key 'motion evil-snipe-override-mode-map
+;;     (kbd "C-;") 'evil-snipe-repeat
+;;     (kbd "C-,") 'evil-snipe-repeat-reverse))
+
+;;automatic indenting of pasted text (functions defined in custom-functions.el)
+(map! :n "p" #'evil-paste-after-and-indent
+      :n "P" #'evil-paste-before-and-indent)
+
+;;;; Auto indent on paste
+;; (defadvice! reindent-after-paste (&rest _)
+;;   :after '(evil-paste-after evil-paste-before)
+;;   (cl-destructuring-bind (_ _ _ beg end &optional _)
+;;       evil-last-paste
+;;     (evil-indent beg end)))
 
 ;;;; Custom Settings
-
-(setq doom-font (font-spec :family "Source Code Pro" :size 12)
+(setq-default line-spacing 2)
+(setq doom-font (font-spec :family "Cascadia Code" :size 12)
       doom-big-font (font-spec :family "Source Code Pro" :size 18)
       doom-variable-pitch-font (font-spec :family "Avenir Next" :size 12)
       mac-right-option-modifier nil
@@ -86,6 +100,7 @@
       lsp-response-timeout 25
       lsp-enable-xref t
       +magit-hub-features t)
+(after! git-gutter-fringe (fringe-mode 8))
 
 (define-key key-translation-map [?\C-i]
   (λ! (if (and (not (cl-position 'tab    (this-single-command-raw-keys)))
@@ -160,7 +175,8 @@
                             :time-grid t
                             :date today
                             :scheduled today
-                            :order 1)))))
+                            :order 1)
+                           (:discard (:anything))))))
             (alltodo "" ((org-agenda-overriding-header "")
                          (org-super-agenda-groups
                           '((:name "In Progress"
@@ -179,12 +195,18 @@
                             (:name "Overdue"
                              :deadline past
                              :order 5)
+                            (:name "Issues"
+                             :tag "issue"
+                             :order 6)
+                            (:name "Reviews"
+                             :tag "review"
+                             :order 6)
+                            (:name "Reviews"
+                             :tag "review"
+                             :order 6)
                             (:name "Meetings"
                              :tag "meeting"
                              :order 6)
-                            (:name "Issues"
-                             :tag "issue"
-                             :order 7)
                             (:name "Research"
                              :tag "research"
                              :order 8)
@@ -321,11 +343,11 @@
 ;; (after! web-mode
 ;;   (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode)))
 
-;; (add-hook 'Info-mode-hook
-;;   (lambda()
-;;     (evil-set-initial-state 'Info-mode 'emacs)
-;;     (map! :ne "C-n" #'Info-scroll-up)
-;;     (map! :ne "C-p" #'Info-scroll-down)))
+(add-hook 'Info-mode-hook
+  (lambda()
+    (evil-set-initial-state 'Info-mode 'emacs)
+    (map! :ne "}" #'Info-scroll-up)
+    (map! :ne "{" #'Info-scroll-down)))
 
 ;; (after! Info-mode
 ;;   (evil-define-key 'motion 'Info-mode-map
