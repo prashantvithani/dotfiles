@@ -86,5 +86,7 @@ source "$CLARISIGHTS_HOME/scripts/dev/kubectl_aliases.sh"
 
 # alias for gssh
 alias gssh=$WORKSPACE/devops/scripts/gssh.sh
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export HOMEBREW_NO_AUTO_UPDATE=1
+
+## MACOS settings
+# export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+# export HOMEBREW_NO_AUTO_UPDATE=1
