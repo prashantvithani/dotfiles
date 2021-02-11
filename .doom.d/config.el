@@ -28,7 +28,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-one)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -88,11 +88,11 @@
 
 ;;;; Custom Settings
 (setq-default line-spacing 1)
-(setq doom-font (font-spec :family "Hermit" :size 12)
-      doom-big-font (font-spec :family "Source Code Pro" :size 18)
-      doom-variable-pitch-font (font-spec :family "Avenir Next" :size 12)
-      mac-right-option-modifier nil
-      mac-command-modifier 'super
+(setq doom-font "Hermit-12:medium"
+      doom-big-font "Hermit-18:medium"
+      doom-variable-pitch-font "Cantarell-12:medium"
+      ;; mac-right-option-modifier nil
+      ;; mac-command-modifier 'super
       projectile-project-search-path '("~/Workspace/repos")
       dired-dwim-target t
       +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
@@ -100,7 +100,8 @@
       lsp-response-timeout 25
       lsp-enable-xref t
       +magit-hub-features t)
-(after! git-gutter-fringe (fringe-mode 8))
+(after! git-gutter-fringe (fringe-mode '4))
+(global-git-gutter-mode t)
 
 (define-key key-translation-map [?\C-i]
   (λ! (if (and (not (cl-position 'tab    (this-single-command-raw-keys)))
@@ -294,7 +295,8 @@
 ;;; Indent guide hooks
 (after! highlight-indent-guides
   ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-method 'bitmap)
+  (setq highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line)
   (defadvice insert-for-yank (before my-clear-indent-guides activate)
     (remove-text-properties
      0 (length (ad-get-arg 0))
@@ -348,6 +350,29 @@
     (evil-set-initial-state 'Info-mode 'emacs)
     (map! :ne "}" #'Info-scroll-up)
     (map! :ne "{" #'Info-scroll-down)))
+
+;; ----- TRAMP on native-comp Emacs 28 -----
+(after! tramp
+  (unless (version<= emacs-version "28.0")
+    (defun start-file-process-shell-command@around (start-file-process-shell-command name buffer &rest args)
+      "Start a program in a subprocess.  Return the process object for it.
+ Similar to `start-process-shell-command', but calls `start-file-process'."
+      ;; On remote hosts, the local `shell-file-name' might be useless.
+      (let ((command (mapconcat 'identity args " ")))
+        (funcall start-file-process-shell-command name buffer command)))
+    (advice-add 'start-file-process-shell-command :around #'start-file-process-shell-command@around))
+  (setq tramp-default-method "ssh"
+        tramp-use-ssh-controlmaster-options nil)
+  (cl-pushnew 'tramp-own-remote-path tramp-remote-path)
+  (require 'git-gutter-fringe))
+
+;; ----- LSP over Tramp -----
+(after! lsp-mode
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection '("solargraph" "stdio"))
+                    :major-modes '(ruby-mode)
+                    :remote? t
+                    :server-id 'solargraph-remote)))
 
 ;; (after! Info-mode
 ;;   (evil-define-key 'motion 'Info-mode-map
