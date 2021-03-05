@@ -1,5 +1,6 @@
 ;;; $DOOMDIR/custom-functions.el -*- lexical-binding: t; -*-
 
+;; ----- Paste with indent -----
 (evil-define-command evil-paste-before-and-indent
   (count &optional register yank-handler)
   "Pastes the latest yanked text before point
@@ -21,3 +22,62 @@ The return value is the yanked text."
     (let ((text (evil-paste-after count register yank-handler)))
       (evil-indent (evil-get-marker ?\[) (evil-get-marker ?\]))
       text)))
+
+;; ----- Treemacs (temporary fix for 6c431174dd933f87c32f283740ad2078e1c4fcb8) -----
+(defun fix-treemacs ()
+  (interactive)
+  (setf treemacs--file-name-handler-alist
+        (with-no-warnings
+          (list
+           (cons tramp-file-name-regexp #'tramp-file-name-handler)))))
+
+;; ----- HideShow functions -----
+(defun +data-hideshow-forward-sexp (arg)
+  (let ((start (current-indentation)))
+    (forward-line)
+    (unless (= start (current-indentation))
+      (require 'evil-indent-plus)
+      (let ((range (evil-indent-plus--same-indent-range)))
+        (goto-char (cadr range))
+        (end-of-line)))))
+
+;; ----- ORG Functions -----
+(defun +org*update-cookies ()
+  (when (and buffer-file-name (file-exists-p buffer-file-name))
+    (let (org-hierarchical-todo-statistics)
+      (org-update-parent-todo-statistics))))
+
+;; ----- Custom User functions -----
+(defun user/fill-column-indicator-hooks ()
+  (add-hook 'ruby-mode-hook (lambda () (display-fill-column-indicator-mode t)))
+  (add-hook 'c-mode-hook (lambda () (display-fill-column-indicator-mode t)))
+  (add-hook 'java-mode-hook (lambda () (display-fill-column-indicator-mode t)))
+  (add-hook 'python-mode-hook (lambda () (display-fill-column-indicator-mode t)))
+  (add-hook 'go-mode-hook (lambda () (display-fill-column-indicator-mode t)))
+  (add-hook 'emacs-lisp-mode-hook (lambda () (display-fill-column-indicator-mode t)))
+  (add-hook 'common-lisp-mode-hook (lambda () (display-fill-column-indicator-mode t)))
+  (add-hook 'scheme-mode-hook (lambda () (display-fill-column-indicator-mode t)))
+  )
+
+(defun user/dictionary ()
+  "All settings related to dictionary"
+  ;;;; Dictionary
+  (require 'dictionary)
+
+  ;; Customize
+  (setq dictionary-default-dictionary "wn")
+
+  ;; key bindings - history go back
+  (evil-define-key 'motion dictionary-mode-map
+    (kbd "C-o") 'dictionary-previous)
+
+  ;; Invoke
+  ;; (spacemacs/set-leader-keys "xwf" 'dictionary-lookup-definition)
+  ;; (spacemacs/set-leader-keys "xwD" 'dictionary-search)
+
+  ;; Font face -- make dictionary beautiful
+  (set-face-font 'dictionary-word-definition-face "Cascadia Code")
+  (set-face-attribute 'dictionary-button-face nil :foreground "magenta")
+  (set-face-attribute 'dictionary-reference-face nil :foreground "cyan")
+  (set-face-attribute 'dictionary-word-entry-face nil :foreground "yellow")
+  )

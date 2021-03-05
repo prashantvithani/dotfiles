@@ -28,7 +28,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-zenburn)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -87,10 +87,12 @@
 ;;     (evil-indent beg end)))
 
 ;;;; Custom Settings
-(setq-default line-spacing 1)
-(setq doom-font "Hermit-12:medium"
-      doom-big-font "Hermit-18:medium"
+(setq-default line-spacing 1
+              read-quoted-char-radix 16)
+(setq doom-font "JetBrains Mono-12:regular"
+      ;; doom-big-font "Hermit-18:medium"
       doom-variable-pitch-font "Cantarell-12:medium"
+      doom-serif-font "Iosevka Custom-12:regular"
       ;; mac-right-option-modifier nil
       ;; mac-command-modifier 'super
       projectile-project-search-path '("~/Workspace/repos")
@@ -122,11 +124,6 @@
 ;; (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
 ;; (set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
 ;; (set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
-
-(defun +org*update-cookies ()
-  (when (and buffer-file-name (file-exists-p buffer-file-name))
-    (let (org-hierarchical-todo-statistics)
-      (org-update-parent-todo-statistics))))
 
 (advice-add #'+org|update-cookies :override #'+org*update-cookies)
 
@@ -281,22 +278,13 @@
 (remove-hook 'ruby-mode-hook #'+ruby|init-robe)
 
 ;;;; Hide-Show
-(defun +data-hideshow-forward-sexp (arg)
-  (let ((start (current-indentation)))
-    (forward-line)
-    (unless (= start (current-indentation))
-      (require 'evil-indent-plus)
-      (let ((range (evil-indent-plus--same-indent-range)))
-        (goto-char (cadr range))
-        (end-of-line)))))
-
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
 ;;; Indent guide hooks
 (after! highlight-indent-guides
   ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (setq highlight-indent-guides-method 'bitmap)
-  (setq highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line)
+  (setq highlight-indent-guides-method 'character)
+  ;; (setq highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line)
   (defadvice insert-for-yank (before my-clear-indent-guides activate)
     (remove-text-properties
      0 (length (ad-get-arg 0))
@@ -304,42 +292,9 @@
 
 
 ;;;; Dictionary
-(defun user/dictionary ()
-  "All settings related to dictionary"
-  ;;;; Dictionary
-  (require 'dictionary)
-
-  ;; Customize
-  (setq dictionary-default-dictionary "wn")
-
-  ;; key bindings - history go back
-  (evil-define-key 'motion dictionary-mode-map
-    (kbd "C-o") 'dictionary-previous)
-
-  ;; Invoke
-  ;; (spacemacs/set-leader-keys "xwf" 'dictionary-lookup-definition)
-  ;; (spacemacs/set-leader-keys "xwD" 'dictionary-search)
-
-  ;; Font face -- make dictionary beautiful
-  (set-face-font 'dictionary-word-definition-face "Cascadia Code")
-  (set-face-attribute 'dictionary-button-face nil :foreground "magenta")
-  (set-face-attribute 'dictionary-reference-face nil :foreground "cyan")
-  (set-face-attribute 'dictionary-word-entry-face nil :foreground "yellow")
-  )
 ;; (user/dictionary)
 
 ;;;; Enable Fill column indicator for certain major modes
-(defun user/fill-column-indicator-hooks ()
-  (add-hook 'ruby-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'c-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'java-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'python-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'go-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'emacs-lisp-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'common-lisp-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'scheme-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  )
-
 (user/fill-column-indicator-hooks)
 
 ;; (after! web-mode
