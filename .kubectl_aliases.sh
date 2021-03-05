@@ -18,6 +18,7 @@ alias kns="kubens"
 alias kctx="kubectx"
 
 alias kctl="kubectl"
+complete -F __start_kubectl kctl
 # alias for kubectl
 alias kl='kctl logs'
 alias kp='kctl get pods --sort-by=.metadata.creationTimestamp'
