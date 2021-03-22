@@ -89,8 +89,9 @@
 ;;;; Custom Settings
 (setq-default line-spacing 1
               read-quoted-char-radix 16)
-(setq doom-font "JetBrains Mono-12:regular"
+(setq doom-font "Hermit-12:regular"
       ;; doom-big-font "Hermit-18:medium"
+      doom-unicode-font "Noto Color Emoji-12:regular"
       doom-variable-pitch-font "Cantarell-12:medium"
       doom-serif-font "Iosevka Custom-12:regular"
       ;; mac-right-option-modifier nil
@@ -111,12 +112,21 @@
                (display-graphic-p))
           [C-i] [?\C-i])))
 
+;; (define-key doom-leader-map (kbd ":") 'projectile-find-file)
+;; (define-key doom-leader-map (kbd "SPC") 'execute-extended-command)
+
+;; Motion bindings
 (map! :m [C-i] #'evil-jump-forward)
 
-(map! :ne "M-/" #'comment-or-uncomment-region)
-(map! :ne "SPC / r" #'deadgrep)
+;; Normal-Emacs bindings
+(map! :ne "M-/" #'comment-line)
+(map! :ne "SPC s g" #'deadgrep)
 (map! :ne "SPC n b" #'org-brain-visualize)
+(map! :leader :desc "M-x" :ne "SPC" #'execute-extended-command)
+(map! :leader :desc "Find file in project" :ne "." #'projectile-find-file)
+(map! :leader :desc "Find file" :ne ":" #'find-file)
 
+(map! :leader :ne "C-+" #'font-size-hidpi)
 
 ;; NOTE: Raise popup window - Info mode: C-~
 
@@ -264,6 +274,9 @@
                       :height 1.75
                       :weight 'bold)
   (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 ;;;;;;;;;;;;;;;;; ORG END ;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;; RUBY
@@ -283,7 +296,7 @@
 ;;; Indent guide hooks
 (after! highlight-indent-guides
   ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-method 'column)
   ;; (setq highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line)
   (defadvice insert-for-yank (before my-clear-indent-guides activate)
     (remove-text-properties
@@ -329,6 +342,8 @@
                     :remote? t
                     :server-id 'solargraph-remote)))
 
+(ace-window-display-mode)
+
 ;; (after! Info-mode
 ;;   (evil-define-key 'motion 'Info-mode-map
 ;;     (kbd "C-n") 'Info-scroll-up
@@ -368,3 +383,7 @@
 ;;   :after (lsp-mode)
 ;;   :config
 ;;   (lsp-ui-doc-mode t))
+
+;; (defun doom-project-ignored-p-override (project-root)
+;;   (not (file-remote-p project-root)))
+;; (advice-add 'doom-project-ignored-p :after-while #'doom-project-ignored-p-override)

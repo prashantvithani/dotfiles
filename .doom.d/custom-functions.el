@@ -81,3 +81,7 @@ The return value is the yanked text."
   (set-face-attribute 'dictionary-reference-face nil :foreground "cyan")
   (set-face-attribute 'dictionary-word-entry-face nil :foreground "yellow")
   )
+
+(defun font-size-hidpi ()
+  (interactive)
+  (set-frame-font "-UKWN-Hermit-normal-normal-normal-*-21-*-*-*-m-*-iso10646-1"))

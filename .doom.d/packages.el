@@ -61,3 +61,4 @@
 ;; (package! minitest)
 (package! dictionary)
 (package! spacemacs-theme)
+(package! verb)
