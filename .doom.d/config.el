@@ -28,7 +28,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-zenburn)
+(setq doom-theme 'doom-palenight)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -102,9 +102,8 @@
       magit-repository-directories '("~/Workspace/repos/")
       lsp-response-timeout 25
       lsp-enable-xref t
-      +magit-hub-features t)
-(after! git-gutter-fringe (fringe-mode '4))
-(global-git-gutter-mode t)
+      ;;+magit-hub-features t
+      +vc-gutter-in-remote-files t)
 
 (define-key key-translation-map [?\C-i]
   (λ! (if (and (not (cl-position 'tab    (this-single-command-raw-keys)))
@@ -334,8 +333,7 @@
     (advice-add 'start-file-process-shell-command :around #'start-file-process-shell-command@around))
   (setq tramp-default-method "ssh"
         tramp-use-ssh-controlmaster-options nil)
-  (cl-pushnew 'tramp-own-remote-path tramp-remote-path)
-  (require 'git-gutter-fringe))
+  (cl-pushnew 'tramp-own-remote-path tramp-remote-path))
 
 ;; ----- LSP over Tramp -----
 (after! lsp-mode
