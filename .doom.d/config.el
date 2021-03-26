@@ -289,6 +289,8 @@
                  ruby-forward-sexp nil)))
 
 (remove-hook 'ruby-mode-hook #'+ruby|init-robe)
+(cl-pushnew 'ruby-mode doom-detect-indentation-excluded-modes)
+;;;; end
 
 ;;;; Hide-Show
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
