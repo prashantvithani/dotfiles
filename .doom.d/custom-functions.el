@@ -84,4 +84,6 @@ The return value is the yanked text."
 
 (defun font-size-hidpi ()
   (interactive)
-  (set-frame-font "-UKWN-Hermit-normal-normal-normal-*-21-*-*-*-m-*-iso10646-1"))
+  (let ((font "-UKWN-Hermit-normal-normal-normal-*-21-*-*-*-m-*-iso10646-1"))
+    (set-frame-font font 'keep-size t)
+    (setf (alist-get 'font default-frame-alist) font)))
