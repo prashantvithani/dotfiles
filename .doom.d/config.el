@@ -112,21 +112,18 @@
                (display-graphic-p))
           [C-i] [?\C-i])))
 
-;; (define-key doom-leader-map (kbd ":") 'projectile-find-file)
-;; (define-key doom-leader-map (kbd "SPC") 'execute-extended-command)
-
 ;; Motion bindings
 (map! :m [C-i] #'evil-jump-forward)
 
-;; Normal-Emacs bindings
+;; Custom Bindings Normal-Emacs bindings
 (map! :ne "M-/" #'comment-line)
 (map! :ne "SPC s g" #'deadgrep)
 (map! :ne "SPC n b" #'org-brain-visualize)
 (map! :leader :desc "M-x" :ne "SPC" #'execute-extended-command)
 (map! :leader :desc "Find file in project" :ne "." #'projectile-find-file)
 (map! :leader :desc "Find file" :ne ":" #'find-file)
-
 (map! :leader :ne "C-+" #'font-size-hidpi)
+(map! :leader :ne "g W" #'git-gutter:update-all-windows)
 
 ;; NOTE: Raise popup window - Info mode: C-~
 
@@ -295,17 +292,6 @@
 ;;;; Hide-Show
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
-;;; Indent guide hooks
-(after! highlight-indent-guides
-  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (setq highlight-indent-guides-method 'column)
-  ;; (setq highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line)
-  (defadvice insert-for-yank (before my-clear-indent-guides activate)
-    (remove-text-properties
-     0 (length (ad-get-arg 0))
-     '(display highlight-indent-guides-prop) (ad-get-arg 0))))
-
-
 ;;;; Dictionary
 ;; (user/dictionary)
 
@@ -320,6 +306,21 @@
     (evil-set-initial-state 'Info-mode 'emacs)
     (map! :ne "}" #'Info-scroll-up)
     (map! :ne "{" #'Info-scroll-down)))
+
+;; ----- GIT GUTTER -----
+(after! git-gutter
+  (remove-hook 'focus-in-hook #'git-gutter:update-all-windows))
+
+;; ------- Indent guide hooks --------
+(after! highlight-indent-guides
+  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (setq highlight-indent-guides-method 'column)
+  ;; (setq highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line)
+  (defadvice insert-for-yank (before my-clear-indent-guides activate)
+    (remove-text-properties
+     0 (length (ad-get-arg 0))
+     '(display highlight-indent-guides-prop) (ad-get-arg 0))))
+
 
 ;; ----- TRAMP on native-comp Emacs 28 -----
 (after! tramp
