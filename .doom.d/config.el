@@ -300,11 +300,14 @@
 ;; (after! web-mode
 ;;   (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode)))
 
+;; -------- INFO --------
 (add-hook 'Info-mode-hook
   (lambda()
     (evil-set-initial-state 'Info-mode 'emacs)
     (map! :ne "}" #'Info-scroll-up)
     (map! :ne "{" #'Info-scroll-down)))
+
+(cl-pushnew "~/info" Info-directory-list)
 
 ;; ----- GIT GUTTER -----
 (after! git-gutter
