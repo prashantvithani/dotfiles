@@ -28,7 +28,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-dracula)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -85,6 +85,11 @@
       json-reformat:indent-width 2
       ;;+magit-hub-features t
       +vc-gutter-in-remote-files t)
+
+;; Doom ALT leader key remap to M-S-SPC. M-SPC is used by
+;; 'Windows Operation Actions'
+(setq doom-leader-alt-key "M-S-SPC")
+(setq doom-localleader-alt-key "M-S-SPC m")
 
 ;; Motion bindings
 (map! :m [C-i] #'evil-jump-forward)
@@ -346,8 +351,12 @@
                       :weight 'bold)
   (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
 
+;;;;; VERB ;;;;;
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((verb . t)))
 ;;;;;;;;;;;;;;;;; ORG END ;;;;;;;;;;;;;;;;;;;;;;
 
 ;; (after! Info-mode

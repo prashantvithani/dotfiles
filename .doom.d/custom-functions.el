@@ -84,6 +84,6 @@ The return value is the yanked text."
 
 (defun font-size-hidpi ()
   (interactive)
-  (let ((font "-UKWN-Hermit-normal-normal-normal-*-21-*-*-*-m-*-iso10646-1"))
-    (set-frame-font font 'keep-size t)
-    (setf (alist-get 'font default-frame-alist) font)))
+  (doom-adjust-font-size 17 t '((doom-font . "Hermit:regular")
+                                (doom-variable-pitch-font . "Cantarell:medium")
+                                (doom-serif-font . "Iosevka Custom:regular"))))
