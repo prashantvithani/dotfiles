@@ -9,7 +9,7 @@
 # === Bash functions
 # get bash shell on pod
 function k8s_get_bash() {
-    kubectl --context=$KUBECTL_CONTEXT --namespace=$KUBECTL_NAMESPACE exec -it $1 bash
+    kubectl --context=$KUBECTL_CONTEXT --namespace=$KUBECTL_NAMESPACE exec -it $1 -- bash
 }
 
 # === Aliases
