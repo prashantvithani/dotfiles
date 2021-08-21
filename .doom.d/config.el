@@ -208,6 +208,14 @@
   :config
   (define-hmac-function hmac-sha1 sha1 64 20))
 
+;; ----- ALERTING -----
+(setq alert-default-style 'libnotify)
+
+;; -------- POMODORO --------
+(use-package pomidor
+  :bind (("<f12>" . pomidor))
+  :config (setq pomidor-long-break-seconds (* 30 60)))
+
 ;;;;;;;;;;;;;;;;; ORG ;;;;;;;;;;;;;;;;;;;;;;
 ;; (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
 ;; (set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
