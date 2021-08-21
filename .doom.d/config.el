@@ -67,6 +67,11 @@
 (setq doom-localleader-key ",")
 (setq doom-localleader-alt-key "M-,")
 
+;; Doom ALT leader key remap to M-S-SPC. M-SPC is used by
+;; 'Windows Operation Actions'
+(setq doom-leader-alt-key "M-S-SPC")
+(setq doom-localleader-alt-key "M-S-SPC m")
+
 ;;;; Custom Settings
 (setq-default line-spacing 1
               read-quoted-char-radix 16)
@@ -84,12 +89,10 @@
       js-indent-level 2
       json-reformat:indent-width 2
       ;;+magit-hub-features t
-      +vc-gutter-in-remote-files t)
-
-;; Doom ALT leader key remap to M-S-SPC. M-SPC is used by
-;; 'Windows Operation Actions'
-(setq doom-leader-alt-key "M-S-SPC")
-(setq doom-localleader-alt-key "M-S-SPC m")
+      +vc-gutter-in-remote-files t
+      vc-ignore-dir-regexp (format "%s\\|%s"
+                                   locate-dominating-stop-dir-regexp
+                                   "[/\\\\]node_modules"))
 
 ;; Motion bindings
 (map! :m [C-i] #'evil-jump-forward)
