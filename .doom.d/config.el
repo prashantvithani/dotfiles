@@ -170,17 +170,16 @@
      0 (length (ad-get-arg 0))
      '(display highlight-indent-guides-prop) (ad-get-arg 0))))
 
-
 ;; ----- TRAMP on native-comp Emacs 28 -----
 (after! tramp
-  (unless (version<= emacs-version "28.0")
-    (defun start-file-process-shell-command@around (start-file-process-shell-command name buffer &rest args)
-      "Start a program in a subprocess.  Return the process object for it.
- Similar to `start-process-shell-command', but calls `start-file-process'."
-      ;; On remote hosts, the local `shell-file-name' might be useless.
-      (let ((command (mapconcat 'identity args " ")))
-        (funcall start-file-process-shell-command name buffer command)))
-    (advice-add 'start-file-process-shell-command :around #'start-file-process-shell-command@around))
+ ;;  (unless (version<= emacs-version "28.0")
+ ;;    (defun start-file-process-shell-command@around (start-file-process-shell-command name buffer &rest args)
+ ;;      "Start a program in a subprocess.  Return the process object for it.
+ ;; Similar to `start-process-shell-command', but calls `start-file-process'."
+ ;;      ;; On remote hosts, the local `shell-file-name' might be useless.
+ ;;      (let ((command (mapconcat 'identity args " ")))
+ ;;        (funcall start-file-process-shell-command name buffer command)))
+ ;;    (advice-add 'start-file-process-shell-command :around #'start-file-process-shell-command@around))
   (setq tramp-default-method "ssh"
         tramp-use-ssh-controlmaster-options nil)
   (cl-pushnew 'tramp-own-remote-path tramp-remote-path))
