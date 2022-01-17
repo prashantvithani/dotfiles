@@ -229,6 +229,3 @@ alias reload="exec ${SHELL} -l"
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
-
-# Use neovim as default vim editor
-alias vim=nvim

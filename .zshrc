@@ -64,7 +64,7 @@ plugins=(
   # yarn
   # web-search
   # node
-  osx
+  macos
   sudo
   # docker
   # kubectl

@@ -71,15 +71,14 @@ source ~/.minikube-completion
 export JRUBY_OPTS="-J-Xmx2048m -J-Xms2048m -J-Xmn1024m -J-XX:ReservedCodeCacheSize=1024m -J-XX:+UseCodeCacheFlushing -J-XX:+UseG1GC -J-Djruby.thread.pool.enabled=true -J-Djruby.jit.threshold=1 --dev"
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home"
 
-export EDITOR="nvim"
-
 export LDAP_USERNAME="prashant"
 export WORKSPACE="/Users/prvithani/Workspace"
 export CLARISIGHTS_HOME="$WORKSPACE/adwyze"
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 
-export PATH="$PATH:/usr/local/opt/postgresql@10/bin"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.emacs.d/bin:$PATH"
 
 # alias for kubectl
 source "$CLARISIGHTS_HOME/scripts/dev/kubectl_aliases.sh"
@@ -88,3 +87,10 @@ source "$CLARISIGHTS_HOME/scripts/dev/kubectl_aliases.sh"
 alias gssh=$WORKSPACE/devops/scripts/gssh.sh
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi
