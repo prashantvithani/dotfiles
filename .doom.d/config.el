@@ -28,7 +28,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-dracula)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -67,15 +67,44 @@
 (setq doom-localleader-key ",")
 (setq doom-localleader-alt-key "M-,")
 
-;;;; Evil Snipe
-(setq evil-snipe-override-evil-repeat-keys nil)
-;; (evil-snipe-override-mode +1)
-;; (when evil-snipe-override-evil-repeat-keys
-;;   (evil-define-key 'motion evil-snipe-override-mode-map
-;;     (kbd "C-;") 'evil-snipe-repeat
-;;     (kbd "C-,") 'evil-snipe-repeat-reverse))
+;; Doom ALT leader key remap to M-S-SPC. M-SPC is used by
+;; 'Windows Operation Actions'
+(setq doom-leader-alt-key "M-S-SPC")
+(setq doom-localleader-alt-key "M-S-SPC m")
 
-;;automatic indenting of pasted text (functions defined in custom-functions.el)
+;;;; Custom Settings
+(setq-default line-spacing 1
+              read-quoted-char-radix 16)
+(setq doom-font "Iosevka Custom Extended-12:regular"
+      ;; doom-big-font "Hermit-18:medium"
+      doom-unicode-font "Noto Color Emoji-12:regular"
+      doom-variable-pitch-font "Rubik-12:medium"
+      doom-serif-font "Iosevka Custom-12:regular"
+      projectile-project-search-path '("~/Workspace/repos")
+      dired-dwim-target t
+      +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
+      magit-repository-directories '("~/Workspace/repos/")
+      lsp-response-timeout 25
+      lsp-enable-xref t
+      js-indent-level 2
+      json-reformat:indent-width 2
+      ;;+magit-hub-features t
+      +vc-gutter-in-remote-files t)
+
+;; Motion bindings
+(map! :m [C-i] #'evil-jump-forward)
+
+;; Custom Bindings Normal-Emacs bindings
+(map! :ne "M-/" #'comment-line)
+(map! :leader :ne "s g" #'deadgrep)
+(map! :leader :ne "n b" #'org-brain-visualize)
+(map! :leader :desc "M-x" :ne "SPC" #'execute-extended-command)
+(map! :leader :desc "Find file in project" :ne "." #'projectile-find-file)
+(map! :leader :desc "Find file" :ne ":" #'find-file)
+(map! :leader :ne "C-+" #'font-size-hidpi)
+(map! :leader :ne "g W" #'git-gutter:update-all-windows)
+
+;; automatic indenting of pasted text (functions defined in custom-functions.el)
 (map! :n "p" #'evil-paste-after-and-indent
       :n "P" #'evil-paste-before-and-indent)
 
@@ -86,46 +115,132 @@
 ;;       evil-last-paste
 ;;     (evil-indent beg end)))
 
-;;;; Custom Settings
-(setq-default line-spacing 1)
-(setq doom-font (font-spec :family "Hermit" :size 12)
-      doom-big-font (font-spec :family "Source Code Pro" :size 18)
-      doom-variable-pitch-font (font-spec :family "Avenir Next" :size 12)
-      mac-right-option-modifier nil
-      mac-command-modifier 'super
-      projectile-project-search-path '("~/Workspace/repos")
-      dired-dwim-target t
-      +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
-      magit-repository-directories '("~/Workspace/repos/")
-      lsp-response-timeout 25
-      lsp-enable-xref t
-      +magit-hub-features t)
-(after! git-gutter-fringe (fringe-mode 8))
+;;;; Evil Snipe
+(setq evil-snipe-override-evil-repeat-keys nil)
+;; (evil-snipe-override-mode +1)
+;; (when evil-snipe-override-evil-repeat-keys
+;;   (evil-define-key 'motion evil-snipe-override-mode-map
+;;     (kbd "C-;") 'evil-snipe-repeat
+;;     (kbd "C-,") 'evil-snipe-repeat-reverse))
 
-(define-key key-translation-map [?\C-i]
-  (λ! (if (and (not (cl-position 'tab    (this-single-command-raw-keys)))
-               (not (cl-position 'kp-tab (this-single-command-raw-keys)))
-               (display-graphic-p))
-          [C-i] [?\C-i])))
+;;;; RUBY
+(after! ruby
+  (add-to-list 'hs-special-modes-alist
+               `(ruby-mode
+                 ,(rx (or "def" "class" "module" "do" "{" "[")) ; Block start
+                 ,(rx (or "}" "]" "end"))                       ; Block end
+                 ,(rx (or "#" "=begin"))                        ; Comment start
+                 ruby-forward-sexp nil)))
 
-(map! :m [C-i] #'evil-jump-forward)
+;; (remove-hook 'ruby-mode-hook #'+ruby|init-robe)
+(cl-pushnew 'ruby-mode doom-detect-indentation-excluded-modes)
+;;;; end
 
-(map! :ne "M-/" #'comment-or-uncomment-region)
-(map! :ne "SPC / r" #'deadgrep)
-(map! :ne "SPC n b" #'org-brain-visualize)
+;;;; Hide-Show
+(add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
+;;;; Enable Fill column indicator for certain major modes
+(user/fill-column-indicator-hooks)
+
+;; -------- INFO --------
+(add-hook 'Info-mode-hook
+  (lambda()
+    (evil-set-initial-state 'Info-mode 'emacs)
+    (map! :ne "}" #'Info-scroll-up)
+    (map! :ne "{" #'Info-scroll-down)))
+
+(cl-pushnew "~/info" Info-directory-list)
 
 ;; NOTE: Raise popup window - Info mode: C-~
+
+;; ----- GIT GUTTER -----
+(after! git-gutter
+  (remove-hook 'focus-in-hook #'git-gutter:update-all-windows))
+
+;; ------- Indent guide hooks --------
+(after! highlight-indent-guides
+  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (setq highlight-indent-guides-method 'column)
+  ;; (setq highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line)
+  (defadvice insert-for-yank (before my-clear-indent-guides activate)
+    (remove-text-properties
+     0 (length (ad-get-arg 0))
+     '(display highlight-indent-guides-prop) (ad-get-arg 0))))
+
+;; ----- TRAMP on native-comp Emacs 28 -----
+(after! tramp
+ ;;  (unless (version<= emacs-version "28.0")
+ ;;    (defun start-file-process-shell-command@around (start-file-process-shell-command name buffer &rest args)
+ ;;      "Start a program in a subprocess.  Return the process object for it.
+ ;; Similar to `start-process-shell-command', but calls `start-file-process'."
+ ;;      ;; On remote hosts, the local `shell-file-name' might be useless.
+ ;;      (let ((command (mapconcat 'identity args " ")))
+ ;;        (funcall start-file-process-shell-command name buffer command)))
+ ;;    (advice-add 'start-file-process-shell-command :around #'start-file-process-shell-command@around))
+  (setq tramp-default-method "ssh"
+        tramp-use-ssh-controlmaster-options nil
+        vc-ignore-dir-regexp (format "%s\\|%s"
+                                     locate-dominating-stop-dir-regexp
+                                     "[/\\\\]node_modules"))
+  (cl-pushnew 'tramp-own-remote-path tramp-remote-path))
+
+;; ----- LSP over Tramp -----
+(after! lsp-solargraph
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-tramp-connection
+                     #'lsp-solargraph--build-command)
+    :major-modes '(ruby-mode enh-ruby-mode)
+    :priority -1
+    :remote? t
+    :multi-root lsp-solargraph-multi-root
+    :library-folders-fn (lambda (_workspace) lsp-solargraph-library-directories)
+    :server-id 'ruby-ls-remote
+    :initialized-fn (lambda (workspace)
+                      (with-lsp-workspace workspace
+                        (lsp--set-configuration
+                         (lsp-configuration-section "solargraph")))))))
+(setq lsp-log-io t)
+
+;; ------ TEMP OVERRIDE ------
+;; (after! lsp-mode
+;;   (defun lsp-deferred@override ()
+;;     "Entry point that defers server startup until buffer is visible.
+;; `lsp-deferred' will wait until the buffer is visible before invoking `lsp'.
+;; This avoids overloading the server with many files when starting Emacs."
+;;     ;; Workspace may not be initialized yet. Use a buffer local variable to
+;;     ;; remember that we deferred loading of this buffer.
+;;     (setq lsp--buffer-deferred t)
+;;     (let ((buffer (current-buffer)))
+;;       ;; Avoid false positives as desktop-mode restores buffers by deferring
+;;       ;; visibility check until the stack clears.
+;;       (run-with-idle-timer 0 nil (lambda ()
+;;                               (when (buffer-live-p buffer)
+;;                                 (with-current-buffer buffer
+;;                                   (unless (lsp--init-if-visible)
+;;                                     (add-hook 'window-configuration-change-hook #'lsp--init-if-visible nil t))))))))
+;;   (advice-add #'lsp-deferred :override #'lsp-deferred@override))
+
+;; ----- Ace window -----
+(ace-window-display-mode)
+
+;; ----- HMAC -----
+(use-package hmac-def
+  :config
+  (define-hmac-function hmac-sha1 sha1 64 20))
+
+;; ----- ALERTING -----
+(setq alert-default-style 'libnotify)
+
+;; -------- POMODORO --------
+(use-package pomidor
+  :bind (("<f12>" . pomidor))
+  :config (setq pomidor-long-break-seconds (* 30 60)))
 
 ;;;;;;;;;;;;;;;;; ORG ;;;;;;;;;;;;;;;;;;;;;;
 ;; (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
 ;; (set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
 ;; (set-popup-rule! "^\\*org-brain" :side 'right :size 1.00 :select t :ttl nil)
-
-(defun +org*update-cookies ()
-  (when (and buffer-file-name (file-exists-p buffer-file-name))
-    (let (org-hierarchical-todo-statistics)
-      (org-update-parent-todo-statistics))))
 
 (advice-add #'+org|update-cookies :override #'+org*update-cookies)
 
@@ -162,9 +277,9 @@
         org-agenda-include-diary t
         org-agenda-start-with-log-mode t
         org-agenda-compact-blocks t)
-        ;; org-agenda-start-day nil
-        ;; org-agenda-span 1
-        ;; org-agenda-start-on-weekday nil)
+  ;; org-agenda-start-day nil
+  ;; org-agenda-span 1
+  ;; org-agenda-start-on-weekday nil)
 
   (setq org-agenda-custom-commands
         '(("c" "Super view"
@@ -266,88 +381,14 @@
                       :height 1.75
                       :weight 'bold)
   (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+
+;;;;; VERB ;;;;;
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((verb . t)))
 ;;;;;;;;;;;;;;;;; ORG END ;;;;;;;;;;;;;;;;;;;;;;
-
-;;;; RUBY
-(after! ruby
-  (add-to-list 'hs-special-modes-alist
-               `(ruby-mode
-                 ,(rx (or "def" "class" "module" "do" "{" "[")) ; Block start
-                 ,(rx (or "}" "]" "end"))                       ; Block end
-                 ,(rx (or "#" "=begin"))                        ; Comment start
-                 ruby-forward-sexp nil)))
-
-(remove-hook 'ruby-mode-hook #'+ruby|init-robe)
-
-;;;; Hide-Show
-(defun +data-hideshow-forward-sexp (arg)
-  (let ((start (current-indentation)))
-    (forward-line)
-    (unless (= start (current-indentation))
-      (require 'evil-indent-plus)
-      (let ((range (evil-indent-plus--same-indent-range)))
-        (goto-char (cadr range))
-        (end-of-line)))))
-
-(add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
-
-;;; Indent guide hooks
-(after! highlight-indent-guides
-  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (setq highlight-indent-guides-method 'character)
-  (defadvice insert-for-yank (before my-clear-indent-guides activate)
-    (remove-text-properties
-     0 (length (ad-get-arg 0))
-     '(display highlight-indent-guides-prop) (ad-get-arg 0))))
-
-
-;;;; Dictionary
-(defun user/dictionary ()
-  "All settings related to dictionary"
-  ;;;; Dictionary
-  (require 'dictionary)
-
-  ;; Customize
-  (setq dictionary-default-dictionary "wn")
-
-  ;; key bindings - history go back
-  (evil-define-key 'motion dictionary-mode-map
-    (kbd "C-o") 'dictionary-previous)
-
-  ;; Invoke
-  ;; (spacemacs/set-leader-keys "xwf" 'dictionary-lookup-definition)
-  ;; (spacemacs/set-leader-keys "xwD" 'dictionary-search)
-
-  ;; Font face -- make dictionary beautiful
-  (set-face-font 'dictionary-word-definition-face "Cascadia Code")
-  (set-face-attribute 'dictionary-button-face nil :foreground "magenta")
-  (set-face-attribute 'dictionary-reference-face nil :foreground "cyan")
-  (set-face-attribute 'dictionary-word-entry-face nil :foreground "yellow")
-  )
-;; (user/dictionary)
-
-;;;; Enable Fill column indicator for certain major modes
-(defun user/fill-column-indicator-hooks ()
-  (add-hook 'ruby-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'c-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'java-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'python-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'go-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'emacs-lisp-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'common-lisp-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'scheme-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  )
-
-(user/fill-column-indicator-hooks)
-
-;; (after! web-mode
-;;   (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode)))
-
-(add-hook 'Info-mode-hook
-  (lambda()
-    (evil-set-initial-state 'Info-mode 'emacs)
-    (map! :ne "}" #'Info-scroll-up)
-    (map! :ne "{" #'Info-scroll-down)))
 
 ;; (after! Info-mode
 ;;   (evil-define-key 'motion 'Info-mode-map
@@ -388,3 +429,19 @@
 ;;   :after (lsp-mode)
 ;;   :config
 ;;   (lsp-ui-doc-mode t))
+
+;; (defun doom-project-ignored-p-override (project-root)
+;;   (not (file-remote-p project-root)))
+;; (advice-add 'doom-project-ignored-p :after-while #'doom-project-ignored-p-override)
+
+;; (define-key key-translation-map [?\C-i]
+;;   (λ! (if (and (not (cl-position 'tab    (this-single-command-raw-keys)))
+;;                (not (cl-position 'kp-tab (this-single-command-raw-keys)))
+;;                (display-graphic-p))
+;;           [C-i] [?\C-i])))
+
+;; (after! web-mode
+;;   (add-to-list 'auto-mode-alist '("\\.njk\\'" . web-mode)))
+
+;;;; Dictionary
+;; (user/dictionary)

@@ -85,8 +85,6 @@ source "$CLARISIGHTS_HOME/scripts/dev/kubectl_aliases.sh"
 
 # alias for gssh
 alias gssh=$WORKSPACE/devops/scripts/gssh.sh
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export HOMEBREW_NO_AUTO_UPDATE=1
 
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
@@ -94,3 +92,7 @@ unset SSH_AGENT_PID
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
+
+# MACOS settings
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export HOMEBREW_NO_AUTO_UPDATE=1

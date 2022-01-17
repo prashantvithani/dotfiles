@@ -9,7 +9,7 @@
 # === Bash functions
 # get bash shell on pod
 function k8s_get_bash() {
-    kubectl --context=$KUBECTL_CONTEXT --namespace=$KUBECTL_NAMESPACE exec -it $1 bash
+    kubectl --context=$KUBECTL_CONTEXT --namespace=$KUBECTL_NAMESPACE exec -it $1 -- bash
 }
 
 # === Aliases
@@ -18,6 +18,7 @@ alias kns="kubens"
 alias kctx="kubectx"
 
 alias kctl="kubectl"
+complete -F __start_kubectl kctl
 # alias for kubectl
 alias kl='kctl logs'
 alias kp='kctl get pods --sort-by=.metadata.creationTimestamp'
