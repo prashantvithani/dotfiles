@@ -84,6 +84,6 @@ The return value is the yanked text."
 
 (defun font-size-hidpi ()
   (interactive)
-  (doom-adjust-font-size 17 t '((doom-font . "Hermit:regular")
+  (doom-adjust-font-size 17 t '((doom-font . "Iosevka Custom Extended:regular")
                                 (doom-variable-pitch-font . "Cantarell:medium")
                                 (doom-serif-font . "Iosevka Custom:regular"))))

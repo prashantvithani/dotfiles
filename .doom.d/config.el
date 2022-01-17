@@ -28,7 +28,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-dracula)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -75,10 +75,10 @@
 ;;;; Custom Settings
 (setq-default line-spacing 1
               read-quoted-char-radix 16)
-(setq doom-font "Hermit-12:regular"
+(setq doom-font "Iosevka Custom Extended-12:regular"
       ;; doom-big-font "Hermit-18:medium"
       doom-unicode-font "Noto Color Emoji-12:regular"
-      doom-variable-pitch-font "Cantarell-12:medium"
+      doom-variable-pitch-font "Rubik-12:medium"
       doom-serif-font "Iosevka Custom-12:regular"
       projectile-project-search-path '("~/Workspace/repos")
       dired-dwim-target t
@@ -89,10 +89,7 @@
       js-indent-level 2
       json-reformat:indent-width 2
       ;;+magit-hub-features t
-      +vc-gutter-in-remote-files t
-      vc-ignore-dir-regexp (format "%s\\|%s"
-                                   locate-dominating-stop-dir-regexp
-                                   "[/\\\\]node_modules"))
+      +vc-gutter-in-remote-files t)
 
 ;; Motion bindings
 (map! :m [C-i] #'evil-jump-forward)
@@ -181,7 +178,10 @@
  ;;        (funcall start-file-process-shell-command name buffer command)))
  ;;    (advice-add 'start-file-process-shell-command :around #'start-file-process-shell-command@around))
   (setq tramp-default-method "ssh"
-        tramp-use-ssh-controlmaster-options nil)
+        tramp-use-ssh-controlmaster-options nil
+        vc-ignore-dir-regexp (format "%s\\|%s"
+                                     locate-dominating-stop-dir-regexp
+                                     "[/\\\\]node_modules"))
   (cl-pushnew 'tramp-own-remote-path tramp-remote-path))
 
 ;; ----- LSP over Tramp -----
@@ -201,6 +201,25 @@
                         (lsp--set-configuration
                          (lsp-configuration-section "solargraph")))))))
 (setq lsp-log-io t)
+
+;; ------ TEMP OVERRIDE ------
+;; (after! lsp-mode
+;;   (defun lsp-deferred@override ()
+;;     "Entry point that defers server startup until buffer is visible.
+;; `lsp-deferred' will wait until the buffer is visible before invoking `lsp'.
+;; This avoids overloading the server with many files when starting Emacs."
+;;     ;; Workspace may not be initialized yet. Use a buffer local variable to
+;;     ;; remember that we deferred loading of this buffer.
+;;     (setq lsp--buffer-deferred t)
+;;     (let ((buffer (current-buffer)))
+;;       ;; Avoid false positives as desktop-mode restores buffers by deferring
+;;       ;; visibility check until the stack clears.
+;;       (run-with-idle-timer 0 nil (lambda ()
+;;                               (when (buffer-live-p buffer)
+;;                                 (with-current-buffer buffer
+;;                                   (unless (lsp--init-if-visible)
+;;                                     (add-hook 'window-configuration-change-hook #'lsp--init-if-visible nil t))))))))
+;;   (advice-add #'lsp-deferred :override #'lsp-deferred@override))
 
 ;; ----- Ace window -----
 (ace-window-display-mode)

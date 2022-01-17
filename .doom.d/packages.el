@@ -61,6 +61,6 @@
 ;; (package! wakatime-mode)
 ;; (package! minitest)
 (package! dictionary)
-(package! spacemacs-theme)
 (package! verb)
 (package! pomidor)
+(package! spacemacs-theme)
