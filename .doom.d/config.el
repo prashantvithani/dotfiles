@@ -28,7 +28,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-dracula)
+(setq doom-theme 'spacemacs-dark)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -75,17 +75,15 @@
 ;;;; Custom Settings
 (setq-default line-spacing 1
               read-quoted-char-radix 16)
-(setq doom-font "Iosevka Custom Extended-12:regular"
+(setq doom-font "Source Code Pro-12:regular"
       ;; doom-big-font "Hermit-18:medium"
-      doom-unicode-font "Noto Color Emoji-12:regular"
-      doom-variable-pitch-font "Rubik-12:medium"
+      ;; doom-unicode-font "Noto Color Emoji-12:regular"
+      doom-variable-pitch-font "Avenir Next-12:medium"
       doom-serif-font "Iosevka Custom-12:regular"
       projectile-project-search-path '("~/Workspace/repos")
       dired-dwim-target t
       +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
       magit-repository-directories '("~/Workspace/repos/")
-      lsp-response-timeout 25
-      lsp-enable-xref t
       js-indent-level 2
       json-reformat:indent-width 2
       ;;+magit-hub-features t
@@ -134,6 +132,9 @@
 
 ;; (remove-hook 'ruby-mode-hook #'+ruby|init-robe)
 (cl-pushnew 'ruby-mode doom-detect-indentation-excluded-modes)
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (setq tab-width ruby-indent-level)))
 ;;;; end
 
 ;;;; Hide-Show
@@ -179,9 +180,11 @@
  ;;    (advice-add 'start-file-process-shell-command :around #'start-file-process-shell-command@around))
   (setq tramp-default-method "ssh"
         tramp-use-ssh-controlmaster-options nil
+        tramp-verbose 3
         vc-ignore-dir-regexp (format "%s\\|%s"
                                      locate-dominating-stop-dir-regexp
                                      "[/\\\\]node_modules"))
+  ;; (setq-default vc-handled-backends '(Git))
   (cl-pushnew 'tramp-own-remote-path tramp-remote-path))
 
 ;; ----- LSP over Tramp -----
@@ -200,7 +203,12 @@
                       (with-lsp-workspace workspace
                         (lsp--set-configuration
                          (lsp-configuration-section "solargraph")))))))
-(setq lsp-log-io t)
+
+(setq lsp-idle-delay 0.500
+      lsp-response-timeout 25
+      lsp-enable-xref t
+      lsp-use-plists t
+      lsp-log-io nil)
 
 ;; ------ TEMP OVERRIDE ------
 ;; (after! lsp-mode
