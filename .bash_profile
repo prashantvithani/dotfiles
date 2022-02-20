@@ -1,5 +1,3 @@
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
 function ensure_in_path() {
   location="$1"
   segment="$2"
@@ -14,9 +12,18 @@ function ensure_in_path() {
   fi
 }
 
-ensure_in_path PREFIX "/opt/homebrew/opt/grep/libexec/gnubin"
-ensure_in_path PREFIX "$HOME/.local/bin"
-ensure_in_path PREFIX "$HOME/.emacs.d/bin"
+if [[ $(uname -s) == "Darwin" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    ensure_in_path PREFIX "/opt/homebrew/opt/grep/libexec/gnubin"
+fi
+
+if [ -f $HOME/.emacs.d/bin ]; then
+    ensure_in_path PREFIX "$HOME/.emacs.d/bin"
+fi
+
+if [ -f $HOME/.local/bin ]; then
+    ensure_in_path PReFIX "$HOME/.local/bin"
+fi
 
 [[ -f ~/.profile ]] && . ~/.profile
 
@@ -24,7 +31,7 @@ ensure_in_path PREFIX "$HOME/.emacs.d/bin"
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don't want to commit.
 for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
-	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+    [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
 
@@ -45,8 +52,21 @@ for option in autocd globstar; do
 done;
 
 # Add tab completion for many Bash commands
-if [ -f $(brew --prefix)/profile.d/bash_completion ]; then
-    source $(brew --prefix)/profile.d/bash_completion
+if [[ $(uname -s) == "Darwin" ]]; then
+    if [ -f $(brew --prefix)/profile.d/bash_completion ]; then
+        source $(brew --prefix)/profile.d/bash_completion
+    fi
+
+    # MACOS settings
+    export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+    export HOMEBREW_NO_AUTO_UPDATE=1
+
+    # Add tab completion for `defaults read|write NSGlobalDomain`
+    # You could just use `-g` instead, but I like being explicit
+    complete -W "NSGlobalDomain" defaults;
+
+    # Add `killall` tab completion for common apps
+    complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
 fi
 
 # Enable tab completion for `g` by marking it as an alias for `git`
@@ -57,45 +77,43 @@ fi
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
 
-# Add tab completion for `defaults read|write NSGlobalDomain`
-# You could just use `-g` instead, but I like being explicit
-complete -W "NSGlobalDomain" defaults;
-
-# Add `killall` tab completion for common apps
-complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
-
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/prvithani/Workspace/google-cloud-sdk/path.bash.inc' ]; then source '/Users/prvithani/Workspace/google-cloud-sdk/path.bash.inc'; fi
+if [ -f "$HOME/Workspace/google-cloud-sdk/path.bash.inc" ]; then source "$HOME/Workspace/google-cloud-sdk/path.bash.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/prvithani/Workspace/google-cloud-sdk/completion.bash.inc' ]; then source '/Users/prvithani/Workspace/google-cloud-sdk/completion.bash.inc'; fi
+if [ -f "$HOME/Workspace/google-cloud-sdk/completion.bash.inc" ]; then source "$HOME/Workspace/google-cloud-sdk/completion.bash.inc"; fi
 
 # minikub bash completion
 # source ~/.minikube-completion
 
-export GOPATH="$HOME/Misc/go"
+if [[ $(uname -s) == "Darwin" ]]
+then
+  export GOPATH="$HOME/Misc/go"
+else
+  export GOPATH="$HOME/go"
+fi
 ensure_in_path SUFFIX "$GOPATH/bin"
 
 export LDAP_USERNAME="prashant"
-export WORKSPACE="/Users/prvithani/Workspace"
-export CLARISIGHTS_HOME="$WORKSPACE/adwyze"
+export WORKSPACE="$HOME/Workspace"
+export CLARISIGHTS_HOME="$WORKSPACE/repos/adwyze"
 
 # alias for kubectl
-# source "$CLARISIGHTS_HOME/scripts/dev/kubectl_aliases.sh"
+source "$CLARISIGHTS_HOME/scripts/dev/kubectl_aliases.sh"
 
 # alias for gssh
 alias gssh=$WORKSPACE/repos/devops/scripts/gssh.sh
 
-export GPG_TTY=$(tty)
-gpg-connect-agent updatestartuptty /bye >/dev/null
-unset SSH_AGENT_PID
-if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+if [[ -z $SSH_TTY ]]
+then
+    export GPG_TTY=$(tty)
+    gpg-connect-agent updatestartuptty /bye >/dev/null
+    unset SSH_AGENT_PID
+    if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+      export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+    fi
 fi
-
-# MACOS settings
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export HOMEBREW_NO_AUTO_UPDATE=1
 
 # EMACS Settings
 export LSP_USE_PLISTS=true
+. "$HOME/.cargo/env"
