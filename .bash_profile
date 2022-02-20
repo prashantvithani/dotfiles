@@ -1,3 +1,25 @@
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+function ensure_in_path() {
+  location="$1"
+  segment="$2"
+  if [[ "$PATH" != *"$segment"* ]]; then
+    if [[ "$location" = "SUFFIX" ]]; then
+      export PATH="$PATH:$segment"
+    elif [[ "$location" = "PREFIX" ]]; then
+      export PATH="$segment:$PATH"
+    else
+      echo -e "Syntax: ensure_in_path {SUFFIX|PREFIX} [SEGMENT]\nGOT: $@" >&2
+    fi
+  fi
+}
+
+ensure_in_path PREFIX "/opt/homebrew/opt/grep/libexec/gnubin"
+ensure_in_path PREFIX "$HOME/.local/bin"
+ensure_in_path PREFIX "$HOME/.emacs.d/bin"
+
+[[ -f ~/.profile ]] && . ~/.profile
+
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don't want to commit.
@@ -23,8 +45,8 @@ for option in autocd globstar; do
 done;
 
 # Add tab completion for many Bash commands
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    source $(brew --prefix)/etc/bash_completion
+if [ -f $(brew --prefix)/profile.d/bash_completion ]; then
+    source $(brew --prefix)/profile.d/bash_completion
 fi
 
 # Enable tab completion for `g` by marking it as an alias for `git`
@@ -42,9 +64,6 @@ complete -W "NSGlobalDomain" defaults;
 # Add `killall` tab completion for common apps
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
 
-# export PATH="/Users/prvithani/Workspace/graalvm-ce-1.0.0-rc5/Contents/Home/bin:$PATH:/usr/local/opt/imagemagick@6/bin"
-export PATH="$PATH:/usr/local/opt/imagemagick@6/bin"
-
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/prvithani/Workspace/google-cloud-sdk/path.bash.inc' ]; then source '/Users/prvithani/Workspace/google-cloud-sdk/path.bash.inc'; fi
 
@@ -52,39 +71,20 @@ if [ -f '/Users/prvithani/Workspace/google-cloud-sdk/path.bash.inc' ]; then sour
 if [ -f '/Users/prvithani/Workspace/google-cloud-sdk/completion.bash.inc' ]; then source '/Users/prvithani/Workspace/google-cloud-sdk/completion.bash.inc'; fi
 
 # minikub bash completion
-source ~/.minikube-completion
+# source ~/.minikube-completion
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
-# "-Xcompile.invokedynamic=true -Xfixnum.cache=false" for performance tuning
-# "-Xcompile.invokedynamic=false -Xcompile.mode=OFF" in development mode only to speedup startup time OR "--dev" if JVMCI disabled (default behavior)
-
-# ----- Prod JRUBY_OPTS ---- With Graal Compiler + InvokeDynamic + FixNum cache disabled ----
-# export JRUBY_OPTS="-J-XX:+UnlockExperimentalVMOptions -J-XX:+EnableJVMCI -J-XX:+UseJVMCICompiler $(echo -J--add-opens=java.base/{java.lang,java.security,java.util,java.security.cert,java.util.zip,java.lang.reflect,java.util.regex,java.net,java.io,java.lang,sun.nio.ch,javax.crypto}=ALL-UNNAMED) -J--illegal-access=warn -Xcompile.invokedynamic=true -Xfixnum.cache=false"
-
-# ----- Dev JRUBY_OPTS -----
-# java-10
-# export JRUBY_OPTS="$(echo -J--add-opens=java.base/{java.lang,java.security,java.util,java.security.cert,java.util.zip,java.lang.reflect,java.util.regex,java.net,java.io,java.lang,sun.nio.ch,javax.crypto,java.util.concurrent}=ALL-UNNAMED) -J--illegal-access=warn -J-Xmx2048m -J-Xms2048m -J-Xmn1024m -J-XX:ReservedCodeCacheSize=1024m -J-XX:+UseCodeCacheFlushing -J-XX:+UseG1GC -J-Xlog:gc:file=/tmp/gc.log -J-Djruby.thread.pool.enabled=true -J-Djruby.jit.threshold=1 -J-Djruby.compile.fastest=true --dev"
-
-# java-8
-export JRUBY_OPTS="-J-Xmx2048m -J-Xms2048m -J-Xmn1024m -J-XX:ReservedCodeCacheSize=1024m -J-XX:+UseCodeCacheFlushing -J-XX:+UseG1GC -J-Djruby.thread.pool.enabled=true -J-Djruby.jit.threshold=1 --dev"
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home"
+export GOPATH="$HOME/Misc/go"
+ensure_in_path SUFFIX "$GOPATH/bin"
 
 export LDAP_USERNAME="prashant"
 export WORKSPACE="/Users/prvithani/Workspace"
 export CLARISIGHTS_HOME="$WORKSPACE/adwyze"
-export GOPATH="$HOME/go"
-export PATH="$PATH:$GOPATH/bin"
-
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.emacs.d/bin:$PATH"
 
 # alias for kubectl
-source "$CLARISIGHTS_HOME/scripts/dev/kubectl_aliases.sh"
+# source "$CLARISIGHTS_HOME/scripts/dev/kubectl_aliases.sh"
 
 # alias for gssh
-alias gssh=$WORKSPACE/devops/scripts/gssh.sh
+alias gssh=$WORKSPACE/repos/devops/scripts/gssh.sh
 
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
@@ -96,3 +96,6 @@ fi
 # MACOS settings
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+# EMACS Settings
+export LSP_USE_PLISTS=true
