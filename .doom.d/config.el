@@ -23,7 +23,8 @@
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
 ;;load custom functions file
-(load "~/.doom.d/custom-functions")
+(load "~/.doom.d/custom-functions.el")
+(load "~/.doom.d/lsp-tramp-configs.el")
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -187,28 +188,13 @@
   ;; (setq-default vc-handled-backends '(Git))
   (cl-pushnew 'tramp-own-remote-path tramp-remote-path))
 
-;; ----- LSP over Tramp -----
-(after! lsp-solargraph
-  (lsp-register-client
-   (make-lsp-client
-    :new-connection (lsp-tramp-connection
-                     #'lsp-solargraph--build-command)
-    :major-modes '(ruby-mode enh-ruby-mode)
-    :priority -1
-    :remote? t
-    :multi-root lsp-solargraph-multi-root
-    :library-folders-fn (lambda (_workspace) lsp-solargraph-library-directories)
-    :server-id 'ruby-ls-remote
-    :initialized-fn (lambda (workspace)
-                      (with-lsp-workspace workspace
-                        (lsp--set-configuration
-                         (lsp-configuration-section "solargraph")))))))
-
+;; ----- LSP -----
 (setq lsp-idle-delay 0.500
       lsp-response-timeout 25
       lsp-enable-xref t
+      lsp-enable-file-watchers nil
       lsp-use-plists t
-      lsp-log-io nil)
+      lsp-log-io t)
 
 ;; ------ TEMP OVERRIDE ------
 ;; (after! lsp-mode
