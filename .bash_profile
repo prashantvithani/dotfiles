@@ -17,12 +17,12 @@ if [[ $(uname -s) == "Darwin" ]]; then
     ensure_in_path PREFIX "/opt/homebrew/opt/grep/libexec/gnubin"
 fi
 
-if [ -f $HOME/.emacs.d/bin ]; then
+if [ -d $HOME/.emacs.d/bin ]; then
     ensure_in_path PREFIX "$HOME/.emacs.d/bin"
 fi
 
-if [ -f $HOME/.local/bin ]; then
-    ensure_in_path PReFIX "$HOME/.local/bin"
+if [ -d $HOME/.local/bin ]; then
+    ensure_in_path PREFIX "$HOME/.local/bin"
 fi
 
 [[ -f ~/.profile ]] && . ~/.profile
@@ -53,9 +53,7 @@ done;
 
 # Add tab completion for many Bash commands
 if [[ $(uname -s) == "Darwin" ]]; then
-    if [ -f $(brew --prefix)/profile.d/bash_completion ]; then
-        source $(brew --prefix)/profile.d/bash_completion
-    fi
+    [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]] && . "$(brew --prefix)/etc/profile.d/bash_completion.sh"
 
     # MACOS settings
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
@@ -116,4 +114,4 @@ fi
 
 # EMACS Settings
 export LSP_USE_PLISTS=true
-. "$HOME/.cargo/env"
+
