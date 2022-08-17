@@ -107,7 +107,10 @@
 (map! :leader :desc "Find file in project" :ne "." #'projectile-find-file)
 (map! :leader :desc "Find file" :ne ":" #'find-file)
 (map! :leader :ne "C-+" #'font-size-hidpi)
+;; Git Gutter bindings
 (map! :leader :ne "g W" #'git-gutter:update-all-windows)
+(map! :leader :ne "g d" #'git-gutter)
+(map! :leader :desc "Show hunk at point" :ne "g h" #'git-gutter:popup-hunk)
 
 ;; automatic indenting of pasted text (functions defined in custom-functions.el)
 (map! :n "p" #'evil-paste-after-and-indent
