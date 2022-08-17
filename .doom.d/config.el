@@ -57,10 +57,16 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
-(add-to-list 'default-frame-alist
-             '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist
-             '(ns-appearance . dark))
+;; (add-to-list 'default-frame-alist
+;;              '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(undecorated . t))
+;; (setq default-frame-alist
+;;       (append
+;;        '((undecorated . t)
+;;          (drag-internal-border . t)
+;;          (internal-border-width . 4))
+;;        default-frame-alist))
+;; (add-to-list 'default-frame-alist '(ns-appearance . dark))
 
 ;; (global-auto-revert-mode t)
 
