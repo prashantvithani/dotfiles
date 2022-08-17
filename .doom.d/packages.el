@@ -64,3 +64,5 @@
 (package! verb)
 (package! pomidor)
 (package! spacemacs-theme)
+;; (package! yafolding)
+(package! kubernetes-tramp)
