@@ -82,19 +82,32 @@
 ;;;; Custom Settings
 (setq-default line-spacing 1
               read-quoted-char-radix 16)
-(setq doom-font "Source Code Pro-12:regular"
-      ;; doom-big-font "Hermit-18:medium"
-      ;; doom-unicode-font "Noto Color Emoji-12:regular"
-      doom-variable-pitch-font "Avenir Next-12:medium"
-      doom-serif-font "Iosevka Custom-12:regular"
-      projectile-project-search-path '("~/Workspace/repos")
+
+(setq projectile-project-search-path '("~/Workspace/repos")
       dired-dwim-target t
       +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
       magit-repository-directories '("~/Workspace/repos/")
-      js-indent-level 2
-      json-reformat:indent-width 2
       ;;+magit-hub-features t
-      +vc-gutter-in-remote-files t)
+      ;;+vc-gutter-in-remote-files t
+      js-indent-level 2
+      json-reformat:indent-width 2)
+
+;;;; Fonts
+(setq doom-font "JetBrains Mono NL-12:regular"
+      ;; doom-big-font "Hermit-18:medium"
+      ;; doom-unicode-font "Noto Color Emoji-12:regular"
+      doom-variable-pitch-font "Avenir Next-12:medium"
+      doom-serif-font "Iosevka Custom-12:regular")
+
+;; Evil Cursor settings
+(setq evil-insert-state-cursor '(hbar "green")
+      evil-normal-state-cursor '(box "orange")
+      evil-visual-state-cursor '(box "gray")
+      evil-motion-state-cursor '(bar "purple")
+      evil-replace-state-cursor '(hbar "red")
+      evil-operator-state-cursor '((hbar . 8) "yellow")
+      evil-treemacs-state-cursor '(bar "magenta")
+      evil-emacs-state-cursor '(bar "cyan"))
 
 ;; Motion bindings
 (map! :m [C-i] #'evil-jump-forward)
@@ -174,7 +187,7 @@
 ;; ------- Indent guide hooks --------
 (after! highlight-indent-guides
   ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (setq highlight-indent-guides-method 'column)
+  (setq highlight-indent-guides-method 'character)
   ;; (setq highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line)
   (defadvice insert-for-yank (before my-clear-indent-guides activate)
     (remove-text-properties
@@ -241,7 +254,8 @@
 ;; -------- POMODORO --------
 (use-package pomidor
   :bind (("<f12>" . pomidor))
-  :config (setq pomidor-long-break-seconds (* 30 60)))
+  :config (setq pomidor-long-break-seconds (* 30 60)
+                pomidor-play-sound-file nil))
 
 ;;;;;;;;;;;;;;;;; ORG ;;;;;;;;;;;;;;;;;;;;;;
 ;; (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
