@@ -154,8 +154,11 @@
 (add-hook 'Info-mode-hook
   (lambda()
     (evil-set-initial-state 'Info-mode 'emacs)
+    (map! :ne "j" #'next-line)
+    (map! :ne "k" #'previous-line)
     (map! :ne "}" #'Info-scroll-up)
-    (map! :ne "{" #'Info-scroll-down)))
+    (map! :ne "{" #'Info-scroll-down)
+    (define-key Info-mode-map (kbd "SPC") 'doom/leader)))
 
 (cl-pushnew "~/info" Info-directory-list)
 
