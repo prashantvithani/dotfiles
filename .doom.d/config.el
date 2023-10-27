@@ -129,6 +129,32 @@
 (map! :n "p" #'evil-paste-after-and-indent
       :n "P" #'evil-paste-before-and-indent)
 
+;; Consult async settings
+(after! consult
+  (defvar consult--async-manual-only t)
+  (defvar consult--async-manual-trigger nil)
+  (defadvice! consult--async-throttle-manual-override (r)
+    :filter-return #'consult--async-throttle
+    (if consult--async-manual-only
+        (progn
+          (setq consult--async-manual-trigger nil)
+          (lambda (action)
+            (when (stringp action)
+              (if consult--async-manual-trigger
+                  (progn
+                    (delete-char -1)
+                    (setq consult--async-manual-trigger nil))
+                (setq action "")))
+            (funcall r action)))
+      r))
+  (defun consult--async-manual-trigger ()
+    (interactive)
+    (setq consult--async-manual-trigger t)
+    ;; HACK: force (completing-read ...) to trigger input change
+    (insert "#"))
+  (define-key! consult-async-map
+    "M-." #'consult--async-manual-trigger))
+
 ;;;; Auto indent on paste
 ;; (defadvice! reindent-after-paste (&rest _)
 ;;   :after '(evil-paste-after evil-paste-before)
