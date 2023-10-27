@@ -57,9 +57,9 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
-;; (add-to-list 'default-frame-alist
-;;              '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist '(undecorated . t))
+(add-to-list 'default-frame-alist
+             '(ns-transparent-titlebar . t))
+;; (add-to-list 'default-frame-alist '(undecorated . t))
 ;; (setq default-frame-alist
 ;;       (append
 ;;        '((undecorated . t)
@@ -80,27 +80,27 @@
 (setq doom-localleader-alt-key "M-S-SPC m")
 
 ;;;; Custom Settings
-(setq-default line-spacing 1
+(setq-default line-spacing nil
               read-quoted-char-radix 16)
 
 (setq projectile-project-search-path '("~/Workspace/repos")
       dired-dwim-target t
-      +doom-dashboard-banner-file (expand-file-name "logo.png" doom-private-dir)
       magit-repository-directories '("~/Workspace/repos/")
       ;;+magit-hub-features t
       ;;+vc-gutter-in-remote-files t
-      js-indent-level 2
-      json-reformat:indent-width 2)
+      remote-file-name-inhibit-auto-save t)
+
+(push "~/.authinfo" auth-sources)
 
 ;;;; Fonts
-(setq doom-font "JetBrains Mono NL-12:regular"
+(setq doom-font "Iosevka Custom Extended-12"
       ;; doom-big-font "Hermit-18:medium"
       ;; doom-unicode-font "Noto Color Emoji-12:regular"
       doom-variable-pitch-font "Avenir Next-12:medium"
       doom-serif-font "Iosevka Custom-12:regular")
 
 ;; Evil Cursor settings
-(setq evil-insert-state-cursor '(hbar "green")
+(setq evil-insert-state-cursor '(bar "green")
       evil-normal-state-cursor '(box "orange")
       evil-visual-state-cursor '(box "gray")
       evil-motion-state-cursor '(bar "purple")
@@ -206,14 +206,19 @@
 
 ;; NOTE: Raise popup window - Info mode: C-~
 
+;; ----- PROJECTILE -----
+(after! projectile
+  (setq projectile-git-fd-args "-H -0 -E .git -tf --strip-cwd-prefix -c never"))
+
 ;; ----- GIT GUTTER -----
 (after! git-gutter
   (remove-hook 'focus-in-hook #'git-gutter:update-all-windows))
 
 ;; ------- Indent guide hooks --------
 (after! highlight-indent-guides
-  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   (setq highlight-indent-guides-method 'character)
+  ;; (setq highlight-indent-guides-character ?¦)
   ;; (setq highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line)
   (defadvice insert-for-yank (before my-clear-indent-guides activate)
     (remove-text-properties
@@ -231,13 +236,14 @@
  ;;        (funcall start-file-process-shell-command name buffer command)))
  ;;    (advice-add 'start-file-process-shell-command :around #'start-file-process-shell-command@around))
   (setq tramp-default-method "ssh"
-        tramp-use-ssh-controlmaster-options nil
+        tramp-use-connection-share nil
         tramp-verbose 3
         vc-ignore-dir-regexp (format "%s\\|%s"
                                      locate-dominating-stop-dir-regexp
                                      "[/\\\\]node_modules"))
   ;; (setq-default vc-handled-backends '(Git))
   (cl-pushnew 'tramp-own-remote-path tramp-remote-path))
+
 
 ;; ----- LSP -----
 (setq lsp-idle-delay 0.500
@@ -246,6 +252,16 @@
       lsp-enable-file-watchers nil
       lsp-use-plists t
       lsp-log-io t)
+
+;;;;;;;
+;; Temp requirement to fix
+;; Eager macro-expansion failure: %S" (wrong-number-of-arguments (1 . 1) 0
+;; https://github.com/emacs-lsp/lsp-metals/issues/81
+;; The correct solution would be to add compatibility for treeview-treelib
+;; in lsp-metals
+;;;;;;;
+(after! lsp-mode
+  (require 'treemacs-extensions))
 
 ;; ------ TEMP OVERRIDE ------
 ;; (after! lsp-mode
@@ -291,6 +307,7 @@
 (advice-add #'+org|update-cookies :override #'+org*update-cookies)
 
 (add-hook 'org-mode-hook #'auto-fill-mode)
+(add-hook 'org-mode-hook #'+word-wrap-mode)
 (add-hook! 'org-mode-hook (company-mode -1))
 (add-hook! 'org-capture-mode-hook (company-mode -1))
 
@@ -390,31 +407,31 @@
 (after! org
   (set-face-attribute 'org-link nil
                       :weight 'normal
-                      :background nil)
+                      :background 'unspecified)
   (set-face-attribute 'org-code nil
                       :foreground "#a9a1e1"
-                      :background nil)
+                      :background 'unspecified)
   (set-face-attribute 'org-date nil
                       :foreground "#5B6268"
-                      :background nil)
+                      :background 'unspecified)
   (set-face-attribute 'org-level-1 nil
                       :foreground "steelblue2"
-                      :background nil
+                      :background 'unspecified
                       :height 1.2
                       :weight 'normal)
   (set-face-attribute 'org-level-2 nil
                       :foreground "slategray2"
-                      :background nil
+                      :background 'unspecified
                       :height 1.0
                       :weight 'normal)
   (set-face-attribute 'org-level-3 nil
                       :foreground "SkyBlue2"
-                      :background nil
+                      :background 'unspecified
                       :height 1.0
                       :weight 'normal)
   (set-face-attribute 'org-level-4 nil
                       :foreground "DodgerBlue2"
-                      :background nil
+                      :background 'unspecified
                       :height 1.0
                       :weight 'normal)
   (set-face-attribute 'org-level-5 nil
@@ -423,7 +440,7 @@
                       :weight 'normal)
   (set-face-attribute 'org-document-title nil
                       :foreground "SlateGray1"
-                      :background nil
+                      :background 'unspecified
                       :height 1.75
                       :weight 'bold)
   (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
