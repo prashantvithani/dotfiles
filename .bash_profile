@@ -55,6 +55,10 @@ done;
 if [[ $(uname -s) == "Darwin" ]]; then
     [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]] && . "$(brew --prefix)/etc/profile.d/bash_completion.sh"
 
+    for bcfile in $(brew --prefix)/etc/bash_completion.d/* ; do
+      . $bcfile
+    done
+
     # MACOS settings
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
     export HOMEBREW_NO_AUTO_UPDATE=1
