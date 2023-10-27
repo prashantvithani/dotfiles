@@ -34,11 +34,42 @@
                       (with-lsp-workspace workspace
                         (lsp--set-configuration
                          (lsp-configuration-section "pylsp")))))))
+(after! lsp-go
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-tramp-connection
+                     (lambda () (cons lsp-go-gopls-server-path lsp-go-gopls-server-args)))
+    :remote? t
+    :activation-fn (lsp-activate-on "go" "go.mod")
+    :language-id "go"
+    :priority 0
+    :server-id 'gopls-remote
+    :completion-in-comments? t
+    :library-folders-fn #'lsp-go--library-default-directories
+    :after-open-fn (lambda ()
+                     ;; https://github.com/golang/tools/commit/b2d8b0336
+                     (setq-local lsp-completion-filter-on-incomplete nil)))))
+
+
+;; (after! rustic-mode
+;;   (lsp-register-client
+;;    (make-lsp-client
+;;     :new-connection (lsp-tramp-connection
+;;                      (lambda () rustic-lsp-server))
+;;     :major-modes '(rustic-mode)
+;;     :priority -1
+;;     :remote? t
+;;     :library-folders-fn (lambda (_workspace) lsp-rust-library-directories)
+;;     :server-id 'rustic-lsp-remote
+;;     :initialized-fn (lambda (workspace)
+;;                       (with-lsp-workspace workspace
+;;                         (lsp--set-configuration
+;;                          (lsp-configuration-section "rust")))))))
 
 (after! lsp-metals
   (lsp-register-client
    (make-lsp-client
-    :new-connection (lsp-tramp-connection (lambda () lsp-metals-server-command))
+    :new-connection (lsp-tramp-connection "metals-emacs")
     :major-modes '(scala-mode)
     :priority -1
     :initialization-options '((decorationProvider . t)
