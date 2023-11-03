@@ -131,7 +131,8 @@
 
 ;; Consult async settings
 (after! consult
-  (defvar consult--async-manual-only t)
+  (setq consult-async-input-debounce 0.5)
+  (defvar consult--async-manual-only nil)
   (defvar consult--async-manual-trigger nil)
   (defadvice! consult--async-throttle-manual-override (r)
     :filter-return #'consult--async-throttle
