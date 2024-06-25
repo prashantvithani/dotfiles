@@ -226,6 +226,21 @@
      0 (length (ad-get-arg 0))
      '(display highlight-indent-guides-prop) (ad-get-arg 0))))
 
+;; ----- TREESITER -----
+;(after! scala-ts-mode
+;  (use-package! scala-mode))
+;
+;(setq treesit-font-lock-level 4)
+;(use-package! treesit-auto
+;  :config
+;  (global-treesit-auto-mode))
+;(defun run-non-ts-hooks ()
+;  (let ((major-name (symbol-name major-mode)))
+;    (when (string-match-p ".*-ts-mode" major-name)
+;      (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-hook")))
+;      (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-local-vars-hook"))))))
+;(add-hook 'prog-mode-hook 'run-non-ts-hooks)
+
 ;; ----- TRAMP on native-comp Emacs 28 -----
 (after! tramp
  ;;  (unless (version<= emacs-version "28.0")
