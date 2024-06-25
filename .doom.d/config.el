@@ -293,11 +293,20 @@
 
 ;; ----- LSP -----
 (setq lsp-idle-delay 0.500
-      lsp-response-timeout 25
-      lsp-enable-xref t
-      lsp-enable-file-watchers nil
-      lsp-use-plists t
-      lsp-log-io t)
+    lsp-response-timeout 25
+    lsp-enable-xref t
+    lsp-enable-file-watchers nil
+    lsp-use-plists t
+    ;; lsp-log-io t
+    lsp-ui-doc-mode t)
+(after! lsp-mode
+  (delete 'lsp-terraform lsp-client-packages))
+
+(after! lsp-java
+  (when (file-remote-p default-directory)
+    (setq lsp-java-workspace-dir (concat (file-remote-p default-directory) "~/.jdtls/workspace")
+          dap-java-test-runner (concat (file-remote-p default-directory) "~/.jdtls/eclipse.jdt.ls/test-runner/junit-platform-console-standalone.jar")
+          lsp-java-server-install-dir (concat (file-remote-p default-directory) "~/.jdtls/eclipse.jdt.ls/"))))
 
 ;;;;;;;
 ;; Temp requirement to fix
@@ -306,8 +315,8 @@
 ;; The correct solution would be to add compatibility for treeview-treelib
 ;; in lsp-metals
 ;;;;;;;
-(after! lsp-mode
-  (require 'treemacs-extensions))
+;; (after! lsp-mode
+;;   (require 'treemacs-extensions))
 
 ;; ------ TEMP OVERRIDE ------
 ;; (after! lsp-mode
