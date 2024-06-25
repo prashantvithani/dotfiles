@@ -148,6 +148,11 @@
 ;;       :gi [backtab] #'corfu-previous
 ;;       :gi "S-TAB" #'corfu-previous)
 
+;; Vterm
+(after! vterm
+  (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key)
+  (pushnew! vterm-tramp-shells '("ssh" "/bin/bash")))
+
 ;; Consult async settings
 (after! consult
   (setq consult-async-input-debounce 0.5)
