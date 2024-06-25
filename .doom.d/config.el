@@ -183,20 +183,39 @@
 ;;     (kbd "C-,") 'evil-snipe-repeat-reverse))
 
 ;;;; RUBY
-(after! ruby
+(after! ruby-mode
   (add-to-list 'hs-special-modes-alist
                `(ruby-mode
                  ,(rx (or "if" "def" "class" "module" "do" "{" "[")) ; Block start
                  ,(rx (or "}" "]" "end"))                            ; Block end
-                 ,(rx (or "#" "=begin"))                             ; Comment start
+                 ,(rx (or "#" "=begin")) ; Comment start
+                 ruby-forward-sexp nil)))
+
+(after! ruby-ts-mode
+  (add-to-list 'hs-special-modes-alist
+               `(ruby-ts-mode
+                 ,(rx (or "if" "def" "class" "module" "do" "{" "[")) ; Block start
+                 ,(rx (or "}" "]" "end"))                            ; Block end
+                 ,(rx (or "#" "=begin")) ; Comment start
                  ruby-forward-sexp nil)))
 
 ;; (remove-hook 'ruby-mode-hook #'+ruby|init-robe)
 (cl-pushnew 'ruby-mode doom-detect-indentation-excluded-modes)
 (add-hook 'ruby-mode-hook
           (lambda ()
-            (setq tab-width ruby-indent-level)))
+            (setq tab-width ruby-indent-level)
+            (flycheck-mode)))
 ;;;; end
+
+;; ----- Robe -----
+(after! robe
+  (map! :localleader
+        :map robe-mode-map
+        :prefix "s"
+        "l" #'ruby-send-line
+        "L" #'ruby-send-line-and-go
+        "b" #'ruby-send-buffer
+        "B" #'ruby-send-buffer-and-go))
 
 ;;;; Hide-Show
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
