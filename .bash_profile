@@ -15,6 +15,7 @@ function ensure_in_path() {
 if [[ $(uname -s) == "Darwin" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
     ensure_in_path PREFIX "/opt/homebrew/opt/grep/libexec/gnubin"
+    ensure_in_path PREFIX "/opt/homebrew/opt/openjdk/bin"
 fi
 
 if [ -d $HOME/.emacs.d/bin ]; then
@@ -118,4 +119,7 @@ fi
 
 # EMACS Settings
 export LSP_USE_PLISTS=true
+
+eval "$(rbenv init - bash)"
+eval "$(fzf --bash)"
 
