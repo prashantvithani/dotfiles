@@ -21,8 +21,9 @@
        ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
-       (company          ; the ultimate code completion backend
-        +childframe)     ; a nicer company UI. Emacs +26 only!
+       (corfu +icons +orderless +dabbrev)
+       ;;(company          ; the ultimate code completion backend
+       ;; +childframe)     ; a nicer company UI. Emacs +26 only!
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ;; (ivy +fuzzy +icons)      ; a search engine for love and life
@@ -59,10 +60,10 @@
        fold              ; (nigh) universal code folding
        ;;(format +onsave)  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
-       ;;lispy             ; vim for lisp, for people who don't like vim
+       lispy             ; vim for lisp, for people who don't like vim
        multiple-cursors  ; editing in many places at once
        ;;objed             ; text object editing for the innocent
-       ;;parinfer          ; turn lisp into python, sort of
+       parinfer          ; turn lisp into python, sort of
        ;;rotate-text       ; cycle region at point between text candidates
        snippets          ; my elves. They type so I don't have to
        word-wrap         ; soft wrapping with language-aware indent
@@ -72,7 +73,7 @@
         +icons)
        electric          ; smarter, keyword-based electric-indent
        ;;ibuffer         ; interactive buffer management
-       undo              ; persistent, smarter undo for your inevitable mistakes
+       (undo +tree)              ; persistent, smarter undo for your inevitable mistakes
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
@@ -82,20 +83,22 @@
        vterm             ; the best terminal emulation in Emacs
 
        :checkers
-       syntax              ; tasing you for every semicolon you forget
-       (spell +flyspell)   ; tasing you for misspelling mispelling
+       (syntax           ; tasing you for every semicolon you forget
+        +childframe
+        +icons)
+       (spell            ; tasing you for misspelling mispelling
+        +flyspell)
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
        ;;ansible
        ;;biblio            ; Writes a PhD for you (citation needed)
-       ;;debugger          ; FIXME stepping through code, to help you add bugs
+       (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
-       gist              ; interacting with github gists
        (lookup             ; navigate your code and its documentation
         +devdocs
         +docsets
@@ -154,7 +157,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
        (json +tree-sitter)              ; At least it ain't XML
-       (java +tree-sitter) ; the poster child for carpal tunnel syndrome
+       (java +tree-sitter +lsp) ; the poster child for carpal tunnel syndrome
        (javascript +tree-sitter)        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
@@ -172,7 +175,6 @@
         +capture         ; org-capture in and outside of Emacs
         +export          ; Exporting org to whatever you want
         +present)         ; Emacs for presentations
-       ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
@@ -186,8 +188,7 @@
        ;;rst               ; ReST in peace
        (ruby               ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
         +rails
-        +lsp
-        +rvm
+        +rbenv
         +tree-sitter)
        (rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
         +lsp
@@ -195,7 +196,7 @@
        (scala            ; java, but good
         +lsp
         +tree-sitter)
-       (scheme +racket)     ; a fully conniving family of lisps
+       ;;(scheme +racket)     ; a fully conniving family of lisps
        sh                ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
@@ -211,7 +212,7 @@
        ;;(wanderlust +gmail)
 
        :app
-       ;;calendar
+       calendar
        ;;emms
        ;;everywhere        ; *leave* Emacs!? You must be joking
        ;;irc               ; how neckbeards socialize
