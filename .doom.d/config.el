@@ -284,6 +284,7 @@
   (setq tramp-default-method "ssh"
         tramp-use-connection-share nil
         tramp-verbose 3
+        tramp-pipe-stty-settings "" ; -icanon is the devil
         vc-ignore-dir-regexp (format "%s\\|%s"
                                      locate-dominating-stop-dir-regexp
                                      "[/\\\\]node_modules"))
