@@ -30,6 +30,14 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'spacemacs-dark)
+(custom-theme-set-faces! 'spacemacs-dark
+  '(iedit-occurrence :foreground "#b1951d" :weight bold :inverse-video t)
+  '(iedit-read-only-occurrence :inherit region)
+  '(region :background "#100a14" :extend t))
+(custom-theme-set-faces! 'spacemacs-light
+  '(iedit-occurrence :foreground "#2d9574" :weight bold :inverse-video t)
+  '(iedit-read-only-occurrence :inherit region)
+  '(region :background "#e3dedd" :extend t))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -79,10 +87,7 @@
 (setq doom-leader-alt-key "M-S-SPC")
 (setq doom-localleader-alt-key "M-S-SPC m")
 
-;;;; Custom Settings
-(setq-default line-spacing nil
-              read-quoted-char-radix 16)
-
+;; Project settings
 (setq projectile-project-search-path '("~/Workspace/repos")
       dired-dwim-target t
       magit-repository-directories '("~/Workspace/repos/")
@@ -90,6 +95,7 @@
       ;;+vc-gutter-in-remote-files t
       remote-file-name-inhibit-auto-save t)
 
+;; Magit code-review
 (push "~/.authinfo" auth-sources)
 
 ;;;; Fonts
@@ -99,8 +105,13 @@
       doom-variable-pitch-font "Avenir Next-12:medium"
       doom-serif-font "Iosevka Custom-12:regular")
 
+;;;; Custom Settings
+(setq-default line-spacing 1
+              read-quoted-char-radix 16)
+(setq enable-remote-dir-locals t)
+
 ;; Evil Cursor settings
-(setq evil-insert-state-cursor '(bar "green")
+(setq evil-insert-state-cursor '(bar "aqua")
       evil-normal-state-cursor '(box "orange")
       evil-visual-state-cursor '(box "gray")
       evil-motion-state-cursor '(bar "purple")
