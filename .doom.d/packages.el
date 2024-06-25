@@ -63,3 +63,4 @@
 (package! verb)
 (package! pomidor)
 (package! spacemacs-theme)
+(package! puppet-mode)
