@@ -140,6 +140,14 @@
 (map! :n "p" #'evil-paste-after-and-indent
       :n "P" #'evil-paste-before-and-indent)
 
+;; Corfu
+;; (map! :after corfu
+;;       :map corfu-map
+;;       :gi [tab] #'corfu-next
+;;       :gi "TAB" #'corfu-next
+;;       :gi [backtab] #'corfu-previous
+;;       :gi "S-TAB" #'corfu-previous)
+
 ;; Consult async settings
 (after! consult
   (setq consult-async-input-debounce 0.5)
@@ -236,6 +244,10 @@
 (cl-pushnew "~/info" Info-directory-list)
 
 ;; NOTE: Raise popup window - Info mode: C-~
+
+;; ----- CORFU -----
+(after! corfu
+  (setq +corfu-want-minibuffer-completion nil))
 
 ;; ----- PROJECTILE -----
 (after! projectile
