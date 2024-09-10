@@ -29,7 +29,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'spacemacs-dark)
+(setq doom-theme 'doom-tokyo-night-storm)
 (custom-theme-set-faces! 'spacemacs-dark
   '(iedit-occurrence :foreground "#b1951d" :weight bold :inverse-video t)
   '(iedit-read-only-occurrence :inherit region)
@@ -38,6 +38,12 @@
   '(iedit-occurrence :foreground "#2d9574" :weight bold :inverse-video t)
   '(iedit-read-only-occurrence :inherit region)
   '(region :background "#e3dedd" :extend t))
+(custom-theme-set-faces! 'doom-tokyo-night
+  '(font-lock-type-face :foreground "#2ac3de"))
+(custom-theme-set-faces! 'doom-tokyo-night-storm
+  '(font-lock-type-face :foreground "#2ac3de"))
+(custom-theme-set-faces! 'doom-tokyo-night-light
+  '(font-lock-type-face :foreground "#006c86"))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -99,16 +105,21 @@
 (push "~/.authinfo" auth-sources)
 
 ;;;; Fonts
-(setq doom-font "Iosevka Custom Extended-12"
+(setq doom-font "Iosevka Custom Condensed-12"
       ;; doom-big-font "Hermit-18:medium"
       ;; doom-unicode-font "Noto Color Emoji-12:regular"
       doom-variable-pitch-font "Avenir Next-12:medium"
       doom-serif-font "Iosevka Custom-12:regular")
 
 ;;;; Custom Settings
-(setq-default line-spacing 1
-              read-quoted-char-radix 16)
-(setq enable-remote-dir-locals t)
+(setq-default project-current-directory-override nil)
+(setq-default ;; line-spacing 1
+ read-quoted-char-radix 16
+ doom-inhibit-indent-detection t)
+(setq enable-remote-dir-locals t
+      js-indent-level 2)
+;; (after! undo-tree
+;;   (add-hook 'evil-local-mode-hook #'turn-on-undo-tree-mode))
 
 ;; Evil Cursor settings
 (setq evil-insert-state-cursor '(bar "aqua")
@@ -131,10 +142,6 @@
 (map! :leader :desc "Find file in project" :ne "." #'projectile-find-file)
 (map! :leader :desc "Find file" :ne ":" #'find-file)
 (map! :leader :ne "C-+" #'font-size-hidpi)
-;; Git Gutter bindings
-(map! :leader :ne "g W" #'git-gutter:update-all-windows)
-(map! :leader :ne "g d" #'git-gutter)
-(map! :leader :desc "Show hunk at point" :ne "g h" #'git-gutter:popup-hunk)
 
 ;; automatic indenting of pasted text (functions defined in custom-functions.el)
 (map! :n "p" #'evil-paste-after-and-indent
@@ -196,6 +203,8 @@
 ;;     (kbd "C-,") 'evil-snipe-repeat-reverse))
 
 ;;;; RUBY
+(add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-ts-mode))
 (after! ruby-mode
   (add-to-list 'hs-special-modes-alist
                `(ruby-mode
@@ -203,7 +212,6 @@
                  ,(rx (or "}" "]" "end"))                            ; Block end
                  ,(rx (or "#" "=begin")) ; Comment start
                  ruby-forward-sexp nil)))
-
 (after! ruby-ts-mode
   (add-to-list 'hs-special-modes-alist
                `(ruby-ts-mode
@@ -217,7 +225,7 @@
 (add-hook 'ruby-mode-hook
           (lambda ()
             (setq tab-width ruby-indent-level)
-            (flycheck-mode)))
+            (setq-local flycheck-eglot-exclusive nil)))
 ;;;; end
 
 ;; ----- Robe -----
@@ -230,6 +238,22 @@
         "b" #'ruby-send-buffer
         "B" #'ruby-send-buffer-and-go))
 
+;; ------- FLYCHECK -------
+(setq flycheck-check-syntax-automatically '(save mode-enabled))
+(after! flycheck-posframe
+  (set-face-attribute 'flycheck-posframe-info-face nil :inherit 'success)
+  (set-face-attribute 'flycheck-posframe-warning-face nil :inherit 'warning)
+  (set-face-attribute 'flycheck-posframe-error-face nil :inherit 'error))
+
+;; ------ DIFF-HL ------
+;; (setq diff-hl-disable-on-remote t)
+(remove-hook 'diff-hl-mode-hook #'diff-hl-flydiff-mode)
+
+;; ------ MAGIT ------
+;; (after! magit
+;;   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+;;   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+
 ;;;; Hide-Show
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
 
@@ -238,13 +262,13 @@
 
 ;; -------- INFO --------
 (add-hook 'Info-mode-hook
-  (lambda()
-    (evil-set-initial-state 'Info-mode 'emacs)
-    (map! :ne "j" #'next-line)
-    (map! :ne "k" #'previous-line)
-    (map! :ne "}" #'Info-scroll-up)
-    (map! :ne "{" #'Info-scroll-down)
-    (define-key Info-mode-map (kbd "SPC") 'doom/leader)))
+          (lambda()
+            (evil-set-initial-state 'Info-mode 'emacs)
+            (map! :ne "j" #'next-line)
+            (map! :ne "k" #'previous-line)
+            (map! :ne "}" #'Info-scroll-up)
+            (map! :ne "{" #'Info-scroll-down)
+            (define-key Info-mode-map (kbd "SPC") 'doom/leader)))
 
 (cl-pushnew "~/info" Info-directory-list)
 
@@ -258,50 +282,50 @@
 (after! projectile
   (setq projectile-git-fd-args "-H -0 -E .git -tf --strip-cwd-prefix -c never"))
 
-;; ----- GIT GUTTER -----
-(after! git-gutter
-  (remove-hook 'focus-in-hook #'git-gutter:update-all-windows))
-
 ;; ------- Indent guide hooks --------
-(after! highlight-indent-guides
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (setq highlight-indent-guides-method 'character)
-  ;; (setq highlight-indent-guides-character ?¦)
-  ;; (setq highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line)
-  (defadvice insert-for-yank (before my-clear-indent-guides activate)
-    (remove-text-properties
-     0 (length (ad-get-arg 0))
-     '(display highlight-indent-guides-prop) (ad-get-arg 0))))
+(after! indent-bars
+  ;; (setq! indent-bars-color '(highlight :face-bg t :blend 0.150))
+  (setq! indent-bars-treesit-support (modulep! :tools tree-sitter)))
+
+;; (after! highlight-indent-guides
+;;   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+;;   (setq highlight-indent-guides-method 'column)
+;;   ;; (setq highlight-indent-guides-character ?¦)
+;;   ;; (setq highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line)
+;;   (defadvice insert-for-yank (before my-clear-indent-guides activate)
+;;     (remove-text-properties
+;;      0 (length (ad-get-arg 0))
+;;      '(display highlight-indent-guides-prop) (ad-get-arg 0))))
 
 ;; ----- TREESITER -----
-;(after! scala-ts-mode
-;  (use-package! scala-mode))
-;
-;(setq treesit-font-lock-level 4)
-;(use-package! treesit-auto
-;  :config
-;  (global-treesit-auto-mode))
-;(defun run-non-ts-hooks ()
-;  (let ((major-name (symbol-name major-mode)))
-;    (when (string-match-p ".*-ts-mode" major-name)
-;      (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-hook")))
-;      (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-local-vars-hook"))))))
-;(add-hook 'prog-mode-hook 'run-non-ts-hooks)
+(after! scala-ts-mode
+  (use-package! scala-mode))
+
+(setq treesit-font-lock-level 4)
+(use-package! treesit-auto
+  :config
+  (global-treesit-auto-mode))
+(defun run-non-ts-hooks ()
+  (let ((major-name (symbol-name major-mode)))
+    (when (string-match-p ".*-ts-mode" major-name)
+      (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-hook")))
+      (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-local-vars-hook"))))))
+(add-hook 'prog-mode-hook 'run-non-ts-hooks)
 
 ;; ----- TRAMP on native-comp Emacs 28 -----
 (after! tramp
- ;;  (unless (version<= emacs-version "28.0")
- ;;    (defun start-file-process-shell-command@around (start-file-process-shell-command name buffer &rest args)
- ;;      "Start a program in a subprocess.  Return the process object for it.
- ;; Similar to `start-process-shell-command', but calls `start-file-process'."
- ;;      ;; On remote hosts, the local `shell-file-name' might be useless.
- ;;      (let ((command (mapconcat 'identity args " ")))
- ;;        (funcall start-file-process-shell-command name buffer command)))
- ;;    (advice-add 'start-file-process-shell-command :around #'start-file-process-shell-command@around))
+  ;;  (unless (version<= emacs-version "28.0")
+  ;;    (defun start-file-process-shell-command@around (start-file-process-shell-command name buffer &rest args)
+  ;;      "Start a program in a subprocess.  Return the process object for it.
+  ;; Similar to `start-process-shell-command', but calls `start-file-process'."
+  ;;      ;; On remote hosts, the local `shell-file-name' might be useless.
+  ;;      (let ((command (mapconcat 'identity args " ")))
+  ;;        (funcall start-file-process-shell-command name buffer command)))
+  ;;    (advice-add 'start-file-process-shell-command :around #'start-file-process-shell-command@around))
   (setq tramp-default-method "ssh"
         tramp-use-connection-share nil
         tramp-verbose 3
-        tramp-pipe-stty-settings "" ; -icanon is the devil
+        tramp-pipe-stty-settings ""     ; -icanon is the devil
         vc-ignore-dir-regexp (format "%s\\|%s"
                                      locate-dominating-stop-dir-regexp
                                      "[/\\\\]node_modules"))
@@ -311,14 +335,21 @@
 
 ;; ----- LSP -----
 (setq lsp-idle-delay 0.500
-    lsp-response-timeout 25
-    lsp-enable-xref t
-    lsp-enable-file-watchers nil
-    lsp-use-plists t
-    ;; lsp-log-io t
-    lsp-ui-doc-mode t)
+      lsp-response-timeout 25
+      lsp-enable-xref t
+      lsp-enable-file-watchers nil
+      lsp-use-plists t
+      lsp-log-io t
+      lsp-ui-sideline-enable nil
+      lsp-ui-doc-mode t)
 (after! lsp-mode
   (delete 'lsp-terraform lsp-client-packages))
+
+(setq lsp-disabled-clients '(rubocop-ls-tramp))
+(setq lsp-ruby-lsp-use-bundler t)
+
+(after! eglot
+  (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp")))
 
 (after! lsp-java
   (when (file-remote-p default-directory)
@@ -379,10 +410,10 @@
 
 (advice-add #'+org|update-cookies :override #'+org*update-cookies)
 
-(add-hook 'org-mode-hook #'auto-fill-mode)
+;; (add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook 'org-mode-hook #'+word-wrap-mode)
-(add-hook! 'org-mode-hook (company-mode -1))
-(add-hook! 'org-capture-mode-hook (company-mode -1))
+(add-hook! 'org-mode-hook (corfu-mode -1))
+(add-hook! 'org-capture-mode-hook (corfu-mode -1))
 
 (setq
  org-agenda-skip-scheduled-if-done t
@@ -555,10 +586,10 @@
 ;; web-mode-markup-indent-offset 2
 ;; web-mode-code-indent-offset 2
 ;; web-mode-css-indent-offset 2
-;; js-indent-level 2
 ;; typescript-indent-level 2
 ;; prettier-js-args '("--single-quote")
 ;; json-reformat:indent-width 2
+;; js-indent-level 2
 ;; css-indent-offset 2
 
 ;; (use-package! lsp-ui

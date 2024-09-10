@@ -64,5 +64,5 @@
 (package! pomidor)
 (package! spacemacs-theme)
 (package! puppet-mode)
-;; (package! treesit-auto)
-;; (package! scala-ts-mode)
+(package! treesit-auto)
+(package! scala-ts-mode)

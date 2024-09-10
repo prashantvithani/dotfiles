@@ -51,6 +51,7 @@ The return value is the yanked text."
 ;; ----- Custom User functions -----
 (defun user/fill-column-indicator-hooks ()
   (add-hook 'ruby-mode-hook (lambda () (display-fill-column-indicator-mode t)))
+  (add-hook 'scala-mode-hook (lambda () (display-fill-column-indicator-mode t)))
   (add-hook 'c-mode-hook (lambda () (display-fill-column-indicator-mode t)))
   (add-hook 'java-mode-hook (lambda () (display-fill-column-indicator-mode t)))
   (add-hook 'python-mode-hook (lambda () (display-fill-column-indicator-mode t)))

@@ -58,22 +58,23 @@
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
-       ;;(format +onsave)  ; automated prettiness
+       format  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        lispy             ; vim for lisp, for people who don't like vim
        multiple-cursors  ; editing in many places at once
        ;;objed             ; text object editing for the innocent
-       parinfer          ; turn lisp into python, sort of
+       ;; parinfer          ; turn lisp into python, sort of
        ;;rotate-text       ; cycle region at point between text candidates
        snippets          ; my elves. They type so I don't have to
        word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       (dired            ; making dired pretty [functional]
-        +icons)
+       (dired                           ; making dired pretty [functional]
+        +icons
+        +dirvish)
        electric          ; smarter, keyword-based electric-indent
        ;;ibuffer         ; interactive buffer management
-       (undo +tree)              ; persistent, smarter undo for your inevitable mistakes
+       undo              ; persistent, smarter undo for your inevitable mistakes
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
@@ -103,7 +104,7 @@
         +devdocs
         +docsets
         +dictionary)
-       (lsp +peek)
+       (lsp +peek +eglot)
        (magit +forge)             ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -186,7 +187,8 @@
        ;;raku              ; the artist formerly known as perl6
        rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
-       (ruby               ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+       (ruby             ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+        +lsp
         +rails
         +rbenv
         +tree-sitter)
