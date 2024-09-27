@@ -112,7 +112,6 @@
       doom-serif-font "Iosevka Custom-12:regular")
 
 ;;;; Custom Settings
-(setq-default project-current-directory-override nil)
 (setq-default ;; line-spacing 1
  read-quoted-char-radix 16
  doom-inhibit-indent-detection t)
@@ -141,6 +140,7 @@
 (map! :leader :desc "M-x" :ne "SPC" #'execute-extended-command)
 (map! :leader :desc "Find file in project" :ne "." #'projectile-find-file)
 (map! :leader :desc "Find file" :ne ":" #'find-file)
+(map! :leader :desc "Jump to definition another window" :ne "c I" #'+lookup/definition-other-window)
 (map! :leader :ne "C-+" #'font-size-hidpi)
 
 ;; automatic indenting of pasted text (functions defined in custom-functions.el)
@@ -204,7 +204,7 @@
 
 ;;;; RUBY
 (add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-ts-mode))
+;; (add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-ts-mode))
 (after! ruby-mode
   (add-to-list 'hs-special-modes-alist
                `(ruby-mode
@@ -212,6 +212,7 @@
                  ,(rx (or "}" "]" "end"))                            ; Block end
                  ,(rx (or "#" "=begin")) ; Comment start
                  ruby-forward-sexp nil)))
+
 (after! ruby-ts-mode
   (add-to-list 'hs-special-modes-alist
                `(ruby-ts-mode
@@ -250,9 +251,9 @@
 (remove-hook 'diff-hl-mode-hook #'diff-hl-flydiff-mode)
 
 ;; ------ MAGIT ------
-;; (after! magit
-;;   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-;;   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+(after! magit
+  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 ;;;; Hide-Show
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
@@ -285,7 +286,8 @@
 ;; ------- Indent guide hooks --------
 (after! indent-bars
   ;; (setq! indent-bars-color '(highlight :face-bg t :blend 0.150))
-  (setq! indent-bars-treesit-support (modulep! :tools tree-sitter)))
+  ;; (setq! indent-bars-treesit-support (modulep! :tools tree-sitter))
+  )
 
 ;; (after! highlight-indent-guides
 ;;   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
@@ -298,19 +300,19 @@
 ;;      '(display highlight-indent-guides-prop) (ad-get-arg 0))))
 
 ;; ----- TREESITER -----
-(after! scala-ts-mode
-  (use-package! scala-mode))
+;; (after! scala-ts-mode
+;;   (use-package! scala-mode))
 
 (setq treesit-font-lock-level 4)
-(use-package! treesit-auto
-  :config
-  (global-treesit-auto-mode))
-(defun run-non-ts-hooks ()
-  (let ((major-name (symbol-name major-mode)))
-    (when (string-match-p ".*-ts-mode" major-name)
-      (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-hook")))
-      (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-local-vars-hook"))))))
-(add-hook 'prog-mode-hook 'run-non-ts-hooks)
+;; (use-package! treesit-auto
+;;   :config
+;;   (global-treesit-auto-mode))
+;; (defun run-non-ts-hooks ()
+;;   (let ((major-name (symbol-name major-mode)))
+;;     (when (string-match-p ".*-ts-mode" major-name)
+;;       (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-hook")))
+;;       (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-local-vars-hook"))))))
+;; (add-hook 'prog-mode-hook 'run-non-ts-hooks)
 
 ;; ----- TRAMP on native-comp Emacs 28 -----
 (after! tramp
