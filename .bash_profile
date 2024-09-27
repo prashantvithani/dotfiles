@@ -16,6 +16,7 @@ if [[ $(uname -s) == "Darwin" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
     ensure_in_path PREFIX "/opt/homebrew/opt/grep/libexec/gnubin"
     ensure_in_path PREFIX "/opt/homebrew/opt/openjdk/bin"
+    export LIBRARY_PATH="$LIBRARY_PATH:/opt/homebrew/lib/gcc/current:/opt/homebrew/opt/gcc/lib/gcc/current/gcc/aarch64-apple-darwin24/14"
 fi
 
 if [ -d $HOME/.emacs.d/bin ]; then
