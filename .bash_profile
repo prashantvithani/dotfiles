@@ -28,6 +28,7 @@ if [ -d $HOME/.local/bin ]; then
 fi
 
 [[ -f ~/.profile ]] && . ~/.profile
+[[ -f ~/.bashrc ]] && . ~/.bashrc
 
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
@@ -79,7 +80,7 @@ fi
 # fi;
 
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
-[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh rsync;
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f "$HOME/Workspace/google-cloud-sdk/path.bash.inc" ]; then source "$HOME/Workspace/google-cloud-sdk/path.bash.inc"; fi
@@ -90,23 +91,26 @@ if [ -f "$HOME/Workspace/google-cloud-sdk/completion.bash.inc" ]; then source "$
 # minikub bash completion
 # source ~/.minikube-completion
 
-if [[ $(uname -s) == "Darwin" ]]
-then
-  export GOPATH="$HOME/Misc/go"
-else
-  export GOPATH="$HOME/go"
-fi
-ensure_in_path SUFFIX "$GOPATH/bin"
+#if [[ $(uname -s) == "Darwin" ]]
+#then
+#  export GOPATH="$HOME/Misc/go"
+#else
+#  export GOPATH="$HOME/go"
+#fi
+#ensure_in_path SUFFIX "$GOPATH/bin"
 
-export LDAP_USERNAME="prashant"
-export WORKSPACE="$HOME/Workspace"
-export CLARISIGHTS_HOME="$WORKSPACE/repos/adwyze"
+#export LDAP_USERNAME="prashant"
+#export WORKSPACE="$HOME/Workspace"
+#export CLARISIGHTS_HOME="$WORKSPACE/repos/adwyze"
 
 # alias for kubectl
-source "$CLARISIGHTS_HOME/scripts/dev/kubectl_aliases.sh"
+#if command -v kubectl 2>&1 >/dev/null
+#then
+#	source "$CLARISIGHTS_HOME/scripts/dev/kubectl_aliases.sh"
+#fi
 
 # alias for gssh
-alias gssh=$WORKSPACE/repos/devops/scripts/gssh.sh
+# alias gssh=$WORKSPACE/repos/devops/scripts/gssh.sh
 
 if [[ -z $SSH_TTY ]]
 then
