@@ -105,11 +105,11 @@
 (push "~/.authinfo" auth-sources)
 
 ;;;; Fonts
-(setq doom-font "Iosevka Custom Condensed-12"
+(setq doom-font "Iosevka Custom Condensed-10"
       ;; doom-big-font "Hermit-18:medium"
-      ;; doom-unicode-font "Noto Color Emoji-12:regular"
-      doom-variable-pitch-font "Avenir Next-12:medium"
-      doom-serif-font "Iosevka Custom-12:regular")
+      doom-unicode-font "Noto Color Emoji-10:regular"
+      ;; doom-variable-pitch-font "Avenir Next-12:medium"
+      doom-serif-font "Iosevka Custom Condensed-10:regular")
 
 ;;;; Custom Settings
 (setq-default ;; line-spacing 1
