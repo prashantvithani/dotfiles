@@ -29,7 +29,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-tokyo-night-storm)
+(setq doom-theme 'doom-tokyo-night)
 (custom-theme-set-faces! 'spacemacs-dark
   '(iedit-occurrence :foreground "#b1951d" :weight bold :inverse-video t)
   '(iedit-read-only-occurrence :inherit region)
@@ -107,9 +107,9 @@
 ;;;; Fonts
 (setq doom-font "Iosevka Custom Condensed-10"
       ;; doom-big-font "Hermit-18:medium"
-      doom-unicode-font "Noto Color Emoji-10:regular"
+      doom-symbol-font "Noto Color Emoji-10:regular"
       ;; doom-variable-pitch-font "Avenir Next-12:medium"
-      doom-serif-font "Iosevka Custom Condensed-10:regular")
+      doom-serif-font "Iosevka Custom Condensed-10")
 
 ;;;; Custom Settings
 (setq-default ;; line-spacing 1
@@ -347,7 +347,7 @@
 (after! lsp-mode
   (delete 'lsp-terraform lsp-client-packages))
 
-(setq lsp-disabled-clients '(rubocop-ls-tramp))
+(setq lsp-disabled-clients '(rubocop-ls rubocop-ls-tramp))
 (setq lsp-ruby-lsp-use-bundler t)
 
 (after! eglot
