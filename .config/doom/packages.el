@@ -65,5 +65,6 @@
 (package! spacemacs-theme)
 (package! puppet-mode)
 (package! kubed)
+(package! breadcrumb)
 ;; (package! treesit-auto)
 ;; (package! scala-ts-mode)

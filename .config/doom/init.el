@@ -27,7 +27,7 @@
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ;; (ivy +fuzzy +icons)      ; a search engine for love and life
-       (vertico +icons)  ; the search engine of the future
+       (vertico +icons +childframe)  ; the search engine of the future
 
        :ui
        ;;deft              ; notational velocity for Emacs
@@ -45,7 +45,7 @@
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
-       ;;tabs              ; an tab bar for Emacs
+       tabs              ; an tab bar for Emacs
        (treemacs +lsp)     ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
        (vc-gutter +pretty)         ; vcs diff in the fringe
@@ -58,7 +58,7 @@
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
-       format  ; automated prettiness
+       (format +lsp)  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        lispy             ; vim for lisp, for people who don't like vim
        multiple-cursors  ; editing in many places at once
@@ -103,7 +103,7 @@
         +devdocs
         +docsets
         +dictionary)
-       (lsp +peek)              ; eglot has some issue with project
+       (lsp +peek +eglot)              ; eglot has some issue with project
        (magit +forge)             ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -169,12 +169,17 @@
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org               ; organize your plain life in plain text
-        +attach          ; custom attachment system
-        +babel           ; running code in org
-        +capture         ; org-capture in and outside of Emacs
-        +export          ; Exporting org to whatever you want
-        +present)         ; Emacs for presentations
+       (org            ; organize your plain life in plain text
+        ;; +attach          ; custom attachment system
+        ;; +babel           ; running code in org
+        ;; +capture         ; org-capture in and outside of Emacs
+        ;; +export          ; Exporting org to whatever you want
+        +brain
+        +hugo
+        +journal
+        +pomodoro
+        +present
+        +roam2)         ; Emacs for presentations
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional

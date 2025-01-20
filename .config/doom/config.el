@@ -29,7 +29,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-tokyo-night)
+(setq doom-theme 'spacemacs-dark)
 (custom-theme-set-faces! 'spacemacs-dark
   '(iedit-occurrence :foreground "#b1951d" :weight bold :inverse-video t)
   '(iedit-read-only-occurrence :inherit region)
@@ -102,7 +102,8 @@
       remote-file-name-inhibit-auto-save t)
 
 ;; Magit code-review
-(push "~/.authinfo" auth-sources)
+(after! code-review
+  (add-to-list 'auth-sources "~/.authinfo"))
 
 ;;;; Fonts
 (setq doom-font "Iosevka Custom Condensed-10"
@@ -117,6 +118,11 @@
  doom-inhibit-indent-detection t)
 (setq enable-remote-dir-locals t
       js-indent-level 2)
+
+;; Frame Opacity
+;; (set-frame-parameter nil (if (eq window-system 'pgtk) 'alpha-background 'alpha) 90)
+(doom/set-frame-opacity 97)
+
 ;; (after! undo-tree
 ;;   (add-hook 'evil-local-mode-hook #'turn-on-undo-tree-mode))
 
@@ -275,9 +281,14 @@
 
 ;; NOTE: Raise popup window - Info mode: C-~
 
+;; ----- VERTICO -----
+(after! vertico
+  (setq vertico-posframe-parameters `((,(if (eq window-system 'pgtk) 'alpha-background 'alpha) . 75))))
+
 ;; ----- CORFU -----
 (after! corfu
-  (setq +corfu-want-minibuffer-completion nil))
+  (setq +corfu-want-minibuffer-completion nil)
+  (add-to-list 'corfu--frame-parameters `(,(if (eq window-system 'pgtk) 'alpha-background 'alpha) . 75)))
 
 ;; ----- PROJECTILE -----
 (after! projectile
@@ -348,7 +359,7 @@
   (delete 'lsp-terraform lsp-client-packages))
 
 (setq lsp-disabled-clients '(rubocop-ls rubocop-ls-tramp))
-(setq lsp-ruby-lsp-use-bundler t)
+;; (setq lsp-ruby-lsp-use-bundler t)
 
 (after! eglot
   (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp")))
@@ -388,6 +399,21 @@
 ;;                                     (add-hook 'window-configuration-change-hook #'lsp--init-if-visible nil t))))))))
 ;;   (advice-add #'lsp-deferred :override #'lsp-deferred@override))
 
+;; ----- Breadcrumb -----
+(add-hook! prog-mode #'breadcrumb-local-mode)
+
+(after! breadcrumb
+  (set-face-attribute 'breadcrumb-face nil :inherit 'doom-modeline-buffer-path)
+  (when (modulep! :tools lsp -eglot)
+    (after! lsp-mode
+      (when nil
+        (add-hook! lsp-before-open :append (lambda () (breadcrumb-local-mode -1))))
+      (defun pritam/breadcrumb--update-on-lsp-start ()
+        (setq breadcrumb--last-update-tick -1))
+      (add-hook! lsp-configure #'pritam/breadcrumb--update-on-lsp-start)
+      (defadvice! pritam/breadcrumb--update-on-lsp-imenu-refresh ()
+        :after #'lsp--imenu-refresh
+        (setq breadcrumb--last-update-tick -1)))))
 ;; ----- Ace window -----
 (ace-window-display-mode)
 
