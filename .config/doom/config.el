@@ -23,13 +23,18 @@
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
 ;;load custom functions file
-(load "~/.doom.d/custom-functions.el")
+(load "~/.config/doom/custom-functions.el")
 ;; (load "~/.doom.d/lsp-tramp-configs.el")
+
+;; site lisp
+(setq site-lisp-dir (expand-file-name "site-lisp" doom-local-dir))
+(add-to-list 'load-path site-lisp-dir)
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'spacemacs-dark)
+(setq doom-theme 'prashant-kanagawa)
+(setq doom-kanagawa-brighter-comments t)
 (custom-theme-set-faces! 'spacemacs-dark
   '(iedit-occurrence :foreground "#b1951d" :weight bold :inverse-video t)
   '(iedit-read-only-occurrence :inherit region)
@@ -44,6 +49,8 @@
   '(font-lock-type-face :foreground "#2ac3de"))
 (custom-theme-set-faces! 'doom-tokyo-night-light
   '(font-lock-type-face :foreground "#006c86"))
+(custom-theme-set-faces! 'doom-tokyo-night-moon
+  '(font-lock-type-face :foreground "#4fd6be"))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -106,7 +113,7 @@
   (add-to-list 'auth-sources "~/.authinfo"))
 
 ;;;; Fonts
-(setq doom-font "Iosevka Custom Condensed-10"
+(setq doom-font "Source Code Pro-10"
       ;; doom-big-font "Hermit-18:medium"
       doom-symbol-font "Noto Color Emoji-10:regular"
       ;; doom-variable-pitch-font "Avenir Next-12:medium"
@@ -142,12 +149,13 @@
 ;; Custom Bindings Normal-Emacs bindings
 (map! :ne "M-/" #'comment-line)
 (map! :leader :ne "s g" #'deadgrep)
-(map! :leader :ne "n b" #'org-brain-visualize)
+;; (map! :leader :ne "n b" #'org-brain-visualize)
 (map! :leader :desc "M-x" :ne "SPC" #'execute-extended-command)
 (map! :leader :desc "Find file in project" :ne "." #'projectile-find-file)
 (map! :leader :desc "Find file" :ne ":" #'find-file)
 (map! :leader :desc "Jump to definition another window" :ne "c I" #'+lookup/definition-other-window)
-(map! :leader :ne "C-+" #'font-size-hidpi)
+(map! :leader :ne "C-M-+" #'font-size-hidpi)
+(map! :leader :ne "C-M--" #'font-size-thinkpad)
 
 ;; automatic indenting of pasted text (functions defined in custom-functions.el)
 (map! :n "p" #'evil-paste-after-and-indent
@@ -210,30 +218,44 @@
 
 ;;;; RUBY
 (add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-mode))
-;; (add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-ts-mode))
-(after! ruby-mode
-  (add-to-list 'hs-special-modes-alist
-               `(ruby-mode
-                 ,(rx (or "if" "def" "class" "module" "do" "{" "[")) ; Block start
-                 ,(rx (or "}" "]" "end"))                            ; Block end
-                 ,(rx (or "#" "=begin")) ; Comment start
-                 ruby-forward-sexp nil)))
+(add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-ts-mode))
+;; (after! ruby-mode
+;;   (add-to-list 'hs-special-modes-alist
+;;                `(ruby-mode
+;;                  ,(rx (or "if" "def" "class" "module" "do" "{" "[")) ; Block start
+;;                  ,(rx (or "}" "]" "end"))                            ; Block end
+;;                  ,(rx (or "#" "=begin")) ; Comment start
+;;                  ruby-forward-sexp nil)))
 
 (after! ruby-ts-mode
   (add-to-list 'hs-special-modes-alist
                `(ruby-ts-mode
-                 ,(rx (or "if" "def" "class" "module" "do" "{" "[")) ; Block start
-                 ,(rx (or "}" "]" "end"))                            ; Block end
-                 ,(rx (or "#" "=begin")) ; Comment start
-                 ruby-forward-sexp nil)))
+                 "class\\|d\\(?:ef\\|o\\)\\|module\\|[[{]"
+                 "end\\|[]}]"
+                 "#\\|=begin"
+                 ruby-forward-sexp)))
 
 ;; (remove-hook 'ruby-mode-hook #'+ruby|init-robe)
 (cl-pushnew 'ruby-mode doom-detect-indentation-excluded-modes)
+(cl-pushnew 'ruby-ts-mode doom-detect-indentation-excluded-modes)
 (add-hook 'ruby-mode-hook
           (lambda ()
             (setq tab-width ruby-indent-level)
             (setq-local flycheck-eglot-exclusive nil)))
 ;;;; end
+
+(after! inf-ruby
+  (defun adwyze/custom-pod-inf-ruby-console-rails (dir)
+    "Runs rails console in DIR in adwyze custom pod."
+    (interactive (list (inf-ruby-console-read-directory 'rails)))
+    (let ((inf-ruby-wrapper-command "bin/rvmexec %s")
+          (inf-ruby-console-environment "production"))
+      (inf-ruby-console-rails dir))))
+
+;; ----- ZEUS ----
+(let ((zeus-dir (expand-file-name "zeus" site-lisp-dir)))
+  (add-to-list 'load-path zeus-dir))
+(require 'zeus)
 
 ;; ----- Robe -----
 (after! robe
@@ -297,7 +319,7 @@
 ;; ------- Indent guide hooks --------
 (after! indent-bars
   ;; (setq! indent-bars-color '(highlight :face-bg t :blend 0.150))
-  ;; (setq! indent-bars-treesit-support (modulep! :tools tree-sitter))
+  (setq! indent-bars-treesit-support t)
   )
 
 ;; (after! highlight-indent-guides
@@ -311,19 +333,18 @@
 ;;      '(display highlight-indent-guides-prop) (ad-get-arg 0))))
 
 ;; ----- TREESITER -----
-;; (after! scala-ts-mode
-;;   (use-package! scala-mode))
-
+(after! scala-ts-mode
+  (use-package! scala-mode))
 (setq treesit-font-lock-level 4)
-;; (use-package! treesit-auto
-;;   :config
-;;   (global-treesit-auto-mode))
-;; (defun run-non-ts-hooks ()
-;;   (let ((major-name (symbol-name major-mode)))
-;;     (when (string-match-p ".*-ts-mode" major-name)
-;;       (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-hook")))
-;;       (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-local-vars-hook"))))))
-;; (add-hook 'prog-mode-hook 'run-non-ts-hooks)
+(use-package! treesit-auto
+  :config
+  (global-treesit-auto-mode))
+(defun run-non-ts-hooks ()
+  (let ((major-name (symbol-name major-mode)))
+    (when (string-match-p ".*-ts-mode" major-name)
+      (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-hook")))
+      (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-local-vars-hook"))))))
+(add-hook 'prog-mode-hook 'run-non-ts-hooks)
 
 ;; ----- TRAMP on native-comp Emacs 28 -----
 (after! tramp
@@ -343,7 +364,8 @@
                                      locate-dominating-stop-dir-regexp
                                      "[/\\\\]node_modules"))
   ;; (setq-default vc-handled-backends '(Git))
-  (cl-pushnew 'tramp-own-remote-path tramp-remote-path))
+  (cl-pushnew 'tramp-own-remote-path tramp-remote-path)
+  (setq explicit-shell-file-name "/bin/bash"))
 
 
 ;; ----- LSP -----
@@ -362,7 +384,10 @@
 ;; (setq lsp-ruby-lsp-use-bundler t)
 
 (after! eglot
-  (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp")))
+  (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp"))
+  (add-to-list 'eglot-server-programs
+               `((scala-mode scala-ts-mode)
+                 . ,(alist-get 'scala-mode eglot-server-programs))))
 
 (after! lsp-java
   (when (file-remote-p default-directory)
@@ -431,6 +456,14 @@
   :config (setq pomidor-long-break-seconds (* 30 60)
                 pomidor-play-sound-file nil))
 
+;; -------- GPTEL ---------
+(gptel-make-gemini "Gemini"
+  :stream t
+  :key "AIzaSyBTkNzfALhKEtonS5wdie6HNRo2RspS-tM")
+(setq gptel-api-key (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))
+(setq gptel-default-mode 'org-mode)
+
+
 ;;;;;;;;;;;;;;;;; ORG ;;;;;;;;;;;;;;;;;;;;;;
 ;; (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
 ;; (set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
@@ -462,78 +495,78 @@
  +org-capture-todo-file "tasks.org")
 
 ;;;;;;;;;;;;;;;; SUPER AGENDA ;;;;;;;;;;;;;;;;
-(use-package org-super-agenda
-  :after org-agenda
-  :init
-  (setq org-agenda-skip-scheduled-if-done t
-        org-agenda-skip-deadline-if-done t
-        org-agenda-include-deadlines t
-        org-agenda-block-separator nil
-        org-agenda-include-diary t
-        org-agenda-start-with-log-mode t
-        org-agenda-compact-blocks t)
-  ;; org-agenda-start-day nil
-  ;; org-agenda-span 1
-  ;; org-agenda-start-on-weekday nil)
+;; (use-package org-super-agenda
+;;   :after org-agenda
+;;   :init
+;;   (setq org-agenda-skip-scheduled-if-done t
+;;         org-agenda-skip-deadline-if-done t
+;;         org-agenda-include-deadlines t
+;;         org-agenda-block-separator nil
+;;         org-agenda-include-diary t
+;;         org-agenda-start-with-log-mode t
+;;         org-agenda-compact-blocks t)
+;;   ;; org-agenda-start-day nil
+;;   ;; org-agenda-span 1
+;;   ;; org-agenda-start-on-weekday nil)
 
-  (setq org-agenda-custom-commands
-        '(("c" "Super view"
-           ((agenda "" ((org-agenda-span 'day)
-                        (org-agenda-start-day nil) ;; today
-                        (org-super-agenda-groups
-                         '((:name "Today"
-                            :time-grid t
-                            :date today
-                            :scheduled today
-                            :order 1)
-                           (:discard (:anything))))))
-            (alltodo "" ((org-agenda-overriding-header "")
-                         (org-super-agenda-groups
-                          '((:name "In Progress"
-                             :todo ("STRT" "[-]")
-                             :order 2)
-                            (:name "Important"
-                             :tag ("important" "imp")
-                             :priority "A"
-                             :order 2)
-                            (:name "Due Today"
-                             :deadline today
-                             :order 3)
-                            (:name "Due Soon"
-                             :deadline future
-                             :order 4)
-                            (:name "Overdue"
-                             :deadline past
-                             :order 5)
-                            (:name "Issues"
-                             :tag "issue"
-                             :order 6)
-                            (:name "Reviews"
-                             :tag "review"
-                             :order 6)
-                            (:name "Reviews"
-                             :tag "review"
-                             :order 6)
-                            (:name "Meetings"
-                             :tag "meeting"
-                             :order 6)
-                            (:name "Research"
-                             :tag "research"
-                             :order 8)
-                            (:name "To read"
-                             :tag "read"
-                             :order 9)
-                            (:name "Waiting"
-                             :todo ("WAIT" "[?]")
-                             :order 10)
-                            (:name "trivial"
-                             :priority<= "C"
-                             :tag ("Trivial" "Unimportant")
-                             :todo ("SOMEDAY" )
-                             :order 90)
-                            (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
-  :config
-  (org-super-agenda-mode))
+;;   (setq org-agenda-custom-commands
+;;         '(("c" "Super view"
+;;            ((agenda "" ((org-agenda-span 'day)
+;;                         (org-agenda-start-day nil) ;; today
+;;                         (org-super-agenda-groups
+;;                          '((:name "Today"
+;;                             :time-grid t
+;;                             :date today
+;;                             :scheduled today
+;;                             :order 1)
+;;                            (:discard (:anything))))))
+;;             (alltodo "" ((org-agenda-overriding-header "")
+;;                          (org-super-agenda-groups
+;;                           '((:name "In Progress"
+;;                              :todo ("STRT" "[-]")
+;;                              :order 2)
+;;                             (:name "Important"
+;;                              :tag ("important" "imp")
+;;                              :priority "A"
+;;                              :order 2)
+;;                             (:name "Due Today"
+;;                              :deadline today
+;;                              :order 3)
+;;                             (:name "Due Soon"
+;;                              :deadline future
+;;                              :order 4)
+;;                             (:name "Overdue"
+;;                              :deadline past
+;;                              :order 5)
+;;                             (:name "Issues"
+;;                              :tag "issue"
+;;                              :order 6)
+;;                             (:name "Reviews"
+;;                              :tag "review"
+;;                              :order 6)
+;;                             (:name "Reviews"
+;;                              :tag "review"
+;;                              :order 6)
+;;                             (:name "Meetings"
+;;                              :tag "meeting"
+;;                              :order 6)
+;;                             (:name "Research"
+;;                              :tag "research"
+;;                              :order 8)
+;;                             (:name "To read"
+;;                              :tag "read"
+;;                              :order 9)
+;;                             (:name "Waiting"
+;;                              :todo ("WAIT" "[?]")
+;;                              :order 10)
+;;                             (:name "trivial"
+;;                              :priority<= "C"
+;;                              :tag ("Trivial" "Unimportant")
+;;                              :todo ("SOMEDAY" )
+;;                              :order 90)
+;;                             (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
+;;   :config
+;;   (org-super-agenda-mode))
 ;;;;;;;;;;;;;;;; SUPER AGENDA END ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (after! org
@@ -574,8 +607,7 @@
                       :foreground "SlateGray1"
                       :background 'unspecified
                       :height 1.75
-                      :weight 'bold)
-  (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+                      :weight 'bold))
 
 ;;;;; VERB ;;;;;
 (with-eval-after-load 'org

@@ -84,11 +84,17 @@ The return value is the yanked text."
   (set-face-attribute 'dictionary-word-entry-face nil :foreground "yellow")
   )
 
-(defun font-size-hidpi ()
+(defun font-size-thinkpad ()
   (interactive)
-  (doom-adjust-font-size 17 t '((doom-font . "Iosevka Custom Extended:regular")
-                                (doom-variable-pitch-font . "Cantarell:medium")
-                                (doom-serif-font . "Iosevka Custom:regular"))))
+  (doom-adjust-font-size 13 t))
+
+(defun font-size-125-hidpi ()
+  (interactive)
+  (doom-adjust-font-size 17 t))
+
+(defun font-size-150-hidpi ()
+  (interactive)
+  (doom-adjust-font-size 20 t))
 
 (dolist (fn '(definition references))
   (fset (intern (format "+lookup/%s-other-window" fn))
