@@ -1,6 +1,7 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
+
 function ensure_in_path() {
   location="$1"
   segment="$2"
@@ -22,8 +23,8 @@ if [[ $(uname -s) == "Darwin" ]]; then
     export LIBRARY_PATH="$LIBRARY_PATH:/opt/homebrew/lib/gcc/current:/opt/homebrew/opt/gcc/lib/gcc/current/gcc/aarch64-apple-darwin24/14"
 fi
 
-if [ -d $HOME/.emacs.d/bin ]; then
-    ensure_in_path PREFIX "$HOME/.emacs.d/bin"
+if [ -d $HOME/.config/emacs/bin ]; then
+    ensure_in_path PREFIX "$HOME/.config/emacs/bin"
 fi
 
 if [ -d $HOME/.local/bin ]; then
@@ -32,13 +33,31 @@ fi
 
 if [[ -z $SSH_TTY ]]
 then
-    # export GPG_TTY=$(tty)
-    # gpg-connect-agent updatestartuptty /bye >/dev/null
+    export GPG_TTY=$(tty)
+    gpg-connect-agent updatestartuptty /bye >/dev/null
     unset SSH_AGENT_PID
     if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
       export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
     fi
 fi
+
+if [ -d $HOME/.jdtls/eclipse.jdt.ls ]; then
+    ensure_in_path SUFFIX "$HOME/.jdtls/eclipse.jdt.ls/bin"
+fi
+
+if [ -d $HOME/.local/share/coursier ]; then
+    ensure_in_path SUFFIX "$HOME/.local/share/coursier/bin"
+fi
+
+# Added by `rbenv init` on Fri Sep 27 19:26:54 UTC 2024
+eval "$(/root/.rbenv/bin/rbenv init - --no-rehash bash)"
+
+. "$HOME/.cargo/env"
+
+export RUBY_YJIT_ENABLE=1
+
+eval "$(fzf --bash)"
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # EMACS Settings
 export LSP_USE_PLISTS=true
@@ -59,11 +78,11 @@ unset file;
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
 
-# Case-insensitive globbing (used in pathname expansion)
-shopt -s nocaseglob;
-
 # append to the history file, don't overwrite it
 shopt -s histappend
+
+# Case-insensitive globbing (used in pathname expansion)
+shopt -s nocaseglob;
 
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell;
@@ -90,6 +109,11 @@ done;
 if [ -z "$arch_chroot" ] && [ -r /etc/arch_chroot ]; then
     arch_chroot=$(cat /etc/arch_chroot)
 fi
+
+# # set variable identifying the chroot you work in (used in the prompt below)
+# if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+#     debian_chroot=$(cat /etc/debian_chroot)
+# fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
@@ -129,20 +153,26 @@ export GIT_PS1_SHOWDIRTYSTATE=1
 
 if [ "$color_prompt" = true ]; then
     PS1='${arch_chroot:+($arch_chroot)}\[\033[38;2;192;255;0m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    # PS1='${debian_chroot:+($debian_chroot)}\[\033[38;2;192;255;0m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 elif [ "$color_prompt" = yes ]; then
     # ORIGINAL
     #PS1='${arch_chroot:+($arch_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
     # ORIGNAL BUT RED
     #PS1='${arch_chroot:+($arch_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w \[\033[01;35m\]\$ \[\033[00m\]'
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w \[\033[01;35m\]\$ \[\033[00m\]'
     # CUSTOM 
     if [[ "${USER}" == "root" ]]; then
 	    PS1='\n${arch_chroot:+($arch_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h\[\033[00m\]: \[\033[01;38;5;36m\]\w \[\033[38;5;32m\]$(__git_ps1 "(%s)")\n\[\033[01;35m\]\$ \[\033[00m\]'
     else
 	    PS1='\n${arch_chroot:+($arch_chroot)}\[\033[01;32m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h\[\033[00m\]: \[\033[01;38;5;36m\]\w \[\033[38;5;32m\]$(__git_ps1 "(%s)")\n\[\033[01;35m\]\$ \[\033[00m\]'
     fi;
+    # PS1='\n${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h\[\033[00m\]: \[\033[01;38;5;36m\]\w \[\033[38;5;32m\]$(__git_ps1 "(%s)")\n\[\033[01;35m\]\$ \[\033[00m\]'
     #PS1='\n${arch_chroot:+($arch_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h\[\033[00m\]: \[\033[01;38;5;36m\]\w\n\[\033[01;35m\]\$ \[\033[00m\]'
+    #PS1='\n${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h\[\033[00m\]: \[\033[01;38;5;36m\]\w\n\[\033[01;35m\]\$ \[\033[00m\]'
 else
     PS1='${arch_chroot:+($arch_chroot)}\u@\h:\w\$ '
+    #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -150,6 +180,7 @@ unset color_prompt force_color_prompt
 case "$TERM" in
 xterm*|rxvt*)
     PS1="\[\e]0;${arch_chroot:+($arch_chroot)}\u@\h: \w\a\]$PS1"
+    #PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
 *)
     ;;
@@ -188,7 +219,16 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-# Add tab completion for many Bash commands
+# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "$HOME/Workspace/google-cloud-sdk/path.bash.inc" ]; then source "$HOME/Workspace/google-cloud-sdk/path.bash.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$HOME/Workspace/google-cloud-sdk/completion.bash.inc" ]; then source "$HOME/Workspace/google-cloud-sdk/completion.bash.inc"; fi
+
+# Add tab completion for many Bash commands MacOS
 if [[ $(uname -s) == "Darwin" ]]; then
     [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]] && . "$(brew --prefix)/etc/profile.d/bash_completion.sh"
 
@@ -212,15 +252,3 @@ if [[ $(uname -s) == "Darwin" ]]; then
     # 	complete -o default -o nospace -F _git g;
     # fi;
 fi
-
-# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
-[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh rsync;
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/Workspace/google-cloud-sdk/path.bash.inc" ]; then source "$HOME/Workspace/google-cloud-sdk/path.bash.inc"; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f "$HOME/Workspace/google-cloud-sdk/completion.bash.inc" ]; then source "$HOME/Workspace/google-cloud-sdk/completion.bash.inc"; fi
-
-eval "$(rbenv init - bash)"
-eval "$(fzf --bash)"
