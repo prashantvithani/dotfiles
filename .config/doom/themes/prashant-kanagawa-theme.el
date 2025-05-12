@@ -51,37 +51,14 @@ Can be an integer to determine the exact padding."
   "A dark theme inspired by rebelot/kanagawa.nvim and others."
 
   ;; name        default   256           16
-  ((bg         '("#181616" "black"       "black"  ))
-   (fg         '("#DCD7BA" "#DCD7BA"     "brightwhite"  ))
-
-   ;; These are off-color variants of bg/fg, used primarily for `solaire-mode',
-   ;; but can also be useful as a basis for subtle highlights (e.g. for hl-line
-   ;; or region), especially when paired with the `doom-darken', `doom-lighten',
-   ;; and `doom-blend' helper functions.
-   (bg-alt     '("#1D1C19" "black"       "black"        ))
-   (fg-alt     '("#C8C093" "#C8C093"     "white"        ))
-
-   ;; These should represent a spectrum from bg to fg, where base0 is a starker
-   ;; bg and base8 is a starker fg. For example, if bg is light grey and fg is
-   ;; dark grey, base0 should be white and base8 should be black.
-   (base0      '("#191922" "black"       "black"        ))
-   (base1      '("#28282E" "#28282E"     "brightblack"  ))
-   (base2      '("#222129" "#222129"     "brightblack"  ))
-   (base3      '("#26252C" "#26252C"     "brightblack"  ))
-   (base4      '("#37363A" "#37363A"     "brightblack"  ))
-   (base5      '("#464546" "#464546"     "brightblack"  ))
-   (base6      '("#545451" "#545451"     "brightblack"  ))
-   (base7      '("#727169" "#727169"     "brightblack"  ))
-   (base8      '("#BABDB9" "#BABDB9"     "white"        ))
-
-   (comet          '("#54536D" "#54536D" "brightblue"   ))
+  ((comet          '("#54536D" "#54536D" "brightblue"   ))
    (spring-violet1 '("#938AA9" "#938AA9" "violet"       ))
    (spring-violet2 '("#9CABCA" "#717C7C" "violet"       ))
    (oni-violet     '("#957FB8" "#717C7C" "violet"       ))
    (crystal-blue   '("#7E9CD8" "#717C7C" "blue"         ))
    (spring-blue    '("#7FB4CA" "#717C7C" "blue"         ))
    (light-blue     '("#A3D4D5" "#717C7C" "brightblue"   ))
-   (dragon-blue   '("#658594" "#658594" "blue"         ))
+   (dragon-blue    '("#658594" "#658594" "blue"         ))
    (spring-green   '("#98BB6C" "#717C7C" "green"        ))
    (wave-red       '("#E46876" "#E46876" "red"          ))
    (sakura-pink    '("#D27E99" "#D27E99" "pink"         ))
@@ -90,12 +67,14 @@ Can be an integer to determine the exact padding."
    (carp-yellow    '("#E6C384" "#E6C384" "yellow"       ))
    (peach-red      '("#FF5D62" "#FF5D62" "red"          ))
    (surimi-orange  '("#FFA066" "#FFA066" "brightred"    ))
-   (wave-blue-1    '("#223249" "#4e4e4e" "blue"         ))
-   (wave-blue-2    '("#2D4F67" "#585858" "blue"         ))
-   (wave-aqua-1    '("#6A9589" "#6a9589" "blue"         ))
-   (wave-aqua-2    '("#7AA89F" "#717C7C" "blue"         ))
+   (wave-blue1     '("#223249" "#4e4e4e" "blue"         ))
+   (wave-blue2     '("#2D4F67" "#585858" "blue"         ))
+   (wave-aqua1     '("#6A9589" "#6a9589" "blue"         ))
+   (wave-aqua2     '("#7AA89F" "#717C7C" "blue"         ))
    (katana-gray    '("#717C7C" "#717C7C" "grey"         ))
    (fuji-gray      '("#727169" "#717C7C" "grey"         ))
+   (fuji-white     '("#DCD7BA" "#ffffff" "brightwhite"  ))
+   (old-white      '("#C8C093" "#ffffff" "white"        ))
 
    (samurai-red   '("#E82424" "#E82424" "red"          ))
    (ronin-yellow  '("#FF9E3B" "#FF9E3B" "yellow"       ))
@@ -116,11 +95,36 @@ Can be an integer to determine the exact padding."
    (sumi-ink3     '("#363646" "#303030" "black"        ))
    (sumi-ink4     '("#54546D" "#303030" "brightblack"  ))
 
+
+   (bg         sumi-ink1b)
+   (fg         fuji-white)
+
+   ;; These are off-color variants of bg/fg, used primarily for `solaire-mode',
+   ;; but can also be useful as a basis for subtle highlights (e.g. for hl-line
+   ;; or region), especially when paired with the `doom-darken', `doom-lighten',
+   ;; and `doom-blend' helper functions.
+   ;; (bg-alt     '("#1D1C19" "black"       "black"        ))
+   (bg-alt     sumi-ink1)
+   (fg-alt     old-white)
+
+   ;; These should represent a spectrum from bg to fg, where base0 is a starker
+   ;; bg and base8 is a starker fg. For example, if bg is light grey and fg is
+   ;; dark grey, base0 should be white and base8 should be black.
+   (base0      '("#191922" "black"       "black"        ))
+   (base1      '("#28282E" "#28282E"     "brightblack"  ))
+   (base2      '("#222129" "#222129"     "brightblack"  ))
+   (base3      '("#26252C" "#26252C"     "brightblack"  ))
+   (base4      '("#37363A" "#37363A"     "brightblack"  ))
+   (base5      '("#464546" "#464546"     "brightblack"  ))
+   (base6      '("#545451" "#545451"     "brightblack"  ))
+   (base7      '("#727169" "#727169"     "brightblack"  ))
+   (base8      '("#BABDB9" "#BABDB9"     "white"        ))
+
    (grey          base7)
    (red           peach-red)
    (orange        surimi-orange)
    (green         spring-green)
-   (teal          wave-aqua-2)
+   (teal          wave-aqua2)
    (yellow        carp-yellow)
    (blue          spring-blue)
    (dark-blue     crystal-blue)
@@ -175,13 +179,16 @@ Can be an integer to determine the exact padding."
 
 
   ;;;; Base theme face overrides
-  ((default :background sumi-ink1b :foreground fg)
+  (
+   ;; (minibuffer-prompt-end (:foreground autumn-red :background winter-red))
+   ;; (minibuffer-prompt (:foreground carp-yellow :background winter-yellow))
+   (default :background sumi-ink1b :foreground fg)
    (cursor :background (if prashant-kanagawa-red-cursor red fg-alt))
-   (highlight :background highlight :foreground spring-violet2 :distant-foreground base8)
+   ;; (highlight :background comet :foreground spring-violet2)
    ((line-number &override) :foreground grey)
    ((line-number-current-line &override) :foreground fg)
    ;; ((font-lock-keyword-face &override) :foreground red)
-   (font-lock-keyword-face :foreground magenta :weight 'semi-bold)
+   (font-lock-keyword-face :foreground keywords :weight 'semi-bold)
    (font-lock-negation-char-face :foreground red)
    ((font-lock-comment-face &override)
     :background (if prashant-kanagawa-brighter-comments (doom-lighten bg 0.05)))
@@ -197,9 +204,9 @@ Can be an integer to determine the exact padding."
    (mode-line-buffer-id                           :foreground blue :bold t)
 
    ;;;; indent-guides
-   (highlight-indent-guides-character-face :foreground base4)
-   (highlight-indent-guides-top-character-face :foreground base4)
-   (highlight-indent-guides-stack-character-face :foreground base4)
+   (highlight-indent-guides-character-face :foreground base6)
+   (highlight-indent-guides-top-character-face :foreground base6)
+   (highlight-indent-guides-stack-character-face :foreground base6)
    ;;;; evil-snipe
    (evil-snipe-first-match-face :foreground (if prashant-kanagawa-red-cursor red blue) :background bg-alt)
    ;;;; corfu
@@ -230,6 +237,23 @@ Can be an integer to determine the exact padding."
    (doom-modeline-panel                           :inherit 'bold :background boat-yellow2 :foreground sumi-ink2)
    (doom-themes-visual-bell                       :background autumn-red)
    ;; (doom-modeline-buffer-project-root :foreground green :weight 'bold)
+
+   ;; message colors
+   ;; (message-header-name                           (:foreground sumi-ink4))
+   ;; (message-header-other                          (:foreground orange))
+   ;; (message-header-subject                        (:foreground yellow))
+   ;; (message-header-to                             (:foreground fg-alt))
+   ;; (message-header-cc                             (:foreground wave-aqua2))
+   ;; (message-header-xheader                        (:foreground fg-alt))
+   ;; (custom-link                                   (:foreground crystal-blue))
+   ;; (link                                          (:foreground crystal-blue))
+
+   ;; Evil
+   ;; (evil-ex-lazy-highlight                        (:foreground winter-green :background autumn-green :bold t))
+   ;; (evil-ex-substitute-matches                    (:foreground winter-red :background autumn-red :bold t))
+   ;; (evil-ex-substitute-replacement                (:foreground carp-yellow :strike-through nil :inherit 'evil-ex-substitute-matches))
+   ;; (evil-search-highlight-persist-highlight-face  (:background carp-yellow))
+
    ;;;; elscreen
    (elscreen-tab-other-screen-face :background "#353a42" :foreground "#1e2022")
    ;;;; ivy
