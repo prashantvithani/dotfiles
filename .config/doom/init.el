@@ -105,6 +105,7 @@
         +devdocs
         +docsets
         +dictionary)
+       llm               ; when I said you needed friends, I didn't mean...
        (lsp +peek +eglot)              ; eglot has some issue with project
        (magit +forge)             ; a git porcelain for Emacs
        make              ; run make tasks from Emacs

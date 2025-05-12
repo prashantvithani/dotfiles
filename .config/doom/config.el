@@ -457,11 +457,11 @@
                 pomidor-play-sound-file nil))
 
 ;; -------- GPTEL ---------
-(gptel-make-gemini "Gemini"
-  :stream t
-  :key "AIzaSyBTkNzfALhKEtonS5wdie6HNRo2RspS-tM")
-(setq gptel-api-key (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))
-(setq gptel-default-mode 'org-mode)
+(after! gptel
+  (setq gptel-model 'gemini-2.5-pro-exp-03-25
+        gptel-backend (gptel-make-gemini "Gemini"
+                        :stream t
+                        :key (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))))
 
 
 ;;;;;;;;;;;;;;;;; ORG ;;;;;;;;;;;;;;;;;;;;;;

@@ -63,7 +63,6 @@
 (package! puppet-mode)
 (package! kubed)
 (package! breadcrumb)
-(package! gptel)
 (package! treesit-auto)
 (package! scala-ts-mode)
 (package! autothemer)
