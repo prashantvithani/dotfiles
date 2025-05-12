@@ -217,8 +217,8 @@
 ;;     (kbd "C-,") 'evil-snipe-repeat-reverse))
 
 ;;;; RUBY
-(add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-mode) '("\\.rbi\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-ts-mode) '("\\.rbi\\'" . ruby-ts-mode))
 ;; (after! ruby-mode
 ;;   (add-to-list 'hs-special-modes-alist
 ;;                `(ruby-mode
@@ -240,6 +240,7 @@
 (cl-pushnew 'ruby-ts-mode doom-detect-indentation-excluded-modes)
 (add-hook 'ruby-mode-hook
           (lambda ()
+            (cl-pushnew 'ruby-reek flycheck-disabled-checkers)
             (setq tab-width ruby-indent-level)
             (setq-local flycheck-eglot-exclusive nil)))
 ;;;; end
