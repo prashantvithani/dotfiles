@@ -464,6 +464,28 @@
                         :stream t
                         :key (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))))
 
+;; -------- AIDER ---------
+(use-package! aidermacs
+  :defer t
+  :config
+  (setenv "OPENROUTER_API_KEY" "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")
+
+  (setq aidermacks-default-chat-mode 'ask)
+  ;; Default model used for all modes unless overridden
+  (setq aidermacs-default-model "openrouter/google/gemini-2.5-pro")
+
+  ;; Optional: Set specific model for architect reasoning
+  (setq aidermacs-architect-model "openrouter/google/gemini-2.5-pro")
+
+  ;; Optional: Set specific model for code generation
+  (setq aidermacs-editor-model "anthropic/claude-sonnet-4")
+  (setq aidermacs-weak-model "google/gemini-2.5-flash")
+  ;; Use vterm backend (default is comint)
+  ;; (setq aidermacs-backend 'vterm)
+
+  ;; Enable/disable showing diffs after changes (default: t)
+  (setq aidermacs-show-diff-after-change t))
+(map! :leader :desc "SPC o L" :ne "o L" #'aidermacs-transient-menu)
 
 ;;;;;;;;;;;;;;;;; ORG ;;;;;;;;;;;;;;;;;;;;;;
 ;; (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
