@@ -459,10 +459,20 @@
 
 ;; -------- GPTEL ---------
 (after! gptel
-  (setq gptel-model 'gemini-2.5-pro-exp-03-25
-        gptel-backend (gptel-make-gemini "Gemini"
+  (setq gptel-model 'anthropic/claude-sonnet-4
+        ;; gptel-backend (gptel-make-gemini "Gemini"
+        ;;                 :stream t
+        ;;                 :key (auth-source-pick-first-password :host "generativelanguage.googleapis.com")))
+        gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
+                        :host "openrouter.ai"
+                        :endpoint "/api/v1/chat/completions"
                         :stream t
-                        :key (auth-source-pick-first-password :host "generativelanguage.googleapis.com"))))
+                        :key "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"                   ;can be a function that returns the key
+                        :models '(google/gemini-2.5-pro
+                                  anthropic/claude-sonnet-4
+                                  openai/gpt-4o-mini
+                                  openai/o1
+                                  deepseek/deepseek-chat))))
 
 ;; -------- AIDER ---------
 (use-package! aidermacs
