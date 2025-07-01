@@ -48,7 +48,7 @@ Can be an integer to determine the exact padding."
 ;;; Theme definition
 
 (def-doom-theme prashant-kanagawa
-  "A dark theme inspired by rebelot/kanagawa.nvim and others."
+    "A dark theme inspired by rebelot/kanagawa.nvim and others."
 
   ;; name        default   256           16
   ((comet          '("#54536D" "#54536D" "brightblue"   ))
@@ -136,20 +136,20 @@ Can be an integer to determine the exact padding."
    ;; These are the "universal syntax classes" that doom-themes establishes.
    ;; These *must* be included in every doom themes, or your theme will throw an
    ;; error, as they are used in the base theme defined in doom-themes-base.
-   (highlight      comet)
+   (highlight      autumn-green)
    (vertical-bar   (doom-lighten base1 0.1))
    (selection      (doom-darken dark-blue 0.5))
    (builtin        blue)
    (comments       (if prashant-kanagawa-brighter-comments dark-cyan base7))
    (doc-comments   (doom-lighten (if prashant-kanagawa-brighter-comments dark-cyan comet) 0.25))
-   (constants      yellow)
+   (constants      boat-yellow2)
    (functions      dark-blue)
    (keywords       magenta)
    (methods        cyan)
-   (operators      boat-yellow2)
-   (type           teal)
+   (operators      teal)
+   (type           wave-red)
    (strings        green)
-   (variables      wave-red)
+   (variables      (doom-lighten functions 0.4))
    (numbers        sakura-pink)
    (region         `(,(doom-lighten (car bg-alt) 0.15) ,@(doom-lighten (cdr base1) 0.35)))
    (error          samurai-red)
@@ -189,6 +189,7 @@ Can be an integer to determine the exact padding."
    ((line-number-current-line &override) :foreground fg)
    ;; ((font-lock-keyword-face &override) :foreground red)
    (font-lock-keyword-face :foreground keywords :weight 'semi-bold)
+   ((font-lock-number-face &override) :weight 'semi-bold)
    (font-lock-negation-char-face :foreground red)
    ((font-lock-comment-face &override)
     :background (if prashant-kanagawa-brighter-comments (doom-lighten bg 0.05)))

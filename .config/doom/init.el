@@ -58,7 +58,7 @@
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
-       (format +lsp)  ; automated prettiness
+       (format +lsp +onsave)  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        multiple-cursors  ;editing in many places at once
@@ -195,7 +195,7 @@
         +lsp)
        (scala            ; java, but good
         +lsp)
-       ;;(scheme +racket)     ; a fully conniving family of lisps
+       (scheme +guile)     ; a fully conniving family of lisps
        sh                ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.

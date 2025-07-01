@@ -113,11 +113,11 @@
   (add-to-list 'auth-sources "~/.authinfo"))
 
 ;;;; Fonts
-(setq doom-font "Source Code Pro-10"
+(setq doom-font "Iosevka Custom Condensed-10:regular"
       ;; doom-big-font "Hermit-18:medium"
       doom-symbol-font "Noto Color Emoji-10:regular"
       ;; doom-variable-pitch-font "Avenir Next-12:medium"
-      doom-serif-font "Iosevka Custom Condensed-10")
+      doom-serif-font "Iosevka Custom Condensed-10:medium")
 
 ;;;; Custom Settings
 (setq-default ;; line-spacing 1
@@ -128,7 +128,7 @@
 
 ;; Frame Opacity
 ;; (set-frame-parameter nil (if (eq window-system 'pgtk) 'alpha-background 'alpha) 90)
-(doom/set-frame-opacity 97)
+(doom/set-frame-opacity 95)
 
 ;; (after! undo-tree
 ;;   (add-hook 'evil-local-mode-hook #'turn-on-undo-tree-mode))
@@ -154,6 +154,7 @@
 (map! :leader :desc "Find file in project" :ne "." #'projectile-find-file)
 (map! :leader :desc "Find file" :ne ":" #'find-file)
 (map! :leader :desc "Jump to definition another window" :ne "c I" #'+lookup/definition-other-window)
+(map! :leader :desc "Ace Window" :ne "w a" #'ace-select-window)
 (map! :leader :ne "C-M-+" #'font-size-hidpi)
 (map! :leader :ne "C-M--" #'font-size-thinkpad)
 
@@ -172,6 +173,7 @@
 ;; Vterm
 (after! vterm
   (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key)
+  (evil-define-key 'insert vterm-mode-map (kbd "C-c ESC") #'vterm--self-insert)
   (pushnew! vterm-tramp-shells '("ssh" "/bin/bash")))
 
 ;; Consult async settings
@@ -381,7 +383,7 @@
 (after! lsp-mode
   (delete 'lsp-terraform lsp-client-packages))
 
-(setq lsp-disabled-clients '(rubocop-ls rubocop-ls-tramp))
+(setq lsp-disabled-clients '(rubocop-ls rubocop-ls-tramp sorbet-ls))
 ;; (setq lsp-ruby-lsp-use-bundler t)
 
 (after! eglot
