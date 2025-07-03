@@ -40,8 +40,8 @@ determine the exact padding."
     "A dark theme inspired by Iceberg-Dark with improvements."
 
   ;; name        default   256       16
-  ((bg-alt     '("#161821" nil       nil))
-   (bg         '("#0B0E14" nil       nil))  ; Darker background
+  ((bg-alt     '("#0B0E14" nil       nil)) ; Darker background
+   (bg         '("#161821" nil       nil))
    (base0      '("#1B202A" "#191C25" "black"))
    (base1      '("#242832" "#242832" "brightblack"))
    (base2      '("#2C333F" "#2C333F" "brightblack"))
@@ -69,25 +69,25 @@ determine the exact padding."
    (dark-cyan  '("#507681" "#507681" "darkcyan"))
 
    ;; face categories -- required for all themes
-   (highlight      lightblue)
+   (highlight      dark-blue)
    (vertical-bar   (doom-darken base1 0.2))
-   (selection      blue)
+   (selection      dark-cyan)
    (builtin        cyan)
    (comments       (if prashant-iceberg-dark-brighter-comments dark-cyan (doom-lighten base5 0.2)))
-   (doc-comments   (doom-lighten (if prashant-iceberg-dark-brighter-comments dark-cyan base5) 0.25))
+   (doc-comments   (doom-lighten comments 0.25))
    (constants      orange)
    (functions      cyan)
-   (keywords       dark-blue)
+   (keywords       blue)
    (methods        magenta)
    (operators      violet)
    (type           teal)
-   (strings        (doom-lighten green 0.05))
-   (variables      (doom-lighten functions 0.4))
+   (strings        (doom-lighten green 0.1))
+   (variables      (doom-lighten functions 0.3))
    (numbers        red)
    (region         (pcase prashant-iceberg-dark-region-highlight
                      (`frost teal)
                      (`snowstorm base7)
-                     (_ base4)))
+                     (_ base5)))
    (error          red)
    (warning        yellow)
    (success        green)
@@ -124,9 +124,10 @@ determine the exact padding."
   (((region &override) :foreground region-fg)
 
    ((line-number &override) :foreground (doom-lighten 'base5 0.2))
-   ((line-number &override) :background (doom-lighten 'bg 0.05))
+   ((hl-line &override) :background base1)
+   ;; ((line-number &override) :background (doom-lighten 'bg 0.05))
    ((line-number-current-line &override) :foreground base7)
-   ((line-number-current-line &override) :background bg-alt)
+   ;; ((line-number-current-line &override) :background bg-alt)
    ((paren-face-match &override) :foreground red :background base3 :weight 'ultra-bold)
    ((paren-face-mismatch &override) :foreground base3 :background red :weight 'ultra-bold)
    ((vimish-fold-overlay &override) :inherit 'font-lock-comment-face :background base3 :weight 'light)
