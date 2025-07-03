@@ -461,7 +461,7 @@
 
 ;; -------- GPTEL ---------
 (after! gptel
-  (setq gptel-model 'anthropic/claude-sonnet-4
+  (setq gptel-model 'google/gemini-2.5-pro
         ;; gptel-backend (gptel-make-gemini "Gemini"
         ;;                 :stream t
         ;;                 :key (auth-source-pick-first-password :host "generativelanguage.googleapis.com")))
@@ -469,12 +469,25 @@
                         :host "openrouter.ai"
                         :endpoint "/api/v1/chat/completions"
                         :stream t
-                        :key "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"                   ;can be a function that returns the key
+                        :key "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"                   ;can be a function that returns the key
                         :models '(google/gemini-2.5-pro
                                   anthropic/claude-sonnet-4
                                   openai/gpt-4o-mini
                                   openai/o1
                                   deepseek/deepseek-chat))))
+
+;; -------- Claude Code --------
+(use-package! claude-code
+  :defer t
+  :init
+  (map! :map claude-code-command-map
+        :leader
+        (:prefix-map ("o" . "open")
+                     (:prefix ("c" . "claude")
+                      :desc "menu" "m" #'claude-code-transient)))
+  :config
+  (setq claude-code-terminal-backend 'vterm)
+  (claude-code-mode))
 
 ;; -------- AIDER ---------
 (use-package! aidermacs

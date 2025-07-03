@@ -65,6 +65,9 @@
 (package! breadcrumb)
 (package! treesit-auto)
 (package! scala-ts-mode)
-(package! autothemer)
+(package! night-owl-theme)
 
 (package! aidermacs)
+(package! claude-code
+  :recipe (:host github :repo "stevemolitor/claude-code.el" :branch "main"
+           :files ("*.el" (:exclude "images/*"))))
