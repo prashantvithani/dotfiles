@@ -21,6 +21,12 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+;;;; Fonts
+(setq doom-font "Iosevka Custom Condensed-10"
+      ;; doom-big-font "Hermit-18:medium"
+      doom-symbol-font "Noto Color Emoji-10:regular"
+      ;; doom-variable-pitch-font "Avenir Next-12:medium"
+      doom-serif-font "Iosevka Custom Condensed-10:medium")
 
 ;;load custom functions file
 (load "~/.config/doom/custom-functions.el")
@@ -33,7 +39,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'prashant-kanagawa)
+(setq doom-theme 'prashant-tokyo-night-moon)
 (setq doom-kanagawa-brighter-comments t)
 (custom-theme-set-faces! 'spacemacs-dark
   '(iedit-occurrence :foreground "#b1951d" :weight bold :inverse-video t)
@@ -108,17 +114,6 @@
       ;;+vc-gutter-in-remote-files t
       remote-file-name-inhibit-auto-save t)
 
-;; Magit code-review
-(after! code-review
-  (add-to-list 'auth-sources "~/.authinfo"))
-
-;;;; Fonts
-(setq doom-font "Iosevka Custom Condensed-10:regular"
-      ;; doom-big-font "Hermit-18:medium"
-      doom-symbol-font "Noto Color Emoji-10:regular"
-      ;; doom-variable-pitch-font "Avenir Next-12:medium"
-      doom-serif-font "Iosevka Custom Condensed-10:medium")
-
 ;;;; Custom Settings
 (setq-default ;; line-spacing 1
  read-quoted-char-radix 16
@@ -173,7 +168,12 @@
 ;; Vterm
 (after! vterm
   (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key)
-  (evil-define-key 'insert vterm-mode-map (kbd "C-c ESC") #'vterm--self-insert)
+  (evil-define-key '(normal insert) vterm-mode-map (kbd "C-c <escape>") #'vterm--self-insert)
+  (map! :localleader
+        :map vterm-mode-map
+        :ne "<escape>" #'vterm--self-insert
+        :ne "q" #'vterm-send-next-key
+        :ne "C-c" #'vterm--self-insert)
   (pushnew! vterm-tramp-shells '("ssh" "/bin/bash")))
 
 ;; Consult async settings
@@ -219,7 +219,7 @@
 ;;     (kbd "C-,") 'evil-snipe-repeat-reverse))
 
 ;;;; RUBY
-(add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-mode) '("\\.rbi\\'" . ruby-mode))
+;; (add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-mode) '("\\.rbi\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-ts-mode) '("\\.rbi\\'" . ruby-ts-mode))
 ;; (after! ruby-mode
 ;;   (add-to-list 'hs-special-modes-alist
@@ -229,13 +229,13 @@
 ;;                  ,(rx (or "#" "=begin")) ; Comment start
 ;;                  ruby-forward-sexp nil)))
 
-(after! ruby-ts-mode
-  (add-to-list 'hs-special-modes-alist
-               `(ruby-ts-mode
-                 "class\\|d\\(?:ef\\|o\\)\\|module\\|[[{]"
-                 "end\\|[]}]"
-                 "#\\|=begin"
-                 ruby-forward-sexp)))
+;; (after! ruby-ts-mode
+;;   (add-to-list 'hs-special-modes-alist
+;;                `(ruby-ts-mode
+;;                  "class\\|d\\(?:ef\\|o\\)\\|module\\|[[{]"
+;;                  "end\\|[]}]"
+;;                  "#\\|=begin"
+;;                  ruby-forward-sexp)))
 
 ;; (remove-hook 'ruby-mode-hook #'+ruby|init-robe)
 (cl-pushnew 'ruby-mode doom-detect-indentation-excluded-modes)
@@ -253,22 +253,20 @@
     (interactive (list (inf-ruby-console-read-directory 'rails)))
     (let ((inf-ruby-wrapper-command "bin/rvmexec %s")
           (inf-ruby-console-environment "production"))
-      (inf-ruby-console-rails dir))))
+      (inf-ruby-console-rails dir)))
+  (map! :localleader
+        :map inf-ruby-minor-mode-map
+        "c" #'inf-ruby-console-auto
+        :prefix "e"
+        "l" #'ruby-send-line
+        "L" #'ruby-send-line-and-go
+        "b" #'ruby-send-buffer
+        "B" #'ruby-send-buffer-and-go))
 
 ;; ----- ZEUS ----
 (let ((zeus-dir (expand-file-name "zeus" site-lisp-dir)))
   (add-to-list 'load-path zeus-dir))
 (require 'zeus)
-
-;; ----- Robe -----
-(after! robe
-  (map! :localleader
-        :map robe-mode-map
-        :prefix "s"
-        "l" #'ruby-send-line
-        "L" #'ruby-send-line-and-go
-        "b" #'ruby-send-buffer
-        "B" #'ruby-send-buffer-and-go))
 
 ;; ------- FLYCHECK -------
 (setq flycheck-check-syntax-automatically '(save mode-enabled))
@@ -285,6 +283,17 @@
 (after! magit
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+
+;; ------ CODE REVIEW ------
+
+;; Magit code-review
+(after! code-review
+  (add-to-list 'auth-sources "~/.authinfo"))
+
+(add-hook 'code-review-mode-hook
+          (lambda ()
+            ;; include *Code-Review* buffer into current workspace
+            (persp-add-buffer (current-buffer))))
 
 ;;;; Hide-Show
 (add-to-list 'hs-special-modes-alist '(yaml-mode "\\s-*\\_<\\(?:[^:]+\\)\\_>" "" "#" +data-hideshow-forward-sexp nil))
@@ -455,9 +464,25 @@
 
 ;; -------- POMODORO --------
 (use-package pomidor
+  :defer t
   :bind (("<f12>" . pomidor))
   :config (setq pomidor-long-break-seconds (* 30 60)
                 pomidor-play-sound-file nil))
+
+;; -------- BLAMER --------
+(use-package! blamer
+  :bind (("s-i" . blamer-show-posframe-commit-info))
+  :defer 20
+  :custom
+  (blamer-idle-time 1)
+  (blamer-min-offset 70)
+  (blamer-type 'both)
+  :custom-face
+  (blamer-face ((t :foreground "#7a88cf"
+                   :background nil
+                   :italic t)))
+  :config
+  (global-blamer-mode 1))
 
 ;; -------- GPTEL ---------
 (after! gptel
@@ -472,6 +497,7 @@
                         :key "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"                   ;can be a function that returns the key
                         :models '(google/gemini-2.5-pro
                                   anthropic/claude-sonnet-4
+                                  anthropic/claude-opus-4
                                   openai/gpt-4o-mini
                                   openai/o1
                                   deepseek/deepseek-chat))))
@@ -479,6 +505,7 @@
 ;; -------- Claude Code --------
 (use-package! claude-code
   :defer t
+  :bind (("s-c" . claude-code-transient))
   :init
   (map! :map claude-code-command-map
         :leader

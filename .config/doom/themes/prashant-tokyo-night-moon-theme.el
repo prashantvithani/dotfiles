@@ -140,6 +140,7 @@
   ;; --- Extra Faces ------------------------
   (
    (hl-line :background bg-highlight)
+   (solaire-hl-line-face  :inherit 'hl-line :background bg-highlight :extend t)
 
    ((line-number-current-line &override) :foreground base8)
    ((line-number &override) :foreground base0 :background (doom-darken bg 0.025))

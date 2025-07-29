@@ -59,12 +59,15 @@
 (package! dictionary)
 (package! verb)
 (package! pomidor)
-(package! spacemacs-theme)
 (package! puppet-mode)
 (package! kubed)
 (package! breadcrumb)
+(package! blamer)
+
 (package! treesit-auto)
 (package! scala-ts-mode)
+
+(package! spacemacs-theme)
 (package! night-owl-theme)
 
 (package! aidermacs)
