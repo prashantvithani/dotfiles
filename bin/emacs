@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# EMACS="$HOME/Workspace/repos/emacs/nextstep/Emacs.app/Contents/MacOS/Emacs"
+
+if [[ "$EMACS_VERSION" = "30" ]]; then
+    EMACS="$HOME/Workspace/repos/emacs-30/src/emacs"
+else
+    EMACS="$HOME/Workspace/repos/emacs/src/emacs"
+fi
+
+# EMACS="/usr/bin/emacs"
+exec "$EMACS" "$@"
