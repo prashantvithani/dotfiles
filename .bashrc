@@ -20,7 +20,6 @@ if [[ $(uname -s) == "Darwin" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
     ensure_in_path PREFIX "/opt/homebrew/opt/grep/libexec/gnubin"
     ensure_in_path PREFIX "/opt/homebrew/opt/openjdk/bin"
-    export LIBRARY_PATH="$LIBRARY_PATH:/opt/homebrew/lib/gcc/current:/opt/homebrew/opt/gcc/lib/gcc/current/gcc/aarch64-apple-darwin24/14"
 fi
 
 if [ -d $HOME/.config/emacs/bin ]; then
@@ -49,15 +48,27 @@ if [ -d $HOME/.local/share/coursier ]; then
     ensure_in_path SUFFIX "$HOME/.local/share/coursier/bin"
 fi
 
-# Added by `rbenv init` on Fri Sep 27 19:26:54 UTC 2024
-eval "$(/root/.rbenv/bin/rbenv init - --no-rehash bash)"
+if [ -d $HOME/.rbenv/bin ]; then
+    # Added by `rbenv init` on Fri Sep 27 19:26:54 UTC 2024
+    eval "$($HOME/.rbenv/bin/rbenv init - --no-rehash bash)"
+else
+    if type rbenv &>/dev/null
+    then
+        eval "$(rbenv init - --no-rehash bash)"
+    fi
+fi
 
-. "$HOME/.cargo/env"
+if [ -d $HOME/.cargo ]; then
+    . $HOME/.cargo/env
+fi
 
 export RUBY_YJIT_ENABLE=1
 
-eval "$(fzf --bash)"
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+if type fzf &>/dev/null
+then
+    eval "$(fzf --bash)"
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+fi
 
 # EMACS Settings
 export LSP_USE_PLISTS=true
@@ -141,7 +152,10 @@ parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
-source /usr/share/git/completion/git-prompt.sh
+if [ -d /usr/share/git/completion ]
+then
+    source /usr/share/git/completion/git-prompt.sh
+fi
 export GIT_PS1_SHOWDIRTYSTATE=1
 
 # Highlight the user name when logged in as root.
@@ -230,11 +244,18 @@ if [ -f "$HOME/Workspace/google-cloud-sdk/completion.bash.inc" ]; then source "$
 
 # Add tab completion for many Bash commands MacOS
 if [[ $(uname -s) == "Darwin" ]]; then
-    [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]] && . "$(brew --prefix)/etc/profile.d/bash_completion.sh"
-
-    for bcfile in $(brew --prefix)/etc/bash_completion.d/* ; do
-      . $bcfile
-    done
+    if type brew &>/dev/null
+    then
+      HOMEBREW_PREFIX="$(brew --prefix)"
+      if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]
+      then
+        source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+      fi
+      for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*
+      do
+          [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+      done
+    fi
 
     # MACOS settings
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
