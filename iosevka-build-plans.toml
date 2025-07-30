@@ -1,0 +1,30 @@
+[buildPlans.IosevkaCustomCondensed]
+family = "Iosevka Custom Condensed"
+spacing = "normal"
+serifs = "sans"
+noCvSs = true
+exportGlyphNames = true
+
+[buildPlans.IosevkaCustomCondensed.variants.design]
+zero = "long-dotted"
+
+[buildPlans.IosevkaCustomCondensed.widths.Normal]
+shape = 500
+menu = 5
+css = "normal"
+
+[buildPlans.IosevkaCustomCondensedFixed]
+family = "Iosevka Condensed Fixed"
+spacing = "fixed"
+serifs = "sans"
+noCvSs = true
+exportGlyphNames = true
+
+[buildPlans.IosevkaCustomCondensedFixed.variants.design]
+zero = "long-dotted"
+
+[buildPlans.IosevkaCustomCondensedFixed.widths.Normal]
+shape = 500
+menu = 5
+css = "normal"
+
