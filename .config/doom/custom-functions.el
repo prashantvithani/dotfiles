@@ -50,16 +50,7 @@ The return value is the yanked text."
 
 ;; ----- Custom User functions -----
 (defun user/fill-column-indicator-hooks ()
-  (add-hook 'ruby-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'scala-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'c-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'java-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'python-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'go-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'emacs-lisp-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'common-lisp-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  (add-hook 'scheme-mode-hook (lambda () (display-fill-column-indicator-mode t)))
-  )
+  (add-hook 'prog-mode-hook (lambda () (display-fill-column-indicator-mode t))))
 
 (defmacro user/disable-flycheck-eglot-exclusive (modes)
   `(add-hook! ,modes (setq-local flycheck-eglot-exclusive nil)))
@@ -93,7 +84,7 @@ The return value is the yanked text."
 
 (defun font-size-125-hidpi ()
   (interactive)
-  (doom-adjust-font-size 17 t))
+  (doom-adjust-font-size 16 t))
 
 (defun font-size-150-hidpi ()
   (interactive)
@@ -109,3 +100,4 @@ The return value is the yanked text."
             (switch-to-buffer-other-window (current-buffer))
             (goto-char pt)
             (funcall (intern (format "+lookup/%s" fn)) identifier arg)))))
+

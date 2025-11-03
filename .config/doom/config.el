@@ -33,7 +33,7 @@
 ;; (load "~/.doom.d/lsp-tramp-configs.el")
 
 ;; site lisp
-(setq site-lisp-dir (expand-file-name "site-lisp" doom-local-dir))
+(setq site-lisp-dir (expand-file-name "site-lisp" doom-user-dir))
 (add-to-list 'load-path site-lisp-dir)
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -99,7 +99,6 @@
 
 ;;;; Local Leader
 (setq doom-localleader-key ",")
-(setq doom-localleader-alt-key "M-,")
 
 ;; Doom ALT leader key remap to M-S-SPC. M-SPC is used by
 ;; 'Windows Operation Actions'
@@ -123,7 +122,7 @@
 
 ;; Frame Opacity
 ;; (set-frame-parameter nil (if (eq window-system 'pgtk) 'alpha-background 'alpha) 90)
-(doom/set-frame-opacity 95)
+(doom/set-frame-opacity 90 t)
 
 ;; (after! undo-tree
 ;;   (add-hook 'evil-local-mode-hook #'turn-on-undo-tree-mode))
@@ -289,12 +288,14 @@
       "r" 'inf-elixir-send-region
       "b" 'inf-elixir-send-buffer
       "R" 'inf-elixir-reload-module)
+
 ;; ------- FLYCHECK -------
-(setq flycheck-check-syntax-automatically '(save mode-enabled))
-(after! flycheck-posframe
-  (set-face-attribute 'flycheck-posframe-info-face nil :inherit 'success)
-  (set-face-attribute 'flycheck-posframe-warning-face nil :inherit 'warning)
-  (set-face-attribute 'flycheck-posframe-error-face nil :inherit 'error))
+(after! flycheck
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (after! flycheck-posframe
+    (set-face-attribute 'flycheck-posframe-info-face nil :inherit 'success)
+    (set-face-attribute 'flycheck-posframe-warning-face nil :inherit 'warning)
+    (set-face-attribute 'flycheck-posframe-error-face nil :inherit 'error)))
 
 ;; ------ DIFF-HL ------
 ;; (setq diff-hl-disable-on-remote t)
@@ -332,12 +333,14 @@
             (map! :ne "{" #'Info-scroll-down)
             (define-key Info-mode-map (kbd "SPC") 'doom/leader)))
 
-(cl-pushnew "~/info" Info-directory-list)
+(after! info
+  (add-to-list 'Info-directory-list "~/info" ))
 
 ;; NOTE: Raise popup window - Info mode: C-~
 
 ;; ----- VERTICO -----
 (after! vertico
+  (setq vertico-posframe-poshandler #'posframe-poshandler-point-bottom-left-corner)
   (setq vertico-posframe-parameters `((,(if (eq window-system 'pgtk) 'alpha-background 'alpha) . 75))))
 
 ;; ----- CORFU -----
