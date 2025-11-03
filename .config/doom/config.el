@@ -433,10 +433,11 @@
 ;; (setq lsp-ruby-lsp-use-bundler t)
 
 (after! eglot
-  (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp"))
   (add-to-list 'eglot-server-programs
                `((scala-mode scala-ts-mode)
                  . ,(alist-get 'scala-mode eglot-server-programs))))
+
+(user/disable-flycheck-eglot-exclusive (elixir-ts-mode ruby-ts-mode))
 
 (after! lsp-java
   (when (file-remote-p default-directory)

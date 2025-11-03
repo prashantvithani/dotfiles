@@ -61,6 +61,9 @@ The return value is the yanked text."
   (add-hook 'scheme-mode-hook (lambda () (display-fill-column-indicator-mode t)))
   )
 
+(defmacro user/disable-flycheck-eglot-exclusive (modes)
+  `(add-hook! ,modes (setq-local flycheck-eglot-exclusive nil)))
+
 (defun user/dictionary ()
   "All settings related to dictionary"
   ;;;; Dictionary
