@@ -218,9 +218,11 @@
 ;;     (kbd "C-;") 'evil-snipe-repeat
 ;;     (kbd "C-,") 'evil-snipe-repeat-reverse))
 
-;;;; RUBY
+;;;; ------------RUBY
+
 ;; (add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-mode) '("\\.rbi\\'" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-ts-mode) '("\\.rbi\\'" . ruby-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.rbi\\'" . ruby-ts-mode))
 ;; (after! ruby-mode
 ;;   (add-to-list 'hs-special-modes-alist
 ;;                `(ruby-mode
@@ -238,13 +240,11 @@
 ;;                  ruby-forward-sexp)))
 
 ;; (remove-hook 'ruby-mode-hook #'+ruby|init-robe)
-(cl-pushnew 'ruby-mode doom-detect-indentation-excluded-modes)
-(cl-pushnew 'ruby-ts-mode doom-detect-indentation-excluded-modes)
-(add-hook 'ruby-mode-hook
-          (lambda ()
-            (cl-pushnew 'ruby-reek flycheck-disabled-checkers)
-            (setq tab-width ruby-indent-level)
-            (setq-local flycheck-eglot-exclusive nil)))
+(add-to-list '+whitespace-guess-excluded-modes 'ruby-mode)
+(add-to-list '+whitespace-guess-excluded-modes 'ruby-ts-mode)
+(add-hook! (ruby-ts-mode ruby-mode)
+           #'inf-ruby-minor-mode
+           (setq-local flycheck-disabled-checkers '(ruby-reek)))
 ;;;; end
 
 (after! inf-ruby
@@ -345,18 +345,34 @@
 ;;      '(display highlight-indent-guides-prop) (ad-get-arg 0))))
 
 ;; ----- TREESITER -----
-(after! scala-ts-mode
-  (use-package! scala-mode))
-(setq treesit-font-lock-level 4)
-(use-package! treesit-auto
-  :config
-  (global-treesit-auto-mode))
+;; (after! scala-ts-mode
+;;   (use-package! scala-mode))
+;; (setq treesit-font-lock-level 4)
+;; (use-package! treesit-auto
+;;   :config
+;;   (global-treesit-auto-mode))
+
 (defun run-non-ts-hooks ()
   (let ((major-name (symbol-name major-mode)))
     (when (string-match-p ".*-ts-mode" major-name)
       (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-hook")))
       (run-hooks (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-local-vars-hook"))))))
-(add-hook 'prog-mode-hook 'run-non-ts-hooks)
+
+(defun inherit-non-ts-keymap ()
+  (let ((major-name (symbol-name major-mode)))
+    (when (string-match-p ".*-ts-mode" major-name)
+      (let* ((ts-keymap-var-name (intern (concat major-name "-map")))
+             (ts-keymap (if (boundp ts-keymap-var-name)
+                            (symbol-value ts-keymap-var-name)
+                          nil))
+             (non-ts-keymap-var-name (intern (concat (replace-regexp-in-string "-ts" "" major-name) "-map")))
+             (non-ts-keymap (if (boundp non-ts-keymap-var-name)
+                                (symbol-value non-ts-keymap-var-name)
+                              nil)))
+        (if (and ts-keymap non-ts-keymap)
+            (set-keymap-parent ts-keymap non-ts-keymap))))))
+
+(add-hook! 'prog-mode-hook '(inherit-non-ts-keymap))
 
 ;; ----- TRAMP on native-comp Emacs 28 -----
 (after! tramp
