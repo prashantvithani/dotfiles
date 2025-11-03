@@ -122,20 +122,23 @@ determine the exact padding."
 
    (font-lock-comment-face
     :foreground comments
-    :background (if prashant-iceberg-light-comment-bg (doom-darken bg 0.05)))
+    :background (if prashant-iceberg-light-comment-bg (doom-darken bg 0.05))
+    :slant 'italic)
    (font-lock-doc-face
     :inherit 'font-lock-comment-face
     :foreground doc-comments
     :slant 'italic)
 
    ;; Enhanced syntax highlighting
-   (font-lock-keyword-face :foreground keywords :weight 'bold)
-   (font-lock-function-name-face :foreground functions :weight 'semi-bold)
-   (font-lock-variable-name-face :foreground variables)
-   (font-lock-constant-face :foreground constants :weight 'bold)
-   (font-lock-string-face :foreground strings :slant 'italic)
-   (font-lock-type-face :foreground type :weight 'semi-bold)
-   (font-lock-builtin-face :foreground builtin :weight 'semi-bold)
+   (font-lock-negation-char-face :foreground red)
+   (font-lock-keyword-face :foreground keywords :weight 'bold :slant 'italic)
+   (font-lock-number-face :foreground numbers :weight 'bold)
+   (font-lock-function-name-face :foreground functions :weight 'medium)
+   ;; (font-lock-variable-name-face :foreground variables)
+   (font-lock-constant-face :foreground constants :weight 'semi-bold)
+   ;; (font-lock-string-face :foreground strings)
+   (font-lock-type-face :foreground type :weight 'medium)
+   (font-lock-builtin-face :foreground builtin :weight 'bold)
 
    (doom-modeline-bar :background (if -modeline-bright modeline-bg highlight))
 
@@ -156,6 +159,19 @@ determine the exact padding."
     :inherit 'mode-line-inactive
     :background modeline-bg-inactive-l
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive-l)))
+
+   ;; Magit
+   ;; (magit-section-heading :foreground blue)
+   (magit-branch-remote   :foreground orange)
+   (magit-diff-our :foreground (doom-darken red 0.2) :background (doom-lighten red 0.7))
+   (magit-diff-our-highlight :foreground red :background (doom-lighten red 0.5) :weight 'bold)
+   (magit-diff-removed :foreground (doom-darken red 0.2) :background (doom-lighten red 0.7))
+   (magit-diff-removed-highlight :foreground red :background (doom-lighten red 0.5) :weight 'bold)
+
+   ;;; Doom Dashboard
+   (doom-dashboard-banner :foreground comments :slant 'normal)
+   (doom-dashboard-loaded :foreground comments :slant 'normal)
+   (doom-dashboard-menu-title :foreground magenta :weight 'bold :slant 'normal)
 
    ;; --- major-mode faces -------------------
    ;; css-mode / scss-mode

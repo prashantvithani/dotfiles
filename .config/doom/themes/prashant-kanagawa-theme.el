@@ -187,13 +187,26 @@ Can be an integer to determine the exact padding."
    ;; (highlight :background comet :foreground spring-violet2)
    ((line-number &override) :foreground grey)
    ((line-number-current-line &override) :foreground fg)
-   ;; ((font-lock-keyword-face &override) :foreground red)
-   (font-lock-keyword-face :foreground keywords :weight 'semi-bold)
-   ((font-lock-number-face &override) :weight 'semi-bold)
+
+   (font-lock-comment-face
+    :foreground comments
+    :background (if prashant-kanagawa-brighter-comments (doom-lighten bg 0.05) 'unspecified)
+    :slant 'italic)
+   (font-lock-doc-face
+    :inherit 'font-lock-comment-face
+    :foreground doc-comments)
    (font-lock-negation-char-face :foreground red)
-   ((font-lock-comment-face &override)
-    :background (if prashant-kanagawa-brighter-comments (doom-lighten bg 0.05)))
+   (font-lock-keyword-face :foreground keywords :weight 'bold :slant 'italic)
+   (font-lock-number-face :foreground numbers :weight 'bold)
+   (font-lock-function-name-face :foreground functions :weight 'medium)
+   ;; (font-lock-variable-name-face :foreground variables)
+   (font-lock-constant-face :foreground constants :weight 'semi-bold)
+   ;; (font-lock-string-face :foreground strings)
+   (font-lock-type-face :foreground type :weight 'medium)
+   (font-lock-builtin-face :foreground builtin :weight 'bold)
+
    (elisp-shorthand-font-lock-face :foreground fg)
+
    (mode-line
     :background modeline-bg :foreground modeline-fg
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg)))
@@ -237,6 +250,12 @@ Can be an integer to determine the exact padding."
    (doom-modeline-panel                           :inherit 'bold :background boat-yellow2 :foreground sumi-ink2)
    (doom-themes-visual-bell                       :background autumn-red)
    ;; (doom-modeline-buffer-project-root :foreground green :weight 'bold)
+
+   ;; Doom Dashboard
+   (doom-dashboard-banner :foreground comments :slant 'normal)
+   (doom-dashboard-loaded :foreground comments :slant 'normal)
+   (doom-dashboard-menu-title :foreground keywords :weight 'semi-bold :slant 'normal)
+
 
    ;; message colors
    ;; (message-header-name                           (:foreground sumi-ink4))

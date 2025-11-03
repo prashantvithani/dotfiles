@@ -152,9 +152,15 @@
    (font-lock-doc-face
     :inherit 'font-lock-comment-face
     :foreground doc-comments)
-   (font-lock-keyword-face :foreground keywords :slant 'italic :weight 'semi-bold)
-   (font-lock-number-face :foreground numbers :weight 'semi-bold)
    (font-lock-negation-char-face :foreground red)
+   (font-lock-keyword-face :foreground keywords :weight 'bold :slant 'italic)
+   (font-lock-number-face :foreground numbers :weight 'bold)
+   (font-lock-function-name-face :foreground functions :weight 'medium)
+   ;; (font-lock-variable-name-face :foreground variables)
+   (font-lock-constant-face :foreground constants :weight 'semi-bold)
+   ;; (font-lock-string-face :foreground strings)
+   (font-lock-type-face :foreground type :weight 'medium)
+   (font-lock-builtin-face :foreground builtin :weight 'bold)
 
    ;;; Doom Modeline
    (doom-modeline-buffer-path       :foreground blue :weight 'bold)
@@ -176,7 +182,7 @@
    ;;; Doom Dashboard
    (doom-dashboard-banner :foreground comments :slant 'normal)
    (doom-dashboard-loaded :foreground comments :slant 'normal)
-   (doom-dashboard-menu-title :foreground magenta :slant 'normal)
+   (doom-dashboard-menu-title :foreground keywords :weight 'semi-bold :slant 'normal)
 
    ;;; Indentation
    (whitespace-indentation :background bg)
