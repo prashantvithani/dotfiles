@@ -268,6 +268,27 @@
   (add-to-list 'load-path zeus-dir))
 (require 'zeus)
 
+;; -------- SCALA -------
+(after! scala-ts-mode
+  (map! :localleader
+        :map scala-ts-mode-map
+        :prefix "s"
+        "t" #'sbt-do-test
+        "c" #'sbt-do-compile
+        "C" #'sbt-command))
+
+;; --------- ELIXIR ----------
+(add-to-list 'exec-path "/root/.local/bin/elixir_ls")
+(map! :after elixir-ts-mode
+      :localleader
+      :map elixir-mode-map
+      :prefix ("i" . "inf-elixir")
+      "i" 'inf-elixir
+      "p" 'inf-elixir-project
+      "l" 'inf-elixir-send-line
+      "r" 'inf-elixir-send-region
+      "b" 'inf-elixir-send-buffer
+      "R" 'inf-elixir-reload-module)
 ;; ------- FLYCHECK -------
 (setq flycheck-check-syntax-automatically '(save mode-enabled))
 (after! flycheck-posframe
@@ -702,10 +723,16 @@
 
 ;;;;; VERB ;;;;;
 (with-eval-after-load 'org
-  (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+  )
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((verb . t)))
+
+;; ------ DUCKDB -----
+(use-package! ob-duckdb)
+(after! org
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               (append org-babel-load-languages '((duckdb . t)))))
 ;;;;;;;;;;;;;;;;; ORG END ;;;;;;;;;;;;;;;;;;;;;;
 
 ;; (after! Info-mode

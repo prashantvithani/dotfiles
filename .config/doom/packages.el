@@ -64,8 +64,7 @@
 (package! breadcrumb)
 (package! blamer)
 
-(package! treesit-auto)
-(package! scala-ts-mode)
+(package! inf-elixir)
 
 (package! spacemacs-theme)
 (package! night-owl-theme)
@@ -74,3 +73,8 @@
 (package! claude-code
   :recipe (:host github :repo "stevemolitor/claude-code.el" :branch "main"
            :files ("*.el" (:exclude "images/*"))))
+
+(package! ob-duckdb
+  :recipe (:host github
+           :repo "gggion/ob-duckdb"
+           :files ("*.el")))
