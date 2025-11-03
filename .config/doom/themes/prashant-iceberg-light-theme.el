@@ -69,6 +69,8 @@ determine the exact padding."
    (cyan       '("#3E999F" "#3E999F" "brightcyan"))    ; Deeper cyan
    (dark-cyan  '("#2C7088" "#2C7088" "cyan"))          ; Darker cyan for contrast
 
+   (dark-green (doom-darken green 0.4))
+
    ;; face categories -- required for all themes
    (highlight      violet)
    (vertical-bar   (doom-lighten base2 0.1))
@@ -82,15 +84,15 @@ determine the exact padding."
    (methods        cyan)
    (operators      dark-blue)
    (type           teal)
-   (strings        (doom-darken green 0.4))
+   (strings        (doom-darken dark-green 0.2))
    (variables      (doom-darken functions 0.1))
    (numbers        orange)
    (region         (doom-lighten base2 0.2))
    (error          red)
    (warning        yellow)
-   (success        green)
+   (success        dark-green)
    (vc-modified    orange)
-   (vc-added       green)
+   (vc-added       dark-green)
    (vc-deleted     red)
 
    ;; Custom categories

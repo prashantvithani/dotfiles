@@ -1,4 +1,4 @@
-;;; doom-tokyo-night-light-theme.el --- inspired by VSCode's Tokyo Night theme -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; prashant-tokyo-night-light-theme.el --- inspired by VSCode's Tokyo Night theme -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;
 ;; Added: August 17, 2024
 ;; Author: Foster Hangdaan <https://code.fosterhangdaan.com/foster>
@@ -97,10 +97,10 @@ storm
    ;; face categories -- required for all themes
    (highlight      cyan)
    (vertical-bar   (doom-lighten bg 0.05))
-   (selection      base5)
+   (selection      grey)
    (builtin        red)
    (comments       (if prashant-tokyo-night-light-brighter-comments (doom-lighten "#6c6e75" 0.25) "#6c6e75"))
-   (doc-comments   (doom-lighten (if prashant-tokyo-night-light-brighter-comments (doom-lighten "#6c6e75" 0.25) "#6c6e75") 0.25))
+   (doc-comments   (doom-darken (if prashant-tokyo-night-light-brighter-comments (doom-lighten "#6c6e75" 0.25) "#6c6e75") 0.5))
    (constants      orange)
    (functions      blue)
    (keywords       magenta)
@@ -231,8 +231,8 @@ storm
    ;;; Magit
    (magit-section-heading :foreground blue)
    (magit-branch-remote   :foreground orange)
-   (magit-diff-our :foreground (doom-darken red 0.2) :background (doom-darken red 0.7))
-   (magit-diff-our-highlight :foreground red :background (doom-darken red 0.5) :weight 'bold)
+   (magit-diff-our :foreground (doom-darken red 0.2) :background (doom-lighten red 0.7))
+   (magit-diff-our-highlight :foreground red :background (doom-lighten red 0.5) :weight 'bold)
    (magit-diff-removed :foreground (doom-darken red 0.2) :background (doom-lighten red 0.7))
    (magit-diff-removed-highlight :foreground red :background (doom-lighten red 0.5) :weight 'bold)
 
