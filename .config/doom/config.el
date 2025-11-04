@@ -520,7 +520,7 @@
   (blamer-type 'both)
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
-                   :background nil
+                   :background unspecified
                    :italic t)))
   :config
   (global-blamer-mode 1))
