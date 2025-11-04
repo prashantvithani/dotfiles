@@ -7,7 +7,6 @@
 ;;
 ;;; Commentary:
 ;;; Code:
-storm
 (require 'doom-themes)
 
 
@@ -64,35 +63,35 @@ storm
   ;; "#e6e7ed" "#e6e7ed" => Editor background
 
   ;; name        default   256       16
-  ((bg         '("#e6e7ed" nil       nil            ))
-   (bg-alt     '("#d4d6e0" nil       nil            ))
-   (base0      '("#707280" "#707280" "white"        ))
-   (base1      '("#797b8a" "#797b8a" "brightwhite"  ))
-   (base2      '("#838593" "#838593" "brightwhite"  ))
-   (base3      '("#8d8f9c" "#8d8f9c" "brightwhite"  ))
-   (base4      '("#989aa5" "#989aa5" "brightwhite"  ))
-   (base5      '("#a2a4ae" "#a2a4ae" "brightwhite"  ))
-   (base6      '("#acaeb7" "#acaeb7" "brightwhite"  ))
-   (base7      '("#b7b8c0" "#b7b8c0" "brightwhite"  ))
-   (base8      '("#c1c2c9" "#c1c2c9" "brightwhite"  ))
-   (fg-alt     '("#475178" "#475178" "brightblack"  ))
-   (fg         '("#343b58" "#343b58" "black"        ))
+  ((bg         '("#e6e7ed" nil       nil))
+   (bg-alt     '("#d4d6e0" nil       nil))
+   (base0      '("#707280" "#707280" "white"))
+   (base1      '("#797b8a" "#797b8a" "brightwhite"))
+   (base2      '("#838593" "#838593" "brightwhite"))
+   (base3      '("#8d8f9c" "#8d8f9c" "brightwhite"))
+   (base4      '("#989aa5" "#989aa5" "brightwhite"))
+   (base5      '("#a2a4ae" "#a2a4ae" "brightwhite"))
+   (base6      '("#acaeb7" "#acaeb7" "brightwhite"))
+   (base7      '("#b7b8c0" "#b7b8c0" "brightwhite"))
+   (base8      '("#c1c2c9" "#c1c2c9" "brightwhite"))
+   (fg-alt     '("#475178" "#475178" "brightblack"))
+   (fg         '("#343b58" "#343b58" "black"))
 
    (grey       base4)
-   (red        '("#8c4351" "#8c4351" "red"          ))
-   (orange     '("#965027" "#965027" "brightred"    ))
-   (green      '("#33635c" "#33635c" "green"        ))
-   (teal       '("#006c86" "#006c86" "brightgreen"  ))
-   (yellow     '("#8f5e15" "#8f5e15" "yellow"       ))
-   (blue       '("#2959aa" "#2959aa" "brightblue"   ))
-   (dark-blue  '("#2959aa" "#2959aa" "blue"         ))
-   (magenta    '("#5a3e8e" "#5a3e8e" "magenta"      ))
+   (red        '("#8c4351" "#8c4351" "red"))
+   (orange     '("#965027" "#965027" "brightred"))
+   (green      '("#33635c" "#33635c" "green"))
+   (teal       '("#006c86" "#006c86" "brightgreen"))
+   (yellow     '("#8f5e15" "#8f5e15" "yellow"))
+   (blue       '("#2959aa" "#2959aa" "brightblue"))
+   (dark-blue  '("#2959aa" "#2959aa" "blue"))
+   (magenta    '("#5a3e8e" "#5a3e8e" "magenta"))
    (violet     '("#40434f" "#40434f" "brightmagenta"))
-   (cyan       '("#0f4b6e" "#0f4b6e" "brightcyan"   ))
-   (dark-cyan  '("#0f4b6e" "#0f4b6e" "cyan"         ))
+   (cyan       '("#0f4b6e" "#0f4b6e" "brightcyan"))
+   (dark-cyan  '("#0f4b6e" "#0f4b6e" "cyan"))
                                         ; Additional custom colors
-   (dark-green '("#385f0d" "#385f0d" "green"        ))
-   (brown      '("#634f30" "#634f30" "yellow"       ))
+   (dark-green '("#385f0d" "#385f0d" "green"))
+   (brown      '("#634f30" "#634f30" "yellow"))
 
    ;; face categories -- required for all themes
    (highlight      cyan)
@@ -293,11 +292,11 @@ storm
    (web-mode-html-attr-equal-face :foreground operators)
    (web-mode-html-attr-name-face :foreground magenta)
    (web-mode-html-tag-bracket-face :foreground (doom-darken red 0.3))
-   (web-mode-html-tag-face :foreground red))
+   (web-mode-html-tag-face :foreground red)))
 
 
-  ;; --- extra variables ---------------------
-  ;; ()
-  )
+;; --- extra variables ---------------------
+;; ()
+
 
 ;;; prashant-tokyo-night-light-theme.el ends here
