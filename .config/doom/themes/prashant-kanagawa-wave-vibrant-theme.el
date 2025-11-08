@@ -1,4 +1,4 @@
-;;; prashant-kanagawa-wave-custom-theme.el --- inspired by rebelot/kanagawa.nvim (wave) -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; prashant-kanagawa-wave-vibrant-theme.el --- inspired by rebelot/kanagawa.nvim (wave) -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;
 ;; Added: September 30 2025
 ;; Author: Anskrevy <https://github.com/Anskrevy
@@ -20,40 +20,40 @@
 ;;
 ;;; Variables
 
-(defgroup prashant-kanagawa-wave-custom-theme nil
-  "Options for the `prashant-kanagawa-wave-custom' theme."
+(defgroup prashant-kanagawa-wave-vibrant-theme nil
+  "Options for the `prashant-kanagawa-wave-vibrant' theme."
   :group 'doom-themes)
 
-(defcustom prashant-kanagawa-wave-custom-brighter-modeline nil
+(defcustom prashant-kanagawa-wave-vibrant-brighter-modeline nil
   "If non-nil, more vivid colors will be used to style the mode-line."
-  :group 'prashant-kanagawa-wave-custom-theme
+  :group 'prashant-kanagawa-wave-vibrant-theme
   :type 'boolean)
 
-(defcustom prashant-kanagawa-wave-custom-brighter-comments nil
+(defcustom prashant-kanagawa-wave-vibrant-brighter-comments nil
   "If non-nil, comments will be highlighted in more vivid colors."
-  :group 'prashant-kanagawa-wave-custom-theme
+  :group 'prashant-kanagawa-wave-vibrant-theme
   :type 'boolean)
 
-(defcustom prashant-kanagawa-wave-custom-padded-modeline doom-themes-padded-modeline
+(defcustom prashant-kanagawa-wave-vibrant-padded-modeline doom-themes-padded-modeline
   "If non-nil, adds a 4px padding to the mode-line.
 Can be an integer to determine the exact padding."
-  :group 'prashant-kanagawa-wave-custom-theme
+  :group 'prashant-kanagawa-wave-vibrant-theme
   :type '(choice integer boolean))
 
-(defcustom prashant-kanagawa-wave-custom-red-cursor nil
+(defcustom prashant-kanagawa-wave-vibrant-red-cursor nil
   "If non-nil, cursor will be red."
-  :group 'prashant-kanagawa-wave-custom-theme
+  :group 'prashant-kanagawa-wave-vibrant-theme
   :type 'boolean)
 
-(defcustom prashant-kanagawa-wave-custom-match-org-blocks nil
+(defcustom prashant-kanagawa-wave-vibrant-match-org-blocks nil
   "If non-nil, org block delimiters use the same colors."
-  :group 'prashant-kanagawa-wave-custom-theme
+  :group 'prashant-kanagawa-wave-vibrant-theme
   :type 'boolean)
 
 ;;
 ;;; Theme definition
 
-(def-doom-theme prashant-kanagawa-wave-custom
+(def-doom-theme prashant-kanagawa-wave-vibrant
     "A dark theme inspired by Kanagawa - the colors of the Great Wave."
 
   ;; name        default   256       16
@@ -122,8 +122,8 @@ Can be an integer to determine the exact padding."
    (vertical-bar   base3)
    (selection      wave-blue-1)
    (builtin        sakura-pink)
-   (comments       (if prashant-kanagawa-wave-custom-brighter-comments wave-aqua-1 base6))
-   (doc-comments   (if prashant-kanagawa-wave-custom-brighter-comments wave-aqua-1 comet))
+   (comments       (if prashant-kanagawa-wave-vibrant-brighter-comments wave-aqua-1 base6))
+   (doc-comments   (if prashant-kanagawa-wave-vibrant-brighter-comments wave-aqua-1 comet))
    (constants      cyan)
    (functions      blue)
    (keywords       magenta)
@@ -144,26 +144,26 @@ Can be an integer to determine the exact padding."
    ;; Mode-line configuration
    (modeline-fg              fg)
    (modeline-fg-alt          base5)
-   (modeline-bg              (if prashant-kanagawa-wave-custom-brighter-modeline
+   (modeline-bg              (if prashant-kanagawa-wave-vibrant-brighter-modeline
                                  (doom-darken dark-blue 0.45)
                                base0))
-   (modeline-bg-alt          (if prashant-kanagawa-wave-custom-brighter-modeline
+   (modeline-bg-alt          (if prashant-kanagawa-wave-vibrant-brighter-modeline
                                  (doom-darken dark-blue 0.475)
                                (doom-darken base0 0.1)))
    (modeline-bg-inactive     base1)
    (modeline-bg-inactive-alt (doom-darken base1 0.1))
 
    (-modeline-pad
-    (when prashant-kanagawa-wave-custom-padded-modeline
-      (if (integerp prashant-kanagawa-wave-custom-padded-modeline)
-          prashant-kanagawa-wave-custom-padded-modeline
+    (when prashant-kanagawa-wave-vibrant-padded-modeline
+      (if (integerp prashant-kanagawa-wave-vibrant-padded-modeline)
+          prashant-kanagawa-wave-vibrant-padded-modeline
         4))))
 
   ;;;; Base theme face overrides
   (
    ;; Basic faces
    (default :background bg :foreground fg)
-   (cursor :background (if prashant-kanagawa-wave-custom-red-cursor red blue) :foreground base0)
+   (cursor :background (if prashant-kanagawa-wave-vibrant-red-cursor red blue) :foreground base0)
    (hl-line :background base3)
    (region :background region :distant-foreground fg)
    ((line-number &override) :foreground base5 :background base0)
@@ -173,7 +173,7 @@ Can be an integer to determine the exact padding."
 
    ;; Font lock
    ((font-lock-comment-face &override) :foreground comments :italic t
-    :background (if prashant-kanagawa-wave-custom-brighter-comments (doom-lighten bg 0.05)))
+    :background (if prashant-kanagawa-wave-vibrant-brighter-comments (doom-lighten bg 0.05)))
    ((font-lock-comment-delimiter-face &override) :foreground comments :italic t)
    ((font-lock-doc-face &override) :foreground doc-comments :italic t)
    ((font-lock-constant-face &override) :weight 'semi-bold)
@@ -194,7 +194,7 @@ Can be an integer to determine the exact padding."
    (mode-line-inactive
     :background modeline-bg-inactive :foreground modeline-fg-alt
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive)))
-   (mode-line-emphasis :foreground (if prashant-kanagawa-wave-custom-brighter-modeline base8 highlight))
+   (mode-line-emphasis :foreground (if prashant-kanagawa-wave-vibrant-brighter-modeline base8 highlight))
    (mode-line-buffer-id :foreground teal :bold t)
    (mode-line-highlight :foreground boat-yellow-2)
 
@@ -255,7 +255,7 @@ Can be an integer to determine the exact padding."
    (doom-dashboard-menu-title :foreground keywords :weight 'semi-bold :slant 'normal)
 
    ;;;; doom-modeline
-   (doom-modeline-bar :background (if prashant-kanagawa-wave-custom-brighter-modeline modeline-bg spring-violet-1) :bold t)
+   (doom-modeline-bar :background (if prashant-kanagawa-wave-vibrant-brighter-modeline modeline-bg spring-violet-1) :bold t)
    (doom-modeline-buffer-file :inherit 'mode-line-buffer-id :weight 'bold)
    (doom-modeline-buffer-path :inherit 'mode-line-emphasis :weight 'bold :foreground teal)
    (doom-modeline-buffer-project-root :foreground orange :weight 'bold)
@@ -352,11 +352,11 @@ Can be an integer to determine the exact padding."
    ;;;; org-mode
    (org-block :background base0 :foreground base5)
    (org-block-begin-line
-    :background (if prashant-kanagawa-wave-custom-match-org-blocks base0 winter-blue)
-    :foreground (if prashant-kanagawa-wave-custom-match-org-blocks base5 blue))
+    :background (if prashant-kanagawa-wave-vibrant-match-org-blocks base0 winter-blue)
+    :foreground (if prashant-kanagawa-wave-vibrant-match-org-blocks base5 blue))
    (org-block-end-line
-    :background (if prashant-kanagawa-wave-custom-match-org-blocks base0 winter-red)
-    :foreground (if prashant-kanagawa-wave-custom-match-org-blocks base5 peach-red))
+    :background (if prashant-kanagawa-wave-vibrant-match-org-blocks base0 winter-red)
+    :foreground (if prashant-kanagawa-wave-vibrant-match-org-blocks base5 peach-red))
    (org-code :background base0 :foreground green)
    (org-meta-line :background winter-green :foreground green)
    (org-level-1 :foreground peach-red :height 1.3 :bold t)
@@ -439,4 +439,4 @@ Can be an integer to determine the exact padding."
   ;;;; Base theme variable overrides
   ())
 
-;;; prashant-kanagawa-wave-custom-theme.el ends here
+;;; prashant-kanagawa-wave-vibrant-theme.el ends here

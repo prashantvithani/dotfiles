@@ -1,4 +1,4 @@
-;;; prashant-kanagawa-lotus-custom-theme.el --- inspired by rebelot/kanagawa.nvim (lotus) -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; prashant-kanagawa-lotus-vibrant-theme.el --- inspired by rebelot/kanagawa.nvim (lotus) -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;
 ;; Added: September 30 2025
 ;; Author: Anskrevy <https://github.com/Anskrevy
@@ -17,35 +17,35 @@
 ;;
 ;;; Variables
 
-(defgroup prashant-kanagawa-lotus-custom-theme nil
-  "Options for the `prashant-kanagawa-lotus-custom' theme."
+(defgroup prashant-kanagawa-lotus-vibrant-theme nil
+  "Options for the `prashant-kanagawa-lotus-vibrant' theme."
   :group 'doom-themes)
 
-(defcustom prashant-kanagawa-lotus-custom-brighter-modeline nil
+(defcustom prashant-kanagawa-lotus-vibrant-brighter-modeline nil
   "If non-nil, more vivid colors will be used to style the mode-line."
-  :group 'prashant-kanagawa-lotus-custom-theme
+  :group 'prashant-kanagawa-lotus-vibrant-theme
   :type 'boolean)
 
-(defcustom prashant-kanagawa-lotus-custom-brighter-comments nil
+(defcustom prashant-kanagawa-lotus-vibrant-brighter-comments nil
   "If non-nil, comments will be highlighted in more vivid colors."
-  :group 'prashant-kanagawa-lotus-custom-theme
+  :group 'prashant-kanagawa-lotus-vibrant-theme
   :type 'boolean)
 
-(defcustom prashant-kanagawa-lotus-custom-padded-modeline doom-themes-padded-modeline
+(defcustom prashant-kanagawa-lotus-vibrant-padded-modeline doom-themes-padded-modeline
   "If non-nil, adds a 4px padding to the mode-line.
 Can be an integer to determine the exact padding."
-  :group 'prashant-kanagawa-lotus-custom-theme
+  :group 'prashant-kanagawa-lotus-vibrant-theme
   :type '(choice integer boolean))
 
-(defcustom prashant-kanagawa-lotus-custom-match-org-blocks nil
+(defcustom prashant-kanagawa-lotus-vibrant-match-org-blocks nil
   "If non-nil, org block delimiters use the same colors."
-  :group 'prashant-kanagawa-lotus-custom-theme
+  :group 'prashant-kanagawa-lotus-vibrant-theme
   :type 'boolean)
 
 ;;
 ;;; Theme definition
 
-(def-doom-theme prashant-kanagawa-lotus-custom
+(def-doom-theme prashant-kanagawa-lotus-vibrant
     "A light theme with serene, warm tones inspired by Kanagawa Lotus."
 
   ;; name        default   256       16
@@ -122,8 +122,8 @@ Can be an integer to determine the exact padding."
    (vertical-bar   base3)
    (selection      lotus-violet3)
    (builtin        lotus-pink)
-   (comments       (if prashant-kanagawa-lotus-custom-brighter-comments dark-cyan lotus-gray3))
-   (doc-comments   (if prashant-kanagawa-lotus-custom-brighter-comments dark-cyan fg-alt))
+   (comments       (if prashant-kanagawa-lotus-vibrant-brighter-comments dark-cyan lotus-gray3))
+   (doc-comments   (if prashant-kanagawa-lotus-vibrant-brighter-comments dark-cyan fg-alt))
    (constants      dark-cyan)
    (functions      lotus-blue5)
    (keywords       magenta)
@@ -144,19 +144,19 @@ Can be an integer to determine the exact padding."
    ;; Mode-line configuration
    (modeline-fg              fg)
    (modeline-fg-alt          base5)
-   (modeline-bg              (if prashant-kanagawa-lotus-custom-brighter-modeline
+   (modeline-bg              (if prashant-kanagawa-lotus-vibrant-brighter-modeline
                                  (doom-lighten dark-blue 0.4)
                                base1))
-   (modeline-bg-alt          (if prashant-kanagawa-lotus-custom-brighter-modeline
+   (modeline-bg-alt          (if prashant-kanagawa-lotus-vibrant-brighter-modeline
                                  (doom-lighten dark-blue 0.45)
                                (doom-darken base1 0.05)))
    (modeline-bg-inactive     base1)
    (modeline-bg-inactive-alt (doom-darken base1 0.05))
 
    (-modeline-pad
-    (when prashant-kanagawa-lotus-custom-padded-modeline
-      (if (integerp prashant-kanagawa-lotus-custom-padded-modeline)
-          prashant-kanagawa-lotus-custom-padded-modeline
+    (when prashant-kanagawa-lotus-vibrant-padded-modeline
+      (if (integerp prashant-kanagawa-lotus-vibrant-padded-modeline)
+          prashant-kanagawa-lotus-vibrant-padded-modeline
         4))))
 
   ;;;; Base theme face overrides
@@ -194,7 +194,7 @@ Can be an integer to determine the exact padding."
    (mode-line-inactive
     :background modeline-bg-inactive :foreground modeline-fg-alt
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive)))
-   (mode-line-emphasis :foreground (if prashant-kanagawa-lotus-custom-brighter-modeline base8 highlight))
+   (mode-line-emphasis :foreground (if prashant-kanagawa-lotus-vibrant-brighter-modeline base8 highlight))
    (mode-line-buffer-id :foreground teal :bold t)
    (mode-line-highlight :foreground yellow)
 
@@ -255,7 +255,7 @@ Can be an integer to determine the exact padding."
    (doom-dashboard-menu-title :foreground keywords :weight 'semi-bold :slant 'normal)
 
 ;;;; doom-modeline
-   (doom-modeline-bar :background (if prashant-kanagawa-lotus-custom-brighter-modeline modeline-bg violet) :bold t)
+   (doom-modeline-bar :background (if prashant-kanagawa-lotus-vibrant-brighter-modeline modeline-bg violet) :bold t)
    (doom-modeline-buffer-file :inherit 'mode-line-buffer-id :weight 'bold)
    (doom-modeline-buffer-path :inherit 'mode-line-emphasis :weight 'bold :foreground teal)
    (doom-modeline-buffer-project-root :foreground orange :weight 'bold)
@@ -352,11 +352,11 @@ Can be an integer to determine the exact padding."
 ;;;; org-mode
    (org-block :background base0 :foreground base5)
    (org-block-begin-line
-    :background (if prashant-kanagawa-lotus-custom-match-org-blocks base0 lotus-blue2)
-    :foreground (if prashant-kanagawa-lotus-custom-match-org-blocks base5 dark-blue))
+    :background (if prashant-kanagawa-lotus-vibrant-match-org-blocks base0 lotus-blue2)
+    :foreground (if prashant-kanagawa-lotus-vibrant-match-org-blocks base5 dark-blue))
    (org-block-end-line
-    :background (if prashant-kanagawa-lotus-custom-match-org-blocks base0 lotus-red4)
-    :foreground (if prashant-kanagawa-lotus-custom-match-org-blocks base5 red))
+    :background (if prashant-kanagawa-lotus-vibrant-match-org-blocks base0 lotus-red4)
+    :foreground (if prashant-kanagawa-lotus-vibrant-match-org-blocks base5 red))
    (org-code :background base0 :foreground green)
    (org-meta-line :background lotus-green3 :foreground green) ; Light green background
    (org-level-1 :foreground red :height 1.3 :bold t)
@@ -439,4 +439,4 @@ Can be an integer to determine the exact padding."
   ;;;; Base theme variable overrides
   ())
 
-;;; prashant-kanagawa-lotus-custom-theme.el ends here
+;;; prashant-kanagawa-lotus-vibrant-theme.el ends here
