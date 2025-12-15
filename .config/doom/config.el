@@ -39,7 +39,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'prashant-tokyo-night-moon)
+(setq doom-theme 'prashant-kanagawa-wave-vibrant)
 (setq doom-kanagawa-brighter-comments t)
 (custom-theme-set-faces! 'spacemacs-dark
   '(iedit-occurrence :foreground "#b1951d" :weight bold :inverse-video t)
@@ -98,12 +98,12 @@
 ;; (global-auto-revert-mode t)
 
 ;;;; Local Leader
-(setq doom-localleader-key ",")
+(setq doom-localleader-key "SPC m")
 
 ;; Doom ALT leader key remap to M-S-SPC. M-SPC is used by
 ;; 'Windows Operation Actions'
-(setq doom-leader-alt-key "M-S-SPC")
-(setq doom-localleader-alt-key "M-S-SPC m")
+(setq doom-leader-alt-key "M-SPC")
+(setq doom-localleader-alt-key " M-SPC m")
 
 ;; Project settings
 (setq projectile-project-search-path '("~/Workspace/repos")
@@ -122,7 +122,7 @@
 
 ;; Frame Opacity
 ;; (set-frame-parameter nil (if (eq window-system 'pgtk) 'alpha-background 'alpha) 90)
-(doom/set-frame-opacity 90 t)
+(doom/set-frame-opacity 95 t)
 
 ;; (after! undo-tree
 ;;   (add-hook 'evil-local-mode-hook #'turn-on-undo-tree-mode))
@@ -151,6 +151,7 @@
 (map! :leader :desc "Ace Window" :ne "w a" #'ace-select-window)
 (map! :leader :ne "C-M-+" #'font-size-hidpi)
 (map! :leader :ne "C-M--" #'font-size-thinkpad)
+(map! :leader :desc "Narrow" :ne "c n" narrow-map)
 
 ;; automatic indenting of pasted text (functions defined in custom-functions.el)
 (map! :n "p" #'evil-paste-after-and-indent
@@ -289,6 +290,13 @@
       "b" 'inf-elixir-send-buffer
       "R" 'inf-elixir-reload-module)
 
+;; --------- CLOJURE ----------
+(map! :localleader
+      :map cider-mode-map
+      :prefix ("e" . "eval")
+      "o" #'cider-eval-sexp-up-to-point
+      "x" 'cider-eval-commands-map)
+
 ;; ------- FLYCHECK -------
 (after! flycheck
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
@@ -303,7 +311,7 @@
 
 ;; ------ MAGIT ------
 (after! magit
-  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  ;; (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 ;; ------ CODE REVIEW ------
@@ -535,7 +543,8 @@
                         :host "openrouter.ai"
                         :endpoint "/api/v1/chat/completions"
                         :stream t
-                        :key "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"                   ;can be a function that returns the key
+                        ;;can be a function that returns the key
+                        :key "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"
                         :models '(google/gemini-2.5-pro
                                   anthropic/claude-sonnet-4
                                   anthropic/claude-opus-4
@@ -544,18 +553,19 @@
                                   deepseek/deepseek-chat))))
 
 ;; -------- Claude Code --------
-(use-package! claude-code
+(use-package! claude-code-ide
   :defer t
-  :bind (("s-c" . claude-code-transient))
+  :bind (("s-c" . claude-code-ide-menu))
   :init
-  (map! :map claude-code-command-map
+  (map! :map claude-code-ide-mode-map
         :leader
         (:prefix-map ("o" . "open")
                      (:prefix ("c" . "claude")
-                      :desc "menu" "m" #'claude-code-transient)))
+                      :desc "menu" "m" #'claude-code-ide-menu)))
   :config
-  (setq claude-code-terminal-backend 'vterm)
-  (claude-code-mode))
+  ;; (setq claude-code-terminal-backend 'vterm)
+  ;; (claude-code-mode)
+  (claude-code-ide-emacs-tools-setup))
 
 ;; -------- AIDER ---------
 (use-package! aidermacs
