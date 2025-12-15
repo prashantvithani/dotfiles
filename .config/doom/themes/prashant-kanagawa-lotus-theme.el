@@ -173,7 +173,7 @@ Can be an integer to determine the exact padding."
 
    ;; Font lock
    ((font-lock-comment-face &override) :foreground comments :italic t
-    :background (if prashant-kanagawa-wave-brighter-comments (doom-darken bg 0.05)))
+    :background (if prashant-kanagawa-lotus-brighter-comments (doom-darken bg 0.05)))
    ((font-lock-comment-delimiter-face &override) :foreground comments :italic t)
    ((font-lock-doc-face &override) :foreground doc-comments :italic t)
    ((font-lock-constant-face &override) :weight 'semi-bold)

@@ -118,19 +118,19 @@ Can be an integer to determine the exact padding."
    (autumn-yellow     '("#DCA561" "#d7af5f" "yellow"))
 
    ;; Face categories
-   (highlight      dark-blue)
+   (highlight      blue)
    (vertical-bar   base3)
    (selection      lotus-violet3)
    (builtin        lotus-pink)
    (comments       (if prashant-kanagawa-lotus-vibrant-brighter-comments dark-cyan lotus-gray3))
    (doc-comments   (if prashant-kanagawa-lotus-vibrant-brighter-comments dark-cyan fg-alt))
-   (constants      dark-cyan)
+   (constants      dark-blue)
    (functions      lotus-blue5)
    (keywords       magenta)
    (methods        teal)
    (operators      lotus-yellow2)
-   (type           blue)
-   (strings        green)
+   (type           cyan)
+   (strings        (doom-darken green 0.2))
    (variables      (doom-darken orange 0.4))
    (numbers        lotus-red4)
    (region         lotus-violet3)
@@ -173,7 +173,7 @@ Can be an integer to determine the exact padding."
 
    ;; Font lock
    ((font-lock-comment-face &override) :foreground comments :italic t
-    :background (if prashant-kanagawa-wave-brighter-comments (doom-darken bg 0.05)))
+    :background (if prashant-kanagawa-lotus-vibrant-brighter-comments (doom-darken bg 0.05)))
    ((font-lock-comment-delimiter-face &override) :foreground comments :italic t)
    ((font-lock-doc-face &override) :foreground doc-comments :italic t)
    ((font-lock-constant-face &override) :weight 'semi-bold)
@@ -361,9 +361,9 @@ Can be an integer to determine the exact padding."
    (org-meta-line :background lotus-green3 :foreground green) ; Light green background
    (org-level-1 :foreground red :height 1.3 :bold t)
    (org-level-2 :foreground violet :height 1.15 :bold t)
-   (org-level-3 :foreground yellow :height 1.05)
-   (org-level-4 :foreground fg)
-   (org-level-5 :foreground fg)
+   (org-level-3 :foreground lotus-blue5 :height 1.05)
+   (org-level-4 :foreground lotus-pink)
+   (org-level-5 :foreground lotus-red2)
    (org-level-6 :foreground yellow)
    (org-level-7 :foreground orange)
    (org-level-8 :foreground green)

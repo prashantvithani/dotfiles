@@ -151,7 +151,15 @@
    (font-lock-doc-face
     :inherit 'font-lock-comment-face
     :foreground doc-comments)
-   (font-lock-keyword-face :foreground keywords :slant 'italic)
+   (font-lock-negation-char-face :foreground red)
+   (font-lock-keyword-face :foreground keywords :weight 'bold :slant 'italic)
+   (font-lock-number-face :foreground numbers :weight 'bold)
+   (font-lock-function-name-face :foreground functions :weight 'medium)
+   ;; (font-lock-variable-name-face :foreground variables)
+   (font-lock-constant-face :foreground constants :weight 'semi-bold)
+   ;; (font-lock-string-face :foreground strings)
+   (font-lock-type-face :foreground type :weight 'medium)
+   (font-lock-builtin-face :foreground builtin :weight 'bold)
 
    ;;; Doom Modeline
    (doom-modeline-bar :background (if -modeline-bright modeline-bg highlight))
