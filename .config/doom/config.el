@@ -22,9 +22,12 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 ;;;; Fonts
-(setq doom-font "Iosevka Custom Condensed-10"
+(setq doom-font
+      ;; "Source Code Pro-10"
+      "Iosevka Custom Condensed-10"
       ;; doom-big-font "Hermit-18:medium"
       doom-symbol-font "Noto Color Emoji-10:regular"
+      doom-emoji-font "Noto Color Emoji-10:regular"
       ;; doom-variable-pitch-font "Avenir Next-12:medium"
       doom-serif-font "Iosevka Custom Condensed-10:medium")
 
