@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# EMACS="$HOME/Workspace/repos/emacs/nextstep/Emacs.app/Contents/MacOS/Emacs"
+
+# Source your bashrc to load environment variables and paths
+if [ -f "$HOME/.bashrc" ]; then
+  . "$HOME/.bashrc"
+fi
+
+if [[ "$EMACS_VERSION" = "30" ]]; then
+    EMACS="$HOME/Workspace/repos/emacs-30/src/emacs --fg-daemon=claridev30"
+else
+    EMACS="$HOME/Workspace/repos/emacs/src/emacs"
+fi
+
+# EMACS="/usr/bin/emacs"
+exec "$EMACS" "--fg-daemon=claridev" "$@"
