@@ -2,8 +2,8 @@
 
 # EMACS="$HOME/Workspace/repos/emacs/nextstep/Emacs.app/Contents/MacOS/Emacs"
 
-if [[ "$EMACS_VERSION" = "30" ]]; then
-    EMACS="$HOME/Workspace/repos/emacs-30/src/emacs"
+if [[ -n "$EMACS_VERSION" ]]; then
+    EMACS="$HOME/Workspace/repos/emacs-$EMACS_VERSION/src/emacs"
 else
     EMACS="$HOME/Workspace/repos/emacs/src/emacs"
 fi
