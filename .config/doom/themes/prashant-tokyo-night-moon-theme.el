@@ -139,28 +139,32 @@
 
   ;; --- Extra Faces ------------------------
   (
+   ;; Basic faces
    (hl-line :background bg-highlight)
    (solaire-hl-line-face  :inherit 'hl-line :background bg-highlight :extend t)
 
    ((line-number-current-line &override) :foreground base8)
-   ((line-number &override) :foreground base0 :background (doom-darken bg 0.025))
+   ((line-number &override) :foreground base2 :background (doom-darken bg 0.25))
+   (vertical-border :foreground base3)
 
-   (font-lock-comment-face
-    :foreground comments
-    :background (if prashant-tokyo-night-moon-comment-bg (doom-lighten bg 0.05) 'unspecified)
-    :slant 'italic)
-   (font-lock-doc-face
-    :inherit 'font-lock-comment-face
-    :foreground doc-comments)
-   (font-lock-negation-char-face :foreground red)
-   (font-lock-keyword-face :foreground keywords :weight 'bold :slant 'italic)
-   (font-lock-number-face :foreground numbers :weight 'bold)
-   (font-lock-function-name-face :foreground functions :weight 'medium)
-   ;; (font-lock-variable-name-face :foreground variables)
-   (font-lock-constant-face :foreground constants :weight 'semi-bold)
-   ;; (font-lock-string-face :foreground strings)
-   (font-lock-type-face :foreground type :weight 'medium)
-   (font-lock-builtin-face :foreground builtin :weight 'bold)
+   ;; Font lock
+   ((font-lock-comment-face &override) :foreground comments :slant 'italic
+    :background (if prashant-tokyo-night-moon-comment-bg (doom-lighten bg 0.05) 'unspecified))
+   ((font-lock-comment-delimiter-face &override) :foreground comments :italic t)
+   ((font-lock-doc-face &override) :inherit 'font-lock-comment-face :foreground doc-comments)
+   ((font-lock-constant-face &override) :foreground constants :weight 'semi-bold)
+   ((font-lock-keyword-face &override) :foreground keywords :weight 'bold :slant 'italic)
+   ((font-lock-number-face &override) :foreground numbers :weight 'bold)
+   ((font-lock-function-name-face &override) :foreground functions :weight 'medium)
+   ((font-lock-type-face &override) :foreground type :weight 'medium)
+   ((font-lock-builtin-face &override) :foreground builtin :weight 'bold)
+   ((font-lock-warning-face &override) :foreground warning)
+   ((font-lock-variable-use-face &override) :foreground blue6)
+   ((font-lock-negation-char-face &override) :foreground red)
+   ((font-lock-preprocessor-face &override) :foreground (doom-lighten operators 0.5))
+   ;; ((font-lock-regexp-grouping-backslash &override) :foreground operators)
+   ;; ((font-lock-string-face &override) :foreground strings)
+   ;; ((font-lock-variable-name-face &override) :foreground variables)
 
    ;;; Doom Modeline
    (doom-modeline-buffer-path       :foreground blue :weight 'bold)
@@ -232,7 +236,7 @@
    (treemacs-root-face :foreground magenta :weight 'bold :height 1.2)
    (doom-themes-treemacs-root-face :foreground magenta :weight 'ultra-bold :height 1.2)
    (doom-themes-treemacs-file-face :foreground fg-alt)
-   (treemacs-directory-face :foreground base8)
+   (treemacs-directory-face :foreground cyan :weight 'semi-bold)
    (treemacs-file-face :foreground fg)
    (treemacs-git-modified-face :foreground green)
    (treemacs-git-renamed-face :foreground yellow)

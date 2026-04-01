@@ -89,7 +89,7 @@
    (violet     '("#40434f" "#40434f" "brightmagenta"))
    (cyan       '("#0f4b6e" "#0f4b6e" "brightcyan"))
    (dark-cyan  '("#0f4b6e" "#0f4b6e" "cyan"))
-                                        ; Additional custom colors
+   ;; Additional custom colors
    (dark-green '("#385f0d" "#385f0d" "green"))
    (brown      '("#634f30" "#634f30" "yellow"))
 
@@ -99,15 +99,15 @@
    (selection      grey)
    (builtin        red)
    (comments       (if prashant-tokyo-night-light-brighter-comments (doom-lighten "#6c6e75" 0.25) "#6c6e75"))
-   (doc-comments   (doom-darken (if prashant-tokyo-night-light-brighter-comments (doom-lighten "#6c6e75" 0.25) "#6c6e75") 0.5))
+   (doc-comments   (doom-darken (if prashant-tokyo-night-light-brighter-comments (doom-lighten "#6c6e75" 0.25) "#6c6e75") 0.3))
    (constants      orange)
    (functions      blue)
    (keywords       magenta)
-   (methods        blue)
-   (operators      teal)
+   (methods        (doom-lighten blue 0.1))
+   (operators      (doom-darken teal 0.1))
    (type           teal)
    (strings        dark-green)
-   (variables      fg)
+   (variables      brown)
    (numbers        orange)
    (region         (doom-lighten base8 0.15))
    (error          red)
@@ -142,24 +142,27 @@
   ;; --- Extra Faces ------------------------
   (
    ((line-number-current-line &override) :foreground fg)
-   ((line-number &override) :foreground base5 :background (doom-darken bg 0.025))
+   ((line-number &override) :foreground (doom-lighten bg 0.025) :background base6)
+   (vertical-border :foreground base7)
 
-   (font-lock-comment-face
-    :foreground comments
-    :background (if prashant-tokyo-night-light-comment-bg (doom-lighten bg 0.05) 'unspecified)
-    :slant 'italic)
-   (font-lock-doc-face
-    :inherit 'font-lock-comment-face
-    :foreground doc-comments)
-   (font-lock-negation-char-face :foreground red)
-   (font-lock-keyword-face :foreground keywords :weight 'bold :slant 'italic)
-   (font-lock-number-face :foreground numbers :weight 'bold)
-   (font-lock-function-name-face :foreground functions :weight 'medium)
-   ;; (font-lock-variable-name-face :foreground variables)
-   (font-lock-constant-face :foreground constants :weight 'semi-bold)
-   ;; (font-lock-string-face :foreground strings)
-   (font-lock-type-face :foreground type :weight 'medium)
-   (font-lock-builtin-face :foreground builtin :weight 'bold)
+   ;; Font lock
+   ((font-lock-comment-face &override) :foreground comments :slant 'italic
+    :background (if prashant-tokyo-night-light-comment-bg (doom-lighten bg 0.05) 'unspecified))
+   ((font-lock-comment-delimiter-face &override) :foreground comments :italic t)
+   ((font-lock-doc-face &override) :inherit 'font-lock-comment-face :foreground doc-comments)
+   ((font-lock-constant-face &override) :foreground constants :weight 'semi-bold)
+   ((font-lock-keyword-face &override) :foreground keywords :weight 'bold :slant 'italic)
+   ((font-lock-number-face &override) :foreground numbers :weight 'bold)
+   ((font-lock-function-name-face &override) :foreground functions :weight 'medium)
+   ((font-lock-type-face &override) :foreground type :weight 'medium)
+   ((font-lock-builtin-face &override) :foreground builtin :weight 'bold)
+   ((font-lock-warning-face &override) :foreground warning)
+   ((font-lock-negation-char-face &override) :foreground red)
+   ((font-lock-variable-use-face &override) :foreground (doom-darken variables 0.3))
+   ;; ((font-lock-regexp-grouping-backslash &override) :foreground operators)
+   ;; ((font-lock-preprocessor-face &override) :foreground operators)
+   ;; ((font-lock-string-face &override) :foreground strings)
+   ;; ((font-lock-variable-name-face &override) :foreground variables)
 
    ;;; Doom Modeline
    (doom-modeline-bar :background (if -modeline-bright modeline-bg highlight))
@@ -230,8 +233,8 @@
    (treemacs-root-face :foreground magenta :weight 'bold :height 1.2)
    (doom-themes-treemacs-root-face :foreground magenta :weight 'ultra-bold :height 1.2)
    (doom-themes-treemacs-file-face :foreground fg-alt)
-   (treemacs-directory-face :foreground base8)
-   (treemacs-file-face :foreground fg)
+   (treemacs-directory-face :foreground (doom-darken dark-cyan 0.1) :weight 'medium)
+   ;; (treemacs-file-face :foreground fg)
    (treemacs-git-modified-face :foreground green)
    (treemacs-git-renamed-face :foreground yellow)
 

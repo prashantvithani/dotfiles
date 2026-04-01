@@ -169,7 +169,7 @@ Can be an integer to determine the exact padding."
    ((line-number &override) :foreground base5 :background base0)
    ((line-number-current-line &override) :foreground violet :background base3 :bold t)
    (fringe :background base0 :foreground base4)
-   (vertical-border :foreground base3)
+   (vertical-border :foreground base5)
 
    ;; Font lock
    ((font-lock-comment-face &override) :foreground comments :italic t
@@ -183,9 +183,12 @@ Can be an integer to determine the exact padding."
    ((font-lock-type-face &override) :weight 'medium)
    ((font-lock-builtin-face &override) :weight 'bold)
    ((font-lock-warning-face &override) :foreground ronin-yellow)
+   ((font-lock-variable-use-face &override) :foreground (doom-lighten sakura-pink 0.5))
    ((font-lock-negation-char-face &override) :foreground samurai-red)
    ((font-lock-preprocessor-face &override) :foreground boat-yellow-2)
-   ((font-lock-regexp-grouping-backslash &override) :foreground boat-yellow-2)
+   ((font-lock-regexp-grouping-backslash &override) :foreground oni-violet-2)
+   ;; ((font-lock-string-face &override) :foreground strings)
+   ;; ((font-lock-variable-name-face &override) :foreground variables)
 
    ;; Mode-line
    (mode-line
@@ -350,7 +353,7 @@ Can be an integer to determine the exact padding."
    (markdown-blockquote-face :foreground oni-violet-2)
 
    ;;;; org-mode
-   (org-block :background base0 :foreground base5)
+   (org-block :background base0 :foreground base7)
    (org-block-begin-line
     :background (if prashant-kanagawa-wave-vibrant-match-org-blocks base0 winter-blue)
     :foreground (if prashant-kanagawa-wave-vibrant-match-org-blocks base5 blue))
@@ -359,9 +362,12 @@ Can be an integer to determine the exact padding."
     :foreground (if prashant-kanagawa-wave-vibrant-match-org-blocks base5 peach-red))
    (org-code :background base0 :foreground green)
    (org-meta-line :background winter-green :foreground green)
-   (org-level-1 :foreground peach-red :height 1.3 :bold t)
-   (org-level-2 :foreground violet :height 1.15 :bold t)
-   (org-level-3 :foreground oni-violet-2 :height 1.05)
+   ;; (org-level-1 :foreground peach-red :height 1.3 :bold t)
+   ;; (org-level-2 :foreground violet :height 1.15 :bold t)
+   ;; (org-level-3 :foreground oni-violet-2 :height 1.05)
+   (org-level-1 :foreground peach-red :bold t)
+   (org-level-2 :foreground violet :bold t)
+   (org-level-3 :foreground oni-violet-2)
    (org-level-4 :foreground sakura-pink)
    (org-level-5 :foreground boat-yellow-2)
    (org-level-6 :foreground yellow)

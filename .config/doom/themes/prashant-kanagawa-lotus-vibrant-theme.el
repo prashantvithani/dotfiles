@@ -132,8 +132,8 @@ Can be an integer to determine the exact padding."
    (type           cyan)
    (strings        (doom-darken green 0.2))
    (variables      (doom-darken orange 0.4))
-   (numbers        lotus-red4)
-   (region         lotus-violet3)
+   (numbers        autumn-red)
+   (region         (doom-lighten lotus-blue3 0.75))
    (error          lotus-red3)
    (warning        lotus-orange2)
    (success        green)
@@ -183,9 +183,12 @@ Can be an integer to determine the exact padding."
    ((font-lock-type-face &override) :weight 'medium)
    ((font-lock-builtin-face &override) :weight 'bold)
    ((font-lock-warning-face &override) :foreground lotus-orange2)
-   ((font-lock-negation-char-face &override) :foreground red)
+   ((font-lock-variable-use-face &override) :foreground (doom-lighten samurai-red 0.1))
+   ((font-lock-negation-char-face &override) :foreground samurai-red)
    ((font-lock-preprocessor-face &override) :foreground red)
    ((font-lock-regexp-grouping-backslash &override) :foreground lotus-yellow2)
+   ;; ((font-lock-string-face &override) :foreground strings)
+   ;; ((font-lock-variable-name-face &override) :foreground variables)
 
    ;; Mode-line
    (mode-line
@@ -350,7 +353,7 @@ Can be an integer to determine the exact padding."
    (markdown-blockquote-face :foreground lotus-violet1)
 
 ;;;; org-mode
-   (org-block :background base0 :foreground base5)
+   (org-block :background base0 :foreground base8)
    (org-block-begin-line
     :background (if prashant-kanagawa-lotus-vibrant-match-org-blocks base0 lotus-blue2)
     :foreground (if prashant-kanagawa-lotus-vibrant-match-org-blocks base5 dark-blue))
@@ -359,9 +362,12 @@ Can be an integer to determine the exact padding."
     :foreground (if prashant-kanagawa-lotus-vibrant-match-org-blocks base5 red))
    (org-code :background base0 :foreground green)
    (org-meta-line :background lotus-green3 :foreground green) ; Light green background
-   (org-level-1 :foreground red :height 1.3 :bold t)
-   (org-level-2 :foreground violet :height 1.15 :bold t)
-   (org-level-3 :foreground lotus-blue5 :height 1.05)
+   ;; (org-level-1 :foreground red :height 1.3 :bold t)
+   ;; (org-level-2 :foreground violet :height 1.15 :bold t)
+   ;; (org-level-3 :foreground lotus-blue5 :height 1.05)
+   (org-level-1 :foreground red :bold t)
+   (org-level-2 :foreground violet :bold t)
+   (org-level-3 :foreground lotus-blue5)
    (org-level-4 :foreground lotus-pink)
    (org-level-5 :foreground lotus-red2)
    (org-level-6 :foreground yellow)
@@ -413,7 +419,7 @@ Can be an integer to determine the exact padding."
    (treemacs-git-modified-face :foreground green)
 
 ;;;; vertico
-   (vertico-current :background lotus-blue2 :foreground yellow :bold t)
+   (vertico-current :background lotus-blue3 :foreground yellow :bold t)
    (vertico-multiline :background samurai-red)
    (vertico-group-title :background lotus-blue2 :foreground dark-blue :bold t)
    (vertico-group-separator :background lotus-blue2 :foreground dark-blue :strike-through t)

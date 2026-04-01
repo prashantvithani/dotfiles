@@ -1,4 +1,4 @@
-;;; prashant-ayu-mirage-theme.el --- inspired by Ayu Mirage -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; prashant-ayu-dark-theme.el --- inspired by Ayu Dark -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;
 ;; Added: February 5, 2021 (#499)
 ;; Author: LoveSponge <https://github.com/LoveSponge>
@@ -14,69 +14,69 @@
 ;;
 ;;; Variables
 
-(defgroup prashant-ayu-mirage-theme nil
-  "Options for the `prashant-ayu-mirage' theme."
+(defgroup prashant-ayu-dark-theme nil
+  "Options for the `prashant-ayu-dark' theme."
   :group 'doom-themes)
 
-(defcustom prashant-ayu-mirage-brighter-modeline nil
+(defcustom prashant-ayu-dark-brighter-modeline nil
   "If non-nil, more vivid colors will be used to style the mode-line."
-  :group 'prashant-ayu-mirage-theme
+  :group 'prashant-ayu-dark-theme
   :type 'boolean)
 
-(defcustom prashant-ayu-mirage-brighter-comments nil
+(defcustom prashant-ayu-dark-brighter-comments nil
   "If non-nil, comments will be highlighted in more vivid colors."
-  :group 'prashant-ayu-mirage-theme
+  :group 'prashant-ayu-dark-theme
   :type 'boolean)
 
-(defcustom prashant-ayu-mirage-comment-bg prashant-ayu-mirage-brighter-comments
+(defcustom prashant-ayu-dark-comment-bg prashant-ayu-dark-brighter-comments
   "If non-nil, comments will have a subtle, darker background. Enhancing their
 legibility."
-  :group 'prashant-ayu-mirage-theme
+  :group 'prashant-ayu-dark-theme
   :type 'boolean)
 
-(defcustom prashant-ayu-mirage-padded-modeline doom-themes-padded-modeline
+(defcustom prashant-ayu-dark-padded-modeline doom-themes-padded-modeline
   "If non-nil, adds a 4px padding to the mode-line. Can be an integer to
 determine the exact padding."
-  :group 'prashant-ayu-mirage-theme
+  :group 'prashant-ayu-dark-theme
   :type '(choice integer boolean))
 
 
 ;;
 ;;; Theme definition
 
-(def-doom-theme prashant-ayu-mirage
-    "A dark theme inspired by Ayu Mirage"
+(def-doom-theme prashant-ayu-dark
+    "A dark theme inspired by Ayu Dark"
   :family 'prashant-ayu
   :background-mode 'dark
 
   ;; name        default   256       16
   (
    ;; common
-   (common-accent-tint   '("#ffcc66" "yellow"  "yellow" ))
-   (common-accent-on   '("#735923" "yellow"  "yellow" ))
-   (common-error    '("#ff6666" "red"     "red"    ))
-   ;; (common-fg       '("#cbccc6" "grey"    "grey"   ))
+   (common-accent-tint   '("#e6b450" "yellow"  "yellow" ))
+   (common-accent-on  (doom-darken common-accent-tint 0.31))
+   (common-error    '("#d95757" "red"     "red"    ))
+   (common-fg       '("#cbccc6" "grey"    "grey"   ))
    (test            '("#7399e6" "grey"    "grey"   ))
    ;; syntax
-   (syntax-tag      '("#5CCFE6" "cyan"    "blue"   ))
-   (syntax-func     '("#FFD173" "yellow"  "yellow" ))
-   (syntax-entity   '("#73D0FF" "blue"    "blue"   ))
-   (syntax-string   '("#D5FF80" "green"   "green"  ))
+   (syntax-tag      '("#39bae6" "cyan"    "blue"   ))
+   (syntax-func     '("#ffb454" "yellow"  "yellow" ))
+   (syntax-entity   '("#59c2ff" "blue"    "blue"   ))
+   (syntax-string   '("#aad94c" "green"   "green"  ))
    (syntax-regexp   '("#95E6CB" "teal"    "green"  ))
-   (syntax-markup   '("#F28779" "red"     "red"    ))
-   (syntax-keyword  '("#FFAD66" "orange"  "orange" ))
-   (syntax-special  '("#D9BE98" "yellow"  "yellow" ))
-   (syntax-comment  '("#6E7C8F" "grey"    "grey"   )) ;; (doom-lighten '("#B8CFE6" "grey"    "grey"   ) 80)
-   (syntax-constant '("#DFBFFF" "magenta" "purple" ))
-   (syntax-operator '("#f29e74" "orange"  "orange" ))
+   (syntax-markup   '("#f07178" "red"     "red"    ))
+   (syntax-keyword  '("#ff8f40" "orange"  "orange" ))
+   (syntax-special  '("#e6c08a" "yellow"  "yellow" ))
+   (syntax-comment  '("#5a6673" "grey"    "grey"   )) ;; (doom-lighten '("#B8CFE6" "grey"    "grey"   ) 80)
+   (syntax-constant '("#d2a6ff" "magenta" "purple" ))
+   (syntax-operator '("#f29668" "orange"  "orange" ))
    ;; ui
-   (ui-line               '("#171b24"))
-   (ui-bg               '("#1f2430" "black"   "black"  ))
-   (ui-fg               '("#707a8c" "grey"    "grey"   ))
-   (ui-selection-normal   (doom-darken '("#637599") 0.15))
-   (ui-selection-active   (doom-darken '("#69758c") 0.12))
-   (ui-panel-bg           '("#1c212b"))
-   (ui-panel-shadow       (doom-lighten '("#12151c") 0.3))
+   (ui-line               '("#1b1f29"))
+   (ui-bg               '("#0d1017" "black"   "black"  ))
+   (ui-fg               '("#5a6378" "grey"    "grey"   ))
+   (ui-selection-active   (doom-darken '("#475266") 0.25))
+   (ui-selection-normal   (doom-darken ui-selection-active 0.2))
+   (ui-panel-bg           '("#141821"))
+   (ui-panel-shadow       (doom-lighten '("#000000") 0.5))
    (ui-gutter-normal      (doom-darken ui-fg 0.45))
    (ui-gutter-active      ui-fg)
    (ui-selection-border   (doom-lighten test 0.93))
@@ -86,27 +86,27 @@ determine the exact padding."
    (elscreen-bg           (doom-darken ui-fg 0.55))
    (elscreen-fg           ui-line)
    ;; vcs
-   (vcs-added    '("#87d96c" "green" "green" ))
-   (vcs-modified '("#80bfff" "blue"  "blue"  ))
-   (vcs-removed  '("#f27983" "red"   "red"   ))
+   (vcs-added    '("#70bf56" "green" "green" ))
+   (vcs-modified '("#73b8ff" "blue"  "blue"  ))
+   (vcs-removed  '("#f26d78" "red"   "red"   ))
    ;; editor
-   (editor-fg '("#cccac2"))
-   (editor-bg '("#242936"))
-   (editor-line '("#1A1F29"))
+   (editor-fg '("#bfbdb6"))
+   (editor-bg '("#10141c"))
+   (editor-line '("#161a24"))
 
    ;; (editor-find-match-active '("#695380"))
    ;; (editor-find-match-inactive (doom-lighten '("#695380") 0.4))
 
-   (editor-selection-active (doom-darken '("#409FFF") 0.25))
-   (editor-selection-inactive (doom-darken '("#409FFF") 0.13))
-   (editor-find-match-active "#736950")
-   (editor-find-match-inactive (doom-lighten '("#736950") 0.4))
-   (editor-line-number-active (doom-lighten ui-fg 0.5))
+   (editor-selection-active (doom-darken '("#3388ff") 0.25))
+   (editor-selection-inactive (doom-darken '("#80b5ff") 0.15))
+   (editor-find-match-active "#4c4126")
+   (editor-find-match-inactive (doom-lighten editor-find-match-active 0.5))
+   (editor-line-number-active (doom-lighten ui-fg 0.65))
    (editor-line-number-inactive ui-fg)
-   (editor-gutter-active (doom-lighten '("#8a9199") 0.8))
-   (editor-gutter-normal (doom-lighten '("#8a9199") 0.4))
-   (editor-indent-guide-active (doom-darken ui-fg 0.44))
-   (editor-indent-guide-normal (doom-darken ui-fg 0.23))
+   (editor-gutter-active (doom-lighten '("#8a9199") 0.6))
+   (editor-gutter-normal (doom-lighten '("#8a9199") 0.5))
+   (editor-indent-guide-active (doom-darken ui-fg 0.63))
+   (editor-indent-guide-normal (doom-darken ui-fg 0.26))
 
    (bg         editor-bg)
    (bg-alt     editor-line)
@@ -140,7 +140,7 @@ determine the exact padding."
    (vertical-bar   ui-panel-shadow)
    (selection      editor-selection-active)
    (builtin        syntax-tag)
-   (comments       (if prashant-ayu-mirage-brighter-comments dark-cyan syntax-comment))
+   (comments       (if prashant-ayu-dark-brighter-comments dark-cyan syntax-comment))
    (doc-comments   (doom-lighten comments 0.25))
    (constants      syntax-constant)
    (functions      syntax-func)
@@ -161,10 +161,10 @@ determine the exact padding."
 
    ;; custom categories
    (hidden     (car bg))
-   (-modeline-bright prashant-ayu-mirage-brighter-modeline)
+   (-modeline-bright prashant-ayu-dark-brighter-modeline)
    (-modeline-pad
-    (when prashant-ayu-mirage-padded-modeline
-      (if (integerp prashant-ayu-mirage-padded-modeline) prashant-ayu-mirage-padded-modeline 4)))
+    (when prashant-ayu-dark-padded-modeline
+      (if (integerp prashant-ayu-dark-padded-modeline) prashant-ayu-dark-padded-modeline 4)))
 
    (modeline-fg     editor-fg)
    (modeline-fg-alt common-accent-tint)
@@ -185,18 +185,19 @@ determine the exact padding."
    ((line-number-current-line &override) :foreground editor-line-number-active)
    (diff-removed :foreground vcs-removed)
    (hl-line :background bg-alt)
+   ((shadow &override) :foreground base4)
 
    ;; Font lock
    ((font-lock-comment-face &override) :foreground comments :slant 'italic
-    :background (if prashant-ayu-mirage-comment-bg (doom-lighten bg 0.05) 'unspecified))
+    :background (if prashant-ayu-dark-comment-bg (doom-lighten bg 0.05) 'unspecified))
    ((font-lock-comment-delimiter-face &override) :foreground comments :italic t)
    ((font-lock-doc-face &override) :inherit 'font-lock-comment-face :foreground doc-comments)
-   ((font-lock-constant-face &override) :foreground constants :weight 'semi-bold)
+   ((font-lock-constant-face &override) :foreground constants :weight 'medium)
    ((font-lock-keyword-face &override) :foreground keywords :weight 'bold :slant 'italic)
    ((font-lock-number-face &override) :foreground numbers :weight 'bold)
    ((font-lock-function-name-face &override) :foreground functions :weight 'medium)
    ((font-lock-type-face &override) :foreground type :weight 'medium)
-   ((font-lock-builtin-face &override) :foreground builtin :weight 'bold)
+   ((font-lock-builtin-face &override) :foreground builtin :weight 'medium)
    ((font-lock-warning-face &override) :foreground warning)
    ((font-lock-variable-use-face &override) :foreground (doom-lighten syntax-regexp 0.3))
    ((font-lock-negation-char-face &override) :foreground red)
@@ -314,4 +315,4 @@ determine the exact padding."
    (web-mode-html-attr-name-face :foreground syntax-func)))
 
 
-;;; prashant-ayu-mirage-theme.el ends here
+;;; prashant-ayu-dark-theme.el ends here

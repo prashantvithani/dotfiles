@@ -82,7 +82,7 @@ determine the exact padding."
    (operators      orange)
    (type           teal)
    (strings        (doom-lighten green 0.1))
-   (variables      (doom-lighten functions 0.3))
+   (variables      (doom-lighten red 0.3))
    (numbers        red)
    (region         (pcase prashant-iceberg-dark-region-highlight
                      (`frost teal)
@@ -123,8 +123,8 @@ determine the exact padding."
   ;; --- extra faces ------------------------
   (((region &override) :foreground region-fg)
 
-   ((line-number &override) :foreground (doom-lighten 'base5 0.2))
    ((hl-line &override) :background base1)
+   ((line-number &override) :foreground (doom-lighten 'base5 0.2))
    ;; ((line-number &override) :background (doom-lighten 'bg 0.05))
    ((line-number-current-line &override) :foreground base7)
    ;; ((line-number-current-line &override) :background bg-alt)
@@ -133,12 +133,24 @@ determine the exact padding."
    ((vimish-fold-overlay &override) :inherit 'font-lock-comment-face :background base3 :weight 'light)
    ((vimish-fold-fringe &override)  :foreground teal)
 
-   (font-lock-comment-face
-    :foreground comments
+   ;; Font lock
+   ((font-lock-comment-face &override) :foreground comments :slant 'italic
     :background (if prashant-iceberg-dark-comment-bg (doom-lighten bg 0.05)))
-   (font-lock-doc-face
-    :inherit 'font-lock-comment-face
-    :foreground doc-comments)
+   ((font-lock-comment-delimiter-face &override) :foreground comments :italic t)
+   ((font-lock-doc-face &override) :inherit 'font-lock-comment-face :foreground doc-comments)
+   ((font-lock-constant-face &override) :foreground constants :weight 'semi-bold)
+   ((font-lock-keyword-face &override) :foreground keywords :weight 'bold :slant 'italic)
+   ((font-lock-number-face &override) :foreground numbers :weight 'bold)
+   ((font-lock-function-name-face &override) :foreground functions :weight 'medium)
+   ((font-lock-type-face &override) :foreground type :weight 'medium)
+   ((font-lock-builtin-face &override) :foreground builtin :weight 'bold)
+   ((font-lock-warning-face &override) :foreground warning)
+   ((font-lock-variable-use-face &override) :foreground (doom-lighten methods 0.2))
+   ((font-lock-negation-char-face &override) :foreground red)
+   ;; ((font-lock-regexp-grouping-backslash &override) :foreground operators)
+   ;; ((font-lock-preprocessor-face &override) :foreground operators)
+   ;; ((font-lock-string-face &override) :foreground strings)
+   ;; ((font-lock-variable-name-face &override) :foreground variables)
 
    ;; Enhanced syntax highlighting
    (font-lock-negation-char-face :foreground red)
