@@ -1,5 +1,6 @@
+# ---------------- IosevkaCustomCondensed --------------------
 [buildPlans.IosevkaCustomCondensed]
-family = "Iosevka Custom Condensed"
+family = "Iosevka Condensed"
 spacing = "normal"
 serifs = "sans"
 noCvSs = false
@@ -16,6 +17,22 @@ seven = "bend-serifless"
 eight = "crossing-asymmetric"
 nine = "open-contour"
 zero = "oval-dotted"
+
+capital-a = "curly-serifless"
+capital-d = "more-rounded-serifless"
+capital-g = "toothless-rounded-serifless-hooked"
+capital-i = "short-serifed"
+capital-j = "serifed-both-sides"
+capital-k = "curly-serifless"
+capital-m = "slanted-sides-hanging-serifless"
+capital-r = "curly-serifless"
+capital-v = "curly-serifless"
+capital-w = "curly-serifless"
+capital-x = "curly-serifless"
+capital-y = "curly-serifless"
+capital-z = "curly-serifless"
+b = "bottom-cut-serifless"
+d = "toothless-corner-serifless"
 g = "double-storey"
 k = "curly-serifless"
 u = "toothed-serifless"
@@ -36,14 +53,32 @@ seven = "straight-serifless"
 eight = "crossing"
 nine = "straight-bar"
 zero = "oval-long-dotted"
+
+capital-a = "curly-serifless"
+capital-d = "more-rounded-serifless"
+capital-g = "toothless-rounded-serifless-hooked"
+capital-i = "short-serifed"
+capital-j = "serifed-both-sides"
+capital-k = "curly-serifless"
+capital-m = "slanted-sides-hanging-serifless"
+capital-r = "curly-serifless"
+capital-v = "curly-serifless"
+capital-w = "curly-serifless"
+capital-x = "curly-serifless"
+capital-y = "curly-serifless"
+capital-z = "curly-serifless"
+b = "bottom-cut-serifless"
+d = "tailed-serifless"
 g = "double-storey"
 k = "cursive-serifless"
-u = "toothed-serifless"
+m = "tailed-serifless"
+n = "tailed-serifless"
+u = "tailed-serifless"
 v = "cursive-serifless"
 w = "cursive-serifless"
 x = "cursive"
 y = "cursive-serifless"
-z = "straight-serifless"
+z = "curly-serifless"
 
 [buildPlans.IosevkaCustomCondensed.widths.Normal]
 shape = 500
@@ -62,7 +97,7 @@ shape = "italic"
 menu = "italic"
 css = "italic"
 
-#---------------------------------------------------
+# ---------------- IosevkaCustomCondensedFixed --------------------
 
 [buildPlans.IosevkaCustomCondensedFixed]
 family = "Iosevka Condensed Fixed"
@@ -82,6 +117,22 @@ seven = "bend-serifless"
 eight = "crossing-asymmetric"
 nine = "open-contour"
 zero = "oval-dotted"
+
+capital-a = "curly-serifless"
+capital-d = "more-rounded-serifless"
+capital-g = "toothless-rounded-serifless-hooked"
+capital-i = "short-serifed"
+capital-j = "serifed-both-sides"
+capital-k = "curly-serifless"
+capital-m = "slanted-sides-hanging-serifless"
+capital-r = "curly-serifless"
+capital-v = "curly-serifless"
+capital-w = "curly-serifless"
+capital-x = "curly-serifless"
+capital-y = "curly-serifless"
+capital-z = "curly-serifless"
+b = "bottom-cut-serifless"
+d = "toothless-corner-serifless"
 g = "double-storey"
 k = "curly-serifless"
 u = "toothed-serifless"
@@ -102,14 +153,32 @@ seven = "straight-serifless"
 eight = "crossing"
 nine = "straight-bar"
 zero = "oval-long-dotted"
+
+capital-a = "curly-serifless"
+capital-d = "more-rounded-serifless"
+capital-g = "toothless-rounded-serifless-hooked"
+capital-i = "short-serifed"
+capital-j = "serifed-both-sides"
+capital-k = "curly-serifless"
+capital-m = "slanted-sides-hanging-serifless"
+capital-r = "curly-serifless"
+capital-v = "curly-serifless"
+capital-w = "curly-serifless"
+capital-x = "curly-serifless"
+capital-y = "curly-serifless"
+capital-z = "curly-serifless"
+b = "bottom-cut-serifless"
+d = "tailed-serifless"
 g = "double-storey"
 k = "cursive-serifless"
-u = "toothed-serifless"
+m = "tailed-serifless"
+n = "tailed-serifless"
+u = "tailed-serifless"
 v = "cursive-serifless"
 w = "cursive-serifless"
 x = "cursive"
 y = "cursive-serifless"
-z = "straight-serifless"
+z = "curly-serifless"
 
 [buildPlans.IosevkaCustomCondensedFixed.widths.Normal]
 shape = 500
@@ -123,6 +192,184 @@ menu = "upright"
 css = "normal"
 
 [buildPlans.IosevkaCustomCondensedFixed.slopes.Italic]
+angle = 9.4
+shape = "italic"
+menu = "italic"
+css = "italic"
+
+# ---------------- IosevkaCustomSerifed --------------------
+
+[buildPlans.IosevkaCustomSerifed]
+family = "Iosevka Serifed"
+spacing = "normal"
+serifs = "slab"
+noCvSs = false
+exportGlyphNames = true
+
+[buildPlans.IosevkaCustomSerifed.variants.design]
+one = "base"
+two = "straight-neck-serifed"
+three = "flat-top-serifed"
+four = "closed-serifed"
+five = "oblique-arched-serifed"
+six = "open-contour"
+seven = "bend-serifed"
+eight = "crossing-asymmetric"
+nine = "open-contour"
+zero = "oval-dotted"
+
+capital-a = "curly-base-serifed"
+capital-d = "more-rounded-bilateral-serifed"
+capital-j = "serifed-symmetric"
+capital-k = "curly-serifed"
+capital-m = "slanted-sides-hanging-serifed"
+capital-r = "curly-serifed"
+capital-v = "curly-serifed"
+capital-w = "curly-serifed"
+capital-x = "curly-serifed"
+capital-y = "curly-serifed"
+capital-z = "curly-serifed"
+b = "bottom-cut-serifed"
+g = "double-storey"
+u = "toothed-serifed"
+v = "curly-serifed"
+w = "curly-serifed"
+x = "curly-serifed"
+y = "curly-turn-serifed"
+z = "curly-serifed"
+
+[buildPlans.IosevkaCustomSerifed.variants.italic]
+one = "base"
+two = "curly-neck-serifed"
+three = "two-arcs"
+four = "semi-open-serifed"
+five = "oblique-arched-serifed"
+six = "straight-bar"
+seven = "straight-serifed"
+eight = "crossing"
+nine = "straight-bar"
+zero = "oval-long-dotted"
+
+capital-a = "curly-base-serifed"
+capital-d = "more-rounded-bilateral-serifed"
+capital-j = "serifed-symmetric"
+capital-k = "curly-serifed"
+capital-m = "slanted-sides-hanging-serifed"
+capital-r = "curly-serifed"
+capital-v = "curly-serifed"
+capital-w = "curly-serifed"
+capital-x = "curly-serifed"
+capital-y = "curly-serifed"
+capital-z = "curly-serifed"
+g = "double-storey"
+u = "tailed-serifed"
+v = "cursive-serifed"
+w = "cursive-serifed"
+x = "cursive"
+y = "cursive-motion-serifed"
+z = "cursive"
+
+[buildPlans.IosevkaCustomSerifed.widths.Normal]
+shape = 500
+menu = 5
+css = "normal"
+
+[buildPlans.IosevkaCustomSerifed.slopes.Upright]
+angle = 0
+shape = "upright"
+menu = "upright"
+css = "normal"
+
+[buildPlans.IosevkaCustomSerifed.slopes.Italic]
+angle = 9.4
+shape = "italic"
+menu = "italic"
+css = "italic"
+
+# ---------------- IosevkaCustomSerifedFixed --------------------
+
+[buildPlans.IosevkaCustomSerifedFixed]
+family = "Iosevka Serifed Fixed"
+spacing = "fixed"
+serifs = "slab"
+noCvSs = false
+exportGlyphNames = true
+
+[buildPlans.IosevkaCustomSerifedFixed.variants.design]
+one = "base"
+two = "straight-neck-serifed"
+three = "flat-top-serifed"
+four = "closed-serifed"
+five = "oblique-arched-serifed"
+six = "open-contour"
+seven = "bend-serifed"
+eight = "crossing-asymmetric"
+nine = "open-contour"
+zero = "oval-dotted"
+
+capital-a = "curly-base-serifed"
+capital-d = "more-rounded-bilateral-serifed"
+capital-j = "serifed-symmetric"
+capital-k = "curly-serifed"
+capital-m = "slanted-sides-hanging-serifed"
+capital-r = "curly-serifed"
+capital-v = "curly-serifed"
+capital-w = "curly-serifed"
+capital-x = "curly-serifed"
+capital-y = "curly-serifed"
+capital-z = "curly-serifed"
+b = "bottom-cut-serifed"
+g = "double-storey"
+u = "toothed-serifed"
+v = "curly-serifed"
+w = "curly-serifed"
+x = "curly-serifed"
+y = "curly-turn-serifed"
+z = "curly-serifed"
+
+[buildPlans.IosevkaCustomSerifedFixed.variants.italic]
+one = "base"
+two = "curly-neck-serifed"
+three = "two-arcs"
+four = "semi-open-serifed"
+five = "oblique-arched-serifed"
+six = "straight-bar"
+seven = "straight-serifed"
+eight = "crossing"
+nine = "straight-bar"
+zero = "oval-long-dotted"
+
+capital-a = "curly-base-serifed"
+capital-d = "more-rounded-bilateral-serifed"
+capital-j = "serifed-symmetric"
+capital-k = "curly-serifed"
+capital-m = "slanted-sides-hanging-serifed"
+capital-r = "curly-serifed"
+capital-v = "curly-serifed"
+capital-w = "curly-serifed"
+capital-x = "curly-serifed"
+capital-y = "curly-serifed"
+capital-z = "curly-serifed"
+g = "double-storey"
+u = "tailed-serifed"
+v = "cursive-serifed"
+w = "cursive-serifed"
+x = "cursive"
+y = "cursive-motion-serifed"
+z = "cursive"
+
+[buildPlans.IosevkaCustomSerifedFixed.widths.Normal]
+shape = 500
+menu = 5
+css = "normal"
+
+[buildPlans.IosevkaCustomSerifedFixed.slopes.Upright]
+angle = 0
+shape = "upright"
+menu = "upright"
+css = "normal"
+
+[buildPlans.IosevkaCustomSerifedFixed.slopes.Italic]
 angle = 9.4
 shape = "italic"
 menu = "italic"
