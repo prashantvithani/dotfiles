@@ -24,10 +24,10 @@
 ;;;; Fonts
 (setq doom-font
       ;; "Source Code Pro-10"
-      "Iosevka Custom Condensed-10"
+      "Iosevka Condensed-10"
       ;; doom-big-font "Hermit-18:medium"
       doom-symbol-font "Noto Color Emoji-10:regular"
-      doom-emoji-font "Noto Color Emoji-10:regular"
+      doom-emoji-font "Emoji One-10:regular"
       ;; doom-variable-pitch-font "Avenir Next-12:medium"
       doom-serif-font "Iosevka Custom Condensed-10:medium")
 
@@ -42,7 +42,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'prashant-kanagawa-wave-vibrant)
+(setq doom-theme 'prashant-ayu-dark)
 (setq doom-kanagawa-brighter-comments t)
 (custom-theme-set-faces! 'spacemacs-dark
   '(iedit-occurrence :foreground "#b1951d" :weight bold :inverse-video t)
@@ -87,15 +87,16 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
-(add-to-list 'default-frame-alist
-             '(ns-transparent-titlebar . t))
+;; (add-to-list 'default-frame-alist
+;;              '(ns-transparent-titlebar . t))
+
 ;; (add-to-list 'default-frame-alist '(undecorated . t))
-;; (setq default-frame-alist
-;;       (append
-;;        '((undecorated . t)
-;;          (drag-internal-border . t)
-;;          (internal-border-width . 4))
-;;        default-frame-alist))
+(setq default-frame-alist
+      (cl-union
+       default-frame-alist
+       '((undecorated . t)
+         (drag-internal-border . t))))
+(set-face-background 'internal-border "gray")
 ;; (add-to-list 'default-frame-alist '(ns-appearance . dark))
 
 ;; (global-auto-revert-mode t)
@@ -117,7 +118,8 @@
       remote-file-name-inhibit-auto-save t)
 
 ;;;; Custom Settings
-(setq-default ;; line-spacing 1
+(setq-default
+ line-spacing '(0.05 . 0.05)
  read-quoted-char-radix 16
  doom-inhibit-indent-detection t)
 (setq enable-remote-dir-locals t
@@ -139,9 +141,6 @@
       evil-operator-state-cursor '((hbar . 8) "yellow")
       evil-treemacs-state-cursor '(bar "magenta")
       evil-emacs-state-cursor '(bar "cyan"))
-
-;; Motion bindings
-(map! :m [C-i] #'evil-jump-forward)
 
 ;; Custom Bindings Normal-Emacs bindings
 (map! :ne "M-/" #'comment-line)
@@ -221,6 +220,20 @@
 ;;     (kbd "C-;") 'evil-snipe-repeat
 ;;     (kbd "C-,") 'evil-snipe-repeat-reverse))
 
+;; ------------------------- LISPY -----------------------------
+(map! :after (lispy lispyville)
+      :map lispy-mode-map-lispy
+      ;; unbind individual bracket keys
+      "[" #'lispy-brackets
+      "{" #'lispy-braces
+      "]" #'lispy-right-nostring
+      "}" #'lispy-right-nostring
+      ;; re-bind commands bound to bracket keys by default
+      "C-{" #'lispyville-previous-closing
+      "C-{" #'lispyville-next-closing
+      "M-[" #'lispyville-previous-opening
+      "M-]" #'lispyville-next-opening)
+
 ;;;; ------------RUBY
 
 ;; (add-to-list 'auto-mode-alist '("\\.rbs\\'" . ruby-mode) '("\\.rbi\\'" . ruby-mode))
@@ -294,19 +307,65 @@
       "R" 'inf-elixir-reload-module)
 
 ;; --------- CLOJURE ----------
-(map! :localleader
-      :map cider-mode-map
-      :prefix ("e" . "eval")
-      "o" #'cider-eval-sexp-up-to-point
-      "x" 'cider-eval-commands-map)
+(after! clojure-mode
+  (setq cider-clojure-cli-aliases ":dev")
+  (map! :localleader
+        :map cider-mode-map
+        :prefix ("e" . "eval")
+        "o" #'cider-eval-sexp-up-to-point
+        "x" 'cider-eval-commands-map))
 
 ;; ------- FLYCHECK -------
 (after! flycheck
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (after! flycheck-posframe
+    ;; (setq flycheck-posframe-info-prefix "")
     (set-face-attribute 'flycheck-posframe-info-face nil :inherit 'success)
     (set-face-attribute 'flycheck-posframe-warning-face nil :inherit 'warning)
-    (set-face-attribute 'flycheck-posframe-error-face nil :inherit 'error)))
+    (set-face-attribute 'flycheck-posframe-error-face nil :inherit 'error)
+
+    (setq flycheck-posframe-info-prefix "ℹ️️ ")
+    (setq flycheck-posframe-warning-prefix "⚠️️ ")
+    (setq flycheck-posframe-error-prefix "❌️ ")
+
+    (when (modulep! :tools lsp)
+      (if (modulep! :tools lsp +eglot)
+          (progn (defadvice! flycheck-posframe--get-face-for-error-eglot (fn err)
+                   :around #'flycheck-posframe-get-face-for-error
+                   (pcase (intern (car (split-string (symbol-name (flycheck-error-level err)) ":")))
+                     ('info 'flycheck-posframe-info-face)
+                     ('warning 'flycheck-posframe-warning-face)
+                     ('error 'flycheck-posframe-error-face)
+                     (_ (funcall fn err))))
+                 (defadvice! flycheck-posframe--get-prefix-for-error-eglot (fn err)
+                   :around #'flycheck-posframe-get-prefix-for-error
+                   (pcase (intern (car (split-string (symbol-name (flycheck-error-level err)) ":")))
+                     ('info flycheck-posframe-info-prefix)
+                     ('warning flycheck-posframe-warning-prefix)
+                     ('error flycheck-posframe-error-prefix)
+                     (_ (funcall fn err)))))
+
+        (progn (defadvice! flycheck-posframe--get-face-for-error-lsp (fn err)
+                 :around #'flycheck-posframe-get-face-for-error
+                 (if-let ((lvl (caddr (split-string (symbol-name (flycheck-error-level err)) "-"))))
+                     (pcase (intern lvl)
+                       ('info 'flycheck-posframe-info-face)
+                       ('warning 'flycheck-posframe-warning-face)
+                       ('error 'flycheck-posframe-error-face)
+                       (_ (funcall fn err)))
+                   (funcall fn err)))
+               (defadvice! flycheck-posframe--get-prefix-for-error-lsp (fn err)
+                 :around #'flycheck-posframe-get-prefix-for-error
+                 (if-let ((lvl (caddr (split-string (symbol-name (flycheck-error-level err)) "-"))))
+                     (pcase (intern lvl)
+                       ('info flycheck-posframe-info-prefix)
+                       ('warning flycheck-posframe-warning-prefix)
+                       ('error flycheck-posframe-error-prefix)
+                       (_ (funcall fn err)))
+                   (funcall fn err))))))
+    )
+
+  (map! :leader :desc "Linter" :ne "c L" flycheck-command-map))
 
 ;; ------ DIFF-HL ------
 ;; (setq diff-hl-disable-on-remote t)
@@ -369,6 +428,13 @@
   (setq! indent-bars-treesit-support t)
   )
 
+;; ------- RAINBOW-DELIMITER -------
+;; (use-package! rainbow-delimiters
+;;   :defer t
+;;   :config
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+;;   )
+
 ;; (after! highlight-indent-guides
 ;;   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 ;;   (setq highlight-indent-guides-method 'column)
@@ -430,21 +496,54 @@
   (cl-pushnew 'tramp-own-remote-path tramp-remote-path)
   (setq explicit-shell-file-name "/bin/bash"))
 
-
 ;; ----- LSP -----
 (setq lsp-idle-delay 0.500
       lsp-response-timeout 25
       lsp-enable-xref t
       lsp-enable-file-watchers nil
+      lsp-semantic-tokens-enable t
       lsp-use-plists t
       lsp-log-io t
       lsp-ui-sideline-enable nil
       lsp-ui-doc-mode t)
-(after! lsp-mode
-  (delete 'lsp-terraform lsp-client-packages))
 
 (setq lsp-disabled-clients '(rubocop-ls rubocop-ls-tramp sorbet-ls))
 ;; (setq lsp-ruby-lsp-use-bundler t)
+
+(after! lsp-mode
+  (delete 'lsp-terraform lsp-client-packages)
+
+  (when (modulep! :tools lsp +booster)
+    (defun lsp-booster--advice-json-parse (old-fn &rest args)
+      "Try to parse bytecode instead of json."
+      (or
+       (when (equal (following-char) ?#)
+         (let ((bytecode (read (current-buffer))))
+           (when (byte-code-function-p bytecode)
+             (funcall bytecode))))
+       (apply old-fn args)))
+    (advice-add (if (progn (require 'json)
+                           (fboundp 'json-parse-buffer))
+                    'json-parse-buffer
+                  'json-read)
+                :around
+                #'lsp-booster--advice-json-parse)
+
+    (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+      "Prepend emacs-lsp-booster command to lsp CMD."
+      (let ((orig-result (funcall old-fn cmd test?)))
+        (if (and (not test?)                             ;; for check lsp-server-present?
+                 (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+                 lsp-use-plists
+                 (not (functionp 'json-rpc-connection))  ;; native json-rpc
+                 (executable-find "emacs-lsp-booster"))
+            (progn
+              (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
+                (setcar orig-result command-from-exec-path))
+              (message "Using emacs-lsp-booster for %s!" orig-result)
+              (cons "emacs-lsp-booster" orig-result))
+          orig-result)))
+    (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)))
 
 (after! eglot
   (add-to-list 'eglot-server-programs
@@ -593,6 +692,9 @@
   (setq aidermacs-show-diff-after-change t))
 (map! :leader :desc "SPC o L" :ne "o L" #'aidermacs-transient-menu)
 
+;; ------ DUCKDB -----
+(use-package! ob-duckdb)
+
 ;;;;;;;;;;;;;;;;; ORG ;;;;;;;;;;;;;;;;;;;;;;
 ;; (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.90 :select t :ttl nil)
 ;; (set-popup-rule! "^CAPTURE.*\\.org$" :side 'bottom :size 0.90 :select t :ttl nil)
@@ -603,15 +705,20 @@
 ;; (add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook 'org-mode-hook #'+word-wrap-mode)
 (add-hook! 'org-mode-hook (corfu-mode -1))
+;; (add-hook! 'org-mode-hook (org-indent-mode -1))
 (add-hook! 'org-capture-mode-hook (corfu-mode -1))
+(add-hook 'org-mode-hook #'org-modern-indent-mode 90)
+
+(after! org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((verb . t)
+     (duckdb . t))))
 
 (setq
  org-agenda-skip-scheduled-if-done t
  org-agenda-skip-deadline-if-done t
- org-ellipsis " ▾ "
- org-bullets-bullet-list '("·")
- org-archive-subtree-save-file-p t ; save target buffer after archiving
- org-tags-column -80
+ ;;  org-archive-subtree-save-file-p t      ; save target buffer after archiving
  org-agenda-files (ignore-errors (directory-files +org-dir t "\\.org$" t))
  org-log-done 'time
  org-refile-targets (quote ((nil :maxlevel . 1)))
@@ -621,7 +728,26 @@
                          ("t" "Task" entry
                           (file+headline "tasks.org" "Inbox")
                           "* [ ] %?\n%i" :prepend t :kill-buffer t))
- +org-capture-todo-file "tasks.org")
+ +org-capture-todo-file "tasks.org"
+
+ ;; Edit settings (copied from org-modern readme)
+ org-auto-align-tags nil
+ org-tags-column 0
+ org-fold-catch-invisible-edits 'show-and-error
+ org-special-ctrl-a/e t
+ org-insert-heading-respect-content t
+
+ ;; Org styling, hide markup etc.
+ org-hide-emphasis-markers t
+ org-pretty-entities t
+ org-agenda-tags-column 0
+ org-ellipsis "…")
+
+;; ----------- ORG MODERN ------------
+
+(after! org-modern
+  (setq org-modern-star 'replace)
+  (set-face-attribute 'org-modern-symbol nil :family "Iosevka"))
 
 ;;;;;;;;;;;;;;;; SUPER AGENDA ;;;;;;;;;;;;;;;;
 ;; (use-package org-super-agenda
@@ -698,58 +824,46 @@
 ;;   (org-super-agenda-mode))
 ;;;;;;;;;;;;;;;; SUPER AGENDA END ;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(after! org
-  (set-face-attribute 'org-link nil
-                      :weight 'normal
-                      :background 'unspecified)
-  (set-face-attribute 'org-code nil
-                      :foreground "#a9a1e1"
-                      :background 'unspecified)
-  (set-face-attribute 'org-date nil
-                      :foreground "#5B6268"
-                      :background 'unspecified)
-  (set-face-attribute 'org-level-1 nil
-                      :foreground "steelblue2"
-                      :background 'unspecified
-                      :height 1.2
-                      :weight 'normal)
-  (set-face-attribute 'org-level-2 nil
-                      :foreground "slategray2"
-                      :background 'unspecified
-                      :height 1.0
-                      :weight 'normal)
-  (set-face-attribute 'org-level-3 nil
-                      :foreground "SkyBlue2"
-                      :background 'unspecified
-                      :height 1.0
-                      :weight 'normal)
-  (set-face-attribute 'org-level-4 nil
-                      :foreground "DodgerBlue2"
-                      :background 'unspecified
-                      :height 1.0
-                      :weight 'normal)
-  (set-face-attribute 'org-level-5 nil
-                      :weight 'normal)
-  (set-face-attribute 'org-level-6 nil
-                      :weight 'normal)
-  (set-face-attribute 'org-document-title nil
-                      :foreground "SlateGray1"
-                      :background 'unspecified
-                      :height 1.75
-                      :weight 'bold))
+;; (after! org
+;;   (set-face-attribute 'org-link nil
+;;                       :weight 'normal
+;;                       :background 'unspecified)
+;;   (set-face-attribute 'org-code nil
+;;                       :foreground "#a9a1e1"
+;;                       :background 'unspecified)
+;;   (set-face-attribute 'org-date nil
+;;                       :foreground "#5B6268"
+;;                       :background 'unspecified)
+;;   (set-face-attribute 'org-level-1 nil
+;;                       :foreground "steelblue2"
+;;                       :background 'unspecified
+;;                       :height 1.2
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-level-2 nil
+;;                       :foreground "slategray2"
+;;                       :background 'unspecified
+;;                       :height 1.0
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-level-3 nil
+;;                       :foreground "SkyBlue2"
+;;                       :background 'unspecified
+;;                       :height 1.0
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-level-4 nil
+;;                       :foreground "DodgerBlue2"
+;;                       :background 'unspecified
+;;                       :height 1.0
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-level-5 nil
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-level-6 nil
+;;                       :weight 'normal)
+;;   (set-face-attribute 'org-document-title nil
+;;                       :foreground "SlateGray1"
+;;                       :background 'unspecified
+;;                       :height 1.75
+;;                       :weight 'bold))
 
-;;;;; VERB ;;;;;
-(with-eval-after-load 'org
-  )
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((verb . t)))
-
-;; ------ DUCKDB -----
-(use-package! ob-duckdb)
-(after! org
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               (append org-babel-load-languages '((duckdb . t)))))
 ;;;;;;;;;;;;;;;;; ORG END ;;;;;;;;;;;;;;;;;;;;;;
 
 ;; (after! Info-mode

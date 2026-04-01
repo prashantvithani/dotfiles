@@ -32,7 +32,7 @@
        :ui
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
-       doom-dashboard    ; a nifty splash screen for Emacs
+       dashboard    ; a nifty splash screen for Emacs
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        ;; (emoji +unicode)  ; 🙂
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
@@ -46,7 +46,7 @@
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
        smooth-scroll     ; So smooth you won't believe it's not butter
        tabs              ; an tab bar for Emacs
-       (treemacs +lsp)     ; a project drawer, like neotree but cooler
+       treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
        (vc-gutter +pretty)         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
@@ -108,7 +108,7 @@
         +docsets
         +dictionary)
        llm               ; when I said you needed friends, I didn't mean...
-       (lsp +peek +eglot +booster)              ; eglot has some issue with project
+       (lsp +peek +booster)              ; eglot has some issue with project
        (magit +forge)             ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -123,13 +123,16 @@
        ;;tty               ; improve the terminal Emacs experience
 
        :lang
+       ;;ada               ; In strong typing we (blindly) trust
        ;;agda              ; types of types of types of types...
        ;;beancount         ; mind the GAAP
-       (cc               ; C/C++/Obj-C madness
-        +lsp)
-       (clojure           ; java with a lisp
+       (cc                              ; C/C++/Obj-C madness
         +lsp
         +tree-sitter)
+       (clojure           ; java with a lisp
+        +lsp
+        ;; +tree-sitter
+        )
        common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
@@ -160,6 +163,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
        (json)              ; At least it ain't XML
+       ;;janet             ; Fun fact: Janet is me!
        (java +lsp +tree-sitter) ; the poster child for carpal tunnel syndrome
        (javascript +tree-sitter)        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
@@ -168,7 +172,7 @@
        ;;lean
        ;;ledger            ; an accounting system in Emacs
        ;;lua               ; one-based indices? one-based indices
-       markdown          ; writing docs for people to ignore
+       (markdown +tree-sitter)          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
@@ -177,14 +181,14 @@
         ;; +babel           ; running code in org
         ;; +capture         ; org-capture in and outside of Emacs
         ;; +export          ; Exporting org to whatever you want
-        ;; +pretty
+        +pretty
         +brain
         +journal
         +pandoc
-        +pomodoro
         +present)         ; Emacs for presentations
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
+       ;;graphviz          ; diagrams for confusing yourself even more
        ;;purescript        ; javascript, but functional
        (python            ; beautiful is better than ugly
         +lsp

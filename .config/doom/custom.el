@@ -5,6 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("79ec9e37b8943ab28f1513bdf70b43f4dd3f192d3ee5789db09a66cbee44c057" default))
+ '(package-selected-packages '(rainbow-delimiters))
  '(safe-local-variable-values '((robe-port . "3456"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

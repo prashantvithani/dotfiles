@@ -53,16 +53,14 @@
 ;; (package! org-super-agenda)
 ;; (package! org-brain)
 ;; (package! ascii-art-to-unicode)
-(package! org-pomodoro)
 (package! deadgrep)
 (package! sql-indent)
 (package! dictionary)
-(package! verb)
-(package! pomidor)
 (package! puppet-mode)
 (package! kubed)
 (package! breadcrumb)
 (package! blamer)
+(package! rainbow-delimiters)
 
 (package! inf-elixir)
 
@@ -75,7 +73,14 @@
            :files ("*.el" (:exclude "images/*"))))
 (package! claude-code-ide)
 
+;; ORG packages
 (package! ob-duckdb
   :recipe (:host github
            :repo "gggion/ob-duckdb"
            :files ("*.el")))
+(package! verb)
+(package! pomidor)
+(package! org-modern-indent
+  :recipe (:type git
+           :host github
+           :repo "jdtsmith/org-modern-indent"))

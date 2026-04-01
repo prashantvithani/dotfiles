@@ -88,7 +88,7 @@ The return value is the yanked text."
 
 (defun font-size-150-hidpi ()
   (interactive)
-  (doom-adjust-font-size 19 t))
+  (doom-adjust-font-size 17 t))
 
 (dolist (fn '(definition references))
   (fset (intern (format "+lookup/%s-other-window" fn))
