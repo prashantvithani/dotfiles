@@ -1,0 +1,24 @@
+font-family = "Iosevka Condensed Fixed"
+font-size = 10.0
+#font-style = medium
+
+window-decoration = "none"
+background-opacity = 0.98
+background-blur-radius = 20
+
+unfocused-split-opacity = 0.5
+unfocused-split-fill = #1e2030
+split-divider-color=#91d7e3
+
+theme = Kanagawa Wave
+
+quick-terminal-size = 80%,100%
+keybind = ctrl+shift+bracket_left=goto_split:previous
+keybind = ctrl+shift+bracket_right=goto_split:next
+keybind = global:super+f12=toggle_quick_terminal
+initial-window = true
+
+shell-integration=bash
+shell-integration-features = ssh-env,ssh-terminfo
+
+copy-on-select = false

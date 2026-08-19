@@ -1,0 +1,27 @@
+# Spacemacs Light Theme for Ghostty
+palette = 0=#efeae9
+palette = 1=#ba2121
+palette = 2=#428120
+palette = 3=#876e10
+palette = 4=#21619b
+palette = 5=#7b219f
+palette = 6=#00684a
+palette = 7=#655370
+palette = 8=#a395aa
+palette = 9=#ba2121
+palette = 10=#428120
+palette = 11=#876e10
+palette = 12=#21619b
+palette = 13=#7b219f
+palette = 14=#00684a
+palette = 15=#2c2630
+
+# Background and Foreground
+background = #fbf8f7
+foreground = #655370
+
+# Selection and Cursor
+selection-background = #d3cbdb
+selection-foreground = #2c2630
+cursor-color = #655370
+

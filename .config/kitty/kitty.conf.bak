@@ -21,7 +21,7 @@ font_family        Iosevka Condensed Fixed
 #: <https://sw.kovidgoyal.net/kitty/kittens/choose-fonts/#font-spec-
 #: syntax>.
 
-font_size 10.0
+font_size 11.0
 
 #: Font size (in pts).
 
@@ -348,7 +348,7 @@ font_size 10.0
 
 #: Scrollback {{{
 
-# scrollback_lines 10000
+scrollback_lines -1
 
 #: Number of lines of history to keep in memory for scrolling back.
 #: Memory is allocated on demand. Negative numbers are (effectively)
@@ -1217,7 +1217,7 @@ inactive_text_alpha 0.6
 
 #: The foreground and background colors.
 
-background_opacity 0.8
+background_opacity 0.9
 
 #: The opacity of the background. A number between zero and one, where
 #: one is opaque and zero is fully transparent. This will only work if
@@ -2655,6 +2655,6 @@ map ctrl+alt+z toggle_layout stack
 
 
 # BEGIN_KITTY_THEME
-# Ayu Mirage
+# Spacemacs
 include current-theme.conf
 # END_KITTY_THEME
