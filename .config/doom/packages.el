@@ -71,7 +71,7 @@
 (package! claude-code
   :recipe (:host github :repo "stevemolitor/claude-code.el" :branch "main"
            :files ("*.el" (:exclude "images/*"))))
-(package! claude-code-ide)
+(package! claude-code-ide :recipe (:host github :repo "manzaltu/claude-code-ide.el"))
 (package! eca :recipe (:host github :repo "editor-code-assistant/eca-emacs" :files ("*.el")))
 
 ;; ORG packages

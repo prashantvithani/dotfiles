@@ -124,7 +124,7 @@
 
 ;;;; Custom Settings
 (setq-default
- line-spacing '(0.05 . 0.05)
+ line-spacing nil
  read-quoted-char-radix 16
  doom-inhibit-indent-detection t)
 (setq enable-remote-dir-locals t
@@ -134,10 +134,10 @@
 ;;   (add-hook 'evil-local-mode-hook #'turn-on-undo-tree-mode))
 
 ;; Evil Cursor settings
-(setq evil-insert-state-cursor '(bar "aqua")
+(setq evil-insert-state-cursor '(bar "purple")
       evil-normal-state-cursor '(box "orange")
       evil-visual-state-cursor '(box "gray")
-      evil-motion-state-cursor '(bar "purple")
+      evil-motion-state-cursor '(bar "green")
       evil-replace-state-cursor '(hbar "red")
       evil-operator-state-cursor '((hbar . 8) "yellow")
       evil-treemacs-state-cursor '(bar "magenta")
@@ -273,9 +273,9 @@
         "B" #'ruby-send-buffer-and-go))
 
 ;; ----- ZEUS ----
-(let ((zeus-dir (expand-file-name "zeus" site-lisp-dir)))
-  (add-to-list 'load-path zeus-dir))
-(require 'zeus)
+;; (let ((zeus-dir (expand-file-name "zeus" site-lisp-dir)))
+;;   (add-to-list 'load-path zeus-dir))
+;; (require 'zeus)
 
 ;; -------- SCALA -------
 (after! scala-ts-mode
@@ -302,11 +302,11 @@
 ;; --------- CLOJURE ----------
 (after! clojure-mode
   (setq cider-clojure-cli-aliases ":dev:user")
-  (map! :localleader
-        :map cider-mode-map
-        :prefix ("e" . "eval")
-        "o" #'cider-eval-sexp-up-to-point
-        "x" 'cider-eval-commands-map))
+  (map! (:localleader
+         :map cider-mode-map
+         (:prefix "e"
+                  "o" #'cider-eval-sexp-up-to-point
+                  "x" 'cider-eval-commands-map))))
 
 ;; ------- FLYCHECK -------
 (after! flycheck
@@ -507,6 +507,7 @@
   (setq lsp-semantic-tokens-enable t
         lsp-enable-snippet t
         lsp-ui-doc-enable t
+        lsp-ui-sideline-show-diagnostics nil
         ;; lsp-idle-delay 0.500
         ;; lsp-response-timeout 25
         ;; lsp-use-plists t
@@ -669,7 +670,8 @@
                      (:prefix ("c" . "claude")
                       :desc "menu" "m" #'claude-code-ide-menu)))
   :config
-  ;; (setq claude-code-terminal-backend 'vterm)
+  (setq claude-code-ide-terminal-backend 'ghostel)
+  (setq claude-code-ide-no-flicker t)
   ;; (claude-code-mode)
   (claude-code-ide-emacs-tools-setup))
 
