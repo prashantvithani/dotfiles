@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Code status line — ps1 segment + model + context usage + cost
+# Claude Code status line — model + context usage + rate limits + session
 
 input=$(cat)
 
@@ -22,44 +22,45 @@ TEAL=$'\033[01;38;5;36m'
 GITC=$'\033[38;5;32m'
 RESET=$'\033[00m'
 
-# PS1-style segment: user@host: dir (git_branch)
-user_part="${RED}$(whoami)${RESET}"
-host_part="${CYAN}$(hostname -s)${RESET}"
-dir_part="${TEAL}${cwd}${RESET}"
-git_branch=""
-if [ -n "$cwd" ] && git -C "$cwd" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  branch=$(git -C "$cwd" --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
-  if [ -n "$branch" ]; then
-    git_branch=" ${GITC}(${branch})${RESET}"
-  fi
-fi
-ps1_part="${user_part}${YELLOW}@${RESET}${host_part}: ${dir_part}${git_branch}"
+# Build progress bar (20 chars wide)
+build_bar() {
+  local pct="$1"
+  local width=20
+  local filled=$(echo "$pct $width" | awk '{printf "%d", ($1/100)*$2}')
+  local empty=$((width - filled))
+  local bar=""
+  for ((i=0; i<filled; i++)); do bar="${bar}█"; done
+  for ((i=0; i<empty; i++)); do bar="${bar}░"; done
+  echo "$bar"
+}
 
-# Model
-model_part=""
-[ -n "$model" ] && model_part=" ${GREEN}[${model}]${RESET}"
-
-# Context bar + percentage
-ctx_part=""
-if [ -n "$used_pct" ]; then
-  filled=$(awk -v p="$used_pct" 'BEGIN { n=int(p/10); if(n>10) n=10; printf "%d", n }')
-  empty=$((10 - filled))
-  bar=$(printf '%0.s#' $(seq 1 $filled) 2>/dev/null; printf '%0.s-' $(seq 1 $empty) 2>/dev/null)
-  ctx_part=" ${YELLOW}[${bar}]${RESET}"
+# Context window section
+remaining=$(echo "$input" | jq -r '.context_window.remaining_percentage // empty')
+if [ -n "$remaining" ]; then
+  bar=$(build_bar "$remaining")
+  remaining_int=$(echo "$remaining" | awk '{printf "%d", $1}')
+  used_int=$(echo "$used_pct" | awk '{printf "%d", $1}')
+  printf "${CYAN}%s${RESET}  ${YELLOW}[%s]${RESET} ${GREEN}%s%%${RESET} (${RED}%s%%${RESET})" \
+    "$model" "$bar" "$remaining_int" "$used_int"
+else
+  printf "${CYAN}%s${RESET}  ${YELLOW}[no context data yet]${RESET}" "$model"
 fi
 
-# Total context used / available / percentage
-tok_part=""
-if [ -n "$total_used" ] && [ -n "$ctx_size" ] && [ -n "$used_pct" ]; then
-  tok_part=" ${YELLOW}${total_used}/${ctx_size} ($(printf '%.0f' "$used_pct")%)${RESET}"
+# Rate limits from input JSON (Claude.ai subscription limits)
+five_hour=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+seven_day=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+
+if [ -n "$five_hour" ]; then
+  five_int=$(printf '%.0f' "$five_hour")
+  printf "  ${TEAL}5h: %s%%${RESET}" "$five_int"
+fi
+if [ -n "$seven_day" ]; then
+  week_int=$(printf '%.0f' "$seven_day")
+  printf "  ${YELLOW}7d: %s%%${RESET}" "$week_int"
 fi
 
-# Cost estimate (Sonnet pricing: input $3/M, output $15/M, cache_write $3.75/M, cache_read $0.30/M)
-cost_part=""
-if [ -n "$in_tok" ] && [ -n "$out_tok" ]; then
-  cost=$(awk -v i="$in_tok" -v o="$out_tok" -v cw="$cache_write" -v cr="$cache_read" \
-    'BEGIN { printf "%.4f", (i * 3 + cw * 3.75 + cr * 0.30 + o * 15) / 1000000 }')
-  cost_part=" ${RED}\$${cost}${RESET}"
+# Session ID
+session_id=$(echo "$input" | jq -r '.session_id // empty')
+if [ -n "$session_id" ]; then
+  printf "  ${DIM}session: %s${RESET}" "$session_id"
 fi
-
-printf "%s%s%s%s\n" "$model_part" "$ctx_part" "$tok_part" "$cost_part"
