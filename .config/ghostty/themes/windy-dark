@@ -1,0 +1,26 @@
+# Windy Dark Theme for Ghostty
+palette = 0=#171717
+palette = 1=#fb2c36
+palette = 2=#00c950
+palette = 3=#fdc700
+palette = 4=#51a2ff
+palette = 5=#fb64b6
+palette = 6=#00d3f2
+palette = 7=#fafafa
+palette = 8=#737373
+palette = 9=#ffa2a2
+palette = 10=#7bf1a8
+palette = 11=#fdcf26
+palette = 12=#bedbff
+palette = 13=#fb7bc0
+palette = 14=#a2f4fd
+palette = 15=#d4d4d4
+
+# Background and Foreground
+background = #27272a
+foreground = #f9fafb
+
+# Selection and Cursor
+selection-background = #525258
+selection-foreground = #f9fafb
+cursor-color = #00c950

@@ -1,0 +1,26 @@
+# Windy Light Theme for Ghostty
+palette = 0=#0a0a0a
+palette = 1=#c10007
+palette = 2=#008236
+palette = 3=#f0b100
+palette = 4=#1447e6
+palette = 5=#a3004c
+palette = 6=#007595
+palette = 7=#fafafa
+palette = 8=#525252
+palette = 9=#fb2c36
+palette = 10=#00c950
+palette = 11=#f2bc26
+palette = 12=#2b7fff
+palette = 13=#b02666
+palette = 14=#00b8db
+palette = 15=#d4d4d4
+
+# Background and Foreground
+background = #f4f4f5
+foreground = #020618
+
+# Selection and Cursor
+selection-background = #cdcdcf
+selection-foreground = #020618
+cursor-color = #008236
