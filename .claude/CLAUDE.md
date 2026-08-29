@@ -55,6 +55,9 @@ you think is harmful rather than forking silently.
 - When two patterns conflict, pick one (more recent / more tested) and say why;
 don't blend them.
 
+## Avoid Over-Engineering
+When the stated goal is simplification, do not introduce new named concepts, abstraction layers, or bridging types. Propose the smallest change that satisfies the requirement first; only escalate if the user asks.
+
 ## Mechanism vs policy
 Infra provides generic mechanism (the knobs); applications set policy (the
 values). Mechanism doesn't name or know the policies that use it. When designing,

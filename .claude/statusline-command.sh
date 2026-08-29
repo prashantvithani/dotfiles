@@ -34,16 +34,27 @@ build_bar() {
   echo "$bar"
 }
 
+# Reasoning effort (stdin if provided, else configured default)
+effort=$(echo "$input" | jq -r '.effort.level // .model.effort.level // .effort // empty')
+if [ -z "$effort" ]; then
+  for f in "$HOME/.claude/settings.local.json" "$HOME/.claude/settings.json"; do
+    [ -r "$f" ] && effort=$(jq -r '.effortLevel // empty' "$f" 2>/dev/null)
+    [ -n "$effort" ] && break
+  done
+fi
+effort_part=""
+[ -n "$effort" ] && effort_part=" ${CYAN}${effort}${RESET}"
+
 # Context window section
 remaining=$(echo "$input" | jq -r '.context_window.remaining_percentage // empty')
 if [ -n "$remaining" ]; then
   bar=$(build_bar "$remaining")
   remaining_int=$(echo "$remaining" | awk '{printf "%d", $1}')
   used_int=$(echo "$used_pct" | awk '{printf "%d", $1}')
-  printf "${CYAN}%s${RESET}  ${YELLOW}[%s]${RESET} ${GREEN}%s%%${RESET} (${RED}%s%%${RESET})" \
+  printf "${CYAN}%s${RESET}${effort_part}  ${YELLOW}[%s]${RESET} ${GREEN}%s%%${RESET} (${RED}%s%%${RESET})" \
     "$model" "$bar" "$remaining_int" "$used_int"
 else
-  printf "${CYAN}%s${RESET}  ${YELLOW}[no context data yet]${RESET}" "$model"
+  printf "${CYAN}%s${RESET}${effort_part}  ${YELLOW}[no context data yet]${RESET}" "$model"
 fi
 
 # Rate limits from input JSON (Claude.ai subscription limits)
