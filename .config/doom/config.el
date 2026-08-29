@@ -43,7 +43,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'prashant-tokyo-night-moon)
+(setq doom-theme 'prashant-windy-dark)
 
 ;; Frame Opacity
 ;; (set-frame-parameter nil (if (eq window-system 'pgtk) 'alpha-background 'alpha) 90)
@@ -134,14 +134,14 @@
 ;;   (add-hook 'evil-local-mode-hook #'turn-on-undo-tree-mode))
 
 ;; Evil Cursor settings
-(setq evil-insert-state-cursor '(bar "purple")
-      evil-normal-state-cursor '(box "orange")
-      evil-visual-state-cursor '(box "gray")
-      evil-motion-state-cursor '(bar "green")
-      evil-replace-state-cursor '(hbar "red")
-      evil-operator-state-cursor '((hbar . 8) "yellow")
-      evil-treemacs-state-cursor '(bar "magenta")
-      evil-emacs-state-cursor '(bar "cyan"))
+(setq evil-insert-state-cursor '(bar "#7c86ff")
+      evil-normal-state-cursor '(box "#00bc7d")
+      evil-visual-state-cursor '(box "#a6a09b")
+      evil-motion-state-cursor '(bar "#fe9a00")
+      evil-replace-state-cursor '(hbar "#fb2c36")
+      evil-operator-state-cursor '((hbar . 8) "#fdc700")
+      evil-treemacs-state-cursor '(bar "#ed6aff")
+      evil-emacs-state-cursor '(bar "#00d5be"))
 
 ;; Custom Bindings Normal-Emacs bindings
 (map! :ne "M-/" #'comment-line)

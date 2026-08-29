@@ -118,27 +118,27 @@
    ;; These are the "universal syntax classes" that doom-themes establishes.
    ;; These *must* be included in every doom themes, or your theme will throw an
    ;; error, as they are used in the base theme defined in doom-themes-base.
-   (highlight      indigo)
+   (highlight      emerald)
    (vertical-bar   (doom-darken bg-alt 0.1))
    (selection      grey)
    (builtin        sky)
-   (comments       (if prashant-windy-light-brighter (doom-blend purple base5 0.8) base5))
-   (doc-comments   (doom-blend comments fg 0.5))
-   (constants      pink)
+   (comments       (if prashant-windy-light-brighter (doom-blend purple base5 0.8) base4))
+   (doc-comments   (doom-blend comments fg 0.8))
+   (constants      fuchsia)
    (functions      teal)
-   (keywords       blue)
-   (methods        cyan)
-   (operators      fuchsia)
-   (type           green)
-   (strings        (doom-blend sky fg 0.5))
-   (variables      emerald)
+   (keywords       indigo)
+   (methods        dgreen)
+   (operators      pink)
+   (type           dcyan)
+   (strings        (doom-darken emerald 0.2))
+   (variables      (doom-darken violet 0.2))
    (numbers        orange)
    (region         `(,(doom-darken (car bg-alt) 0.1) ,@(doom-darken (cdr base0) 0.3)))
    (error          rose)
    (warning        amber)
-   (success        green)
+   (success        dsky)
    (vc-modified    blue)
-   (vc-added       green)
+   (vc-added       dsky)
    (vc-deleted     red)
 
    ;; Extra color variables used only in this theme
@@ -166,13 +166,13 @@
     :box `(:line-width -1 :color ,base3))
    (highlight
     :forground 'unspecified
-    :background (doom-blend bg light-blue 0.4)
+    :background (doom-blend bg highlight 0.6)
     :distant-foreground fg-alt)
    (homoglyph :forground damber)
    (lazy-highlight :inherit 'match)
    ((line-number &override) :foreground base4)
    ((line-number-current-line &override) :foreground base7)
-   ((link &override) :foreground 'unspecified :weight 'unspecified)
+   ;; (vertical-border :foreground base2)
    (link-visited :inherit 'link :foreground violet)
    (match
     :background (doom-blend bg bgreen 0.8)
@@ -632,7 +632,7 @@
     :foreground fg
     :bold bold)
         ;;;; markdown-mode
-   ((markdown-code-face &override) :background base1)
+   ((markdown-code-face &override) :background base2)
    (markdown-header-face
     :inherit 'bold
     :foreground dark-blue)
@@ -874,14 +874,14 @@
    (transient-nonstandard-key :box `(:line-width -1 :color ,cyan))
         ;;;; treemacs
    (treemacs-root-face :foreground teal :weight 'bold :height 1.2)
-   (treemacs-directory-face :foreground pink)
+   (treemacs-directory-face :foreground dblue)
    (treemacs-directory-collapsed-face :foreground dsky)
    (treemacs-file-face :foreground fg)
    (treemacs-git-added-face :foreground orange)
    (treemacs-git-renamed-face :foreground sky)
    (treemacs-git-ignored-face :foreground stone)
    (treemacs-git-unmodified-face :foreground base5)
-   (treemacs-git-modified-face :foreground green)
+   (treemacs-git-modified-face :foreground dgreen)
         ;;;; tty-menu
    (tty-menu-disabled-face :background indigo :foreground base3)
    (tty-menu-enabled-face  :background blue   :foreground base1)
